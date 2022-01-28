@@ -31,7 +31,7 @@ class MainPage extends StatefulWidget {
 class _MainPageState extends State<MainPage> {
 
   int selectedIndex = 1;
-  List<Widget> listWidgets = [const Map(),const Home(),const Profil()];
+  List<Widget> listWidgets = [MyMap(),const Home(),const Profil()];
 
   @override
   Widget build(BuildContext context) {
