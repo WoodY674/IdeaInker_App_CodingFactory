@@ -41,7 +41,7 @@ class _MainPageState extends State<MainPage> {
         backgroundColor: Colors.deepPurple,
       ),
       body: listWidgets[selectedIndex],
-      bottomNavigationBar: ConvexAppBar.badge({3: '21+'},
+      bottomNavigationBar: ConvexAppBar.badge(const {3: '21+'},
         items: const [
           TabItem(icon: Icons.map, title: 'Map'),
           TabItem(icon: Icons.home, title: 'Home'),
