@@ -53,8 +53,6 @@ class _Profil extends State<Profil> {
               child: ElevatedButton(
                 child: const Text('Login'),
                 onPressed: () {
-                  print(emailController.text);
-                  print(passwordController.text);
                 },
               )
           ),
@@ -67,11 +65,7 @@ class _Profil extends State<Profil> {
                   style: TextStyle(fontSize: 20),
                 ),
                 onPressed: () {
-                  print("Coucou va créer ton compte");
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => const CreateAccount()),
-                  );
+                  Navigator.of(context).pushNamed(CreateAccount.route);
                 },
               )
             ],
@@ -81,4 +75,12 @@ class _Profil extends State<Profil> {
       ),
     );
   }
+
+  /*
+   si mon utilisateur
+    return profil
+    sinon return login
+    si bouton register
+    return register
+   */
 }
