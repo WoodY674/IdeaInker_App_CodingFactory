@@ -14,13 +14,6 @@ class _Home extends State<Home> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-      appBar: AppBar(
-        backgroundColor: Colors.deepPurpleAccent,
-        title: const Center(
-          child: Text(
-          "Find Your Tattoo"
-        ),)
-      ),
       body: Padding(
         padding: const EdgeInsets.all(10),
         child: MasonryGridView.count(
@@ -173,18 +166,6 @@ class _Home extends State<Home> {
           },
         ),
       ),
-        bottomNavigationBar: ConvexAppBar(
-          backgroundColor: Colors.deepPurpleAccent,
-          items: [
-            TabItem(icon: Icons.home, title: 'Home'),
-            TabItem(icon: Icons.map, title: 'Discovery'),
-            TabItem(icon: Icons.add, title: 'Add'),
-            TabItem(icon: Icons.message, title: 'Message'),
-            TabItem(icon: Icons.people, title: 'Profile'),
-          ],
-          initialActiveIndex: 2,//optional, default as 0
-          onTap: (int i) => print('click index=$i'),
-        )
     );
   }
 }

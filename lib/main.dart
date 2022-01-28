@@ -1,28 +1,64 @@
-import 'package:thebestatoo/home.dart';
+import 'package:convex_bottom_bar/convex_bottom_bar.dart';
 import 'package:flutter/material.dart';
-
-import 'home.dart';
+import 'package:thebestatoo/profil.dart';
+import 'package:thebestatoo/map.dart';
+import 'package:thebestatoo/home.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({Key? key}) : super(key: key);
-
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'FindMyTattoo',
-      routes: {},
+    return const MaterialApp(
       debugShowCheckedModeBanner: false,
-
-      theme: ThemeData(
-
-        primarySwatch: Colors.red,
-      ),
-      home: Home(),
+      home: MainPage(title: 'Find My Tattoo',),
     );
   }
+}
+
+class MainPage extends StatefulWidget {
+  const MainPage({Key? key, required this.title}) : super(key: key);
+
+  final String title;
+
+  @override
+  _MainPageState createState() => _MainPageState();
+}
+
+class _MainPageState extends State<MainPage> {
+
+  int selectedIndex = 1;
+  List<Widget> listWidgets = [const Map(),const Home(),const Profil()];
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(widget.title),
+        backgroundColor: Colors.deepPurple,
+      ),
+      body: listWidgets[selectedIndex],
+      bottomNavigationBar: ConvexAppBar.badge({3: '21+'},
+        items: const [
+          TabItem(icon: Icons.map, title: 'Map'),
+          TabItem(icon: Icons.home, title: 'Home'),
+          TabItem(icon: Icons.verified_user, title: 'Profil'),
+        ],
+        onTap: onItemTapped,
+        activeColor: Colors.white,
+        backgroundColor: Colors.deepPurple,
+        initialActiveIndex: 1,
+      ),
+    );
+  }
+
+  void onItemTapped(int index){
+    setState(() {
+      selectedIndex = index;
+    });
+  }
+
 }
