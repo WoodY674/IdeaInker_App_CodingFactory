@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:thebestatoo/profil.dart';
 import 'package:thebestatoo/map.dart';
 import 'package:thebestatoo/home.dart';
+import 'package:thebestatoo/chat.dart';
+import 'package:thebestatoo/messages.dart';
 
 void main() {
   runApp(MyApp());
@@ -12,9 +14,12 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
+    return MaterialApp(
       debugShowCheckedModeBanner: false,
       home: MainPage(title: 'Find My Tattoo',),
+      routes: {
+        Chat.route : (context) => Chat(),
+      },
     );
   }
 }
@@ -31,7 +36,7 @@ class MainPage extends StatefulWidget {
 class _MainPageState extends State<MainPage> {
 
   int selectedIndex = 1;
-  List<Widget> listWidgets = [const Map(),const Home(),const Profil()];
+  List<Widget> listWidgets = [const Map(),const Home(),const Profil(), Messages(),];
 
   @override
   Widget build(BuildContext context) {
@@ -46,6 +51,7 @@ class _MainPageState extends State<MainPage> {
           TabItem(icon: Icons.map, title: 'Map'),
           TabItem(icon: Icons.home, title: 'Home'),
           TabItem(icon: Icons.verified_user, title: 'Profil'),
+          TabItem(icon: Icons.chat_rounded, title: 'Messages'),
         ],
         onTap: onItemTapped,
         activeColor: Colors.white,
