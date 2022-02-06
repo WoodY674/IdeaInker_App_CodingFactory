@@ -35,7 +35,8 @@ class _MainPageState extends State<MainPage> {
   List<Widget> listWidgets = [
     const Map(),
     const Home(),
-    const Profil()
+    const Profil(),
+    const CreateAccount()
   ];
 
   @override
