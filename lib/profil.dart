@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import 'createaccount.dart';
@@ -14,9 +15,9 @@ class _Profil extends State<Profil> {
   TextEditingController passwordController = TextEditingController();
 
   @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(10),
+  Widget build(BuildContext context) => CupertinoPageScaffold(child:
+  SafeArea(
+    child: Center(
       child: ListView(
         children: <Widget>[
           Container(
@@ -28,23 +29,15 @@ class _Profil extends State<Profil> {
               )),
           Container(
             padding: const EdgeInsets.all(10),
-            child: TextField(
+            child: CupertinoTextField(
               controller: emailController,
-              decoration: const InputDecoration(
-                border: OutlineInputBorder(),
-                labelText: 'E-mail',
-              ),
+              prefix: Icon(CupertinoIcons.person),
             ),
           ),
           Container(
             padding: const EdgeInsets.fromLTRB(10, 10, 10, 0),
-            child: TextField(
-              obscureText: true,
+            child: CupertinoTextField(
               controller: passwordController,
-              decoration: const InputDecoration(
-                border: OutlineInputBorder(),
-                labelText: 'Password',
-              ),
             ),
           ),
           Container(
@@ -59,13 +52,14 @@ class _Profil extends State<Profil> {
           Row(
             children: <Widget>[
               const Text('Does not have account?'),
-              TextButton(
+              CupertinoButton(
                 child: const Text(
                   'Create an account',
                   style: TextStyle(fontSize: 20),
                 ),
                 onPressed: () {
-                  Navigator.of(context).pushNamed(CreateAccount.route);
+                  Navigator.of(context).push(CupertinoPageRoute(builder: (context)=> const CreateAccount())
+                  );
                 },
               )
             ],
@@ -73,14 +67,7 @@ class _Profil extends State<Profil> {
           ),
         ],
       ),
-    );
-  }
-
-  /*
-   si mon utilisateur
-    return profil
-    sinon return login
-    si bouton register
-    return register
-   */
+    ),
+  ),
+  );
 }
