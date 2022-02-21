@@ -1,6 +1,5 @@
 import 'package:convex_bottom_bar/convex_bottom_bar.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:thebestatoo/createaccount.dart';
 import 'package:thebestatoo/profil.dart';
 import 'package:thebestatoo/map.dart';
@@ -14,7 +13,7 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const CupertinoApp(
+    return const MaterialApp(
       debugShowCheckedModeBanner: false,
       home: MainPage(title: 'Find My Tattoo',),
     );
@@ -41,26 +40,35 @@ class _MainPageState extends State<MainPage> {
 
   @override
   Widget build(BuildContext context) {
-    return CupertinoPageScaffold(
-      navigationBar: const CupertinoNavigationBar(
-        middle: Text('Best Tattoo',
-          style: TextStyle(color: Colors.white)),
-        backgroundColor: Colors.deepPurple,
-      ),
-      child: CupertinoTabScaffold(
-        tabBar: CupertinoTabBar(
-          items: const [
-            BottomNavigationBarItem(icon: Icon(Icons.map),label: 'Map'),
-            BottomNavigationBarItem(icon: Icon(Icons.home),label: 'Home'),
-            BottomNavigationBarItem(icon: Icon(Icons.verified_user),label: 'Profil')
-          ],
+    return MaterialApp(
+      routes: {
+        CreateAccount.route: (context) => const CreateAccount(),
+      },
+      home: Scaffold(
+        appBar: AppBar(
+          title: Text(widget.title),
           backgroundColor: Colors.deepPurple,
-          activeColor: Colors.white,
         ),
-        tabBuilder: (BuildContext context, index){
-          return listWidgets[index];
-        },
+        body: listWidgets[selectedIndex],
+        bottomNavigationBar: ConvexAppBar.badge({3: '21+'},
+          items: const [
+            TabItem(icon: Icons.map, title: 'Map'),
+            TabItem(icon: Icons.home, title: 'Home'),
+            TabItem(icon: Icons.verified_user, title: 'Profil'),
+          ],
+          onTap: onItemTapped,
+          activeColor: Colors.white,
+          backgroundColor: Colors.deepPurple,
+          initialActiveIndex: 1,
+        ),
       ),
     );
   }
+
+  void onItemTapped(int index){
+    setState(() {
+      selectedIndex = index;
+    });
+  }
+
 }
