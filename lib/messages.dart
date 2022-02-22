@@ -79,13 +79,13 @@ class _Messages extends State<Messages> {
             onTap: () =>
             {Navigator.pushNamed(context, Chat.route)},
               child: Container(
-                padding: EdgeInsets.only(top: 15, bottom: 15, left: 10, right: 10),
+                padding: const EdgeInsets.only(top: 15, bottom: 15, left: 10, right: 10),
                 child: Row(
                   children: [
                     Container(
                       width: 62,
                       height: 62,
-                      margin: EdgeInsets.only(right: 20),
+                      margin: const EdgeInsets.only(right: 20),
                       decoration: BoxDecoration(
                         color: Colors.purple,
                         shape: BoxShape.circle,
@@ -125,11 +125,11 @@ class _Messages extends State<Messages> {
                                   Text(message['date']),
                                   message['unread'] != 0
                                       ? Container(
-                                      padding: EdgeInsets.all(5),
-                                      decoration: BoxDecoration(color: Colors.orange, shape: BoxShape.circle),
+                                      padding: const EdgeInsets.all(5),
+                                      decoration: const BoxDecoration(color: Colors.orange, shape: BoxShape.circle),
                                       child : Text(
                                           message['unread'].toString(),
-                                          style: TextStyle(
+                                          style: const TextStyle(
                                             color: Colors.white,
                                           ))
 
@@ -139,7 +139,7 @@ class _Messages extends State<Messages> {
                               ),
                               ],
                           ),
-                          SizedBox(height: 20),
+                          const SizedBox(height: 20),
                           Container(
                             color: Colors.grey[400],
                             height: 0.5,

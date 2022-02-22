@@ -13,9 +13,17 @@ class Chat extends StatefulWidget {
 class _Chat extends State<Chat> {
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(
+    return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Colors.deepPurple,
+        title: const Text('nom du destinataire'),
+        leading: IconButton (
+          icon:const Icon(Icons.arrow_back),
+          onPressed:() {Navigator.pop(context);}
+        ),
+      ),
         backgroundColor: Colors.white,
-        body: Center(
+        body: const Center(
           child: Text('bonjour')
         )
     );
