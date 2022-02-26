@@ -46,7 +46,16 @@ class _MainPageState extends State<MainPage> {
       },
       home: Scaffold(
         appBar: AppBar(
-          title: Text(widget.title),
+          title: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Image.asset(
+                'assets/IdeaInkerBanderole.png',
+                fit: BoxFit.contain,
+                height: 40,
+              ),
+            ],
+          ),
           backgroundColor: Colors.deepPurple,
         ),
         body: listWidgets[selectedIndex],

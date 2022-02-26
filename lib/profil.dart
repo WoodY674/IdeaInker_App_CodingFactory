@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 
 import 'createaccount.dart';
@@ -53,7 +55,12 @@ class _Profil extends State<Profil> {
               child: ElevatedButton(
                 child: const Text('Login'),
                 onPressed: () {
+                  log(emailController.text);
+                  log(passwordController.text);
                 },
+                style: ButtonStyle(
+                    backgroundColor: MaterialStateProperty.all(Colors.deepPurple)
+                ),
               )
           ),
           Row(

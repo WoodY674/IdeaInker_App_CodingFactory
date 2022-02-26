@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 
 class CreateAccount extends StatefulWidget {
@@ -17,6 +19,10 @@ class _CreateAccount extends State<CreateAccount> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        title: const Text('Create Account'),
+        backgroundColor: Colors.deepPurple,
+      ),
       body: Padding(
         padding: const EdgeInsets.all(10),
         child: ListView(
@@ -78,7 +84,14 @@ class _CreateAccount extends State<CreateAccount> {
                 child: ElevatedButton(
                   child: const Text('Register'),
                   onPressed: () {
+                    log(firstNameController.text);
+                    log(lastNameController.text);
+                    log(emailController.text);
+                    log(passwordController.text);
                   },
+                  style: ButtonStyle(
+                    backgroundColor: MaterialStateProperty.all(Colors.deepPurple)
+                  ),
                 )
             ),
           ],
