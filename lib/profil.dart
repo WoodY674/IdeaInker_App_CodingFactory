@@ -1,4 +1,8 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
+
+import 'createaccount.dart';
 
 class Profil extends StatefulWidget {
   const Profil({Key? key}) : super(key: key);
@@ -8,7 +12,7 @@ class Profil extends StatefulWidget {
 }
 
 class _Profil extends State<Profil> {
-  TextEditingController nameController = TextEditingController();
+  TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
 
   @override
@@ -27,7 +31,7 @@ class _Profil extends State<Profil> {
           Container(
             padding: const EdgeInsets.all(10),
             child: TextField(
-              controller: nameController,
+              controller: emailController,
               decoration: const InputDecoration(
                 border: OutlineInputBorder(),
                 labelText: 'E-mail',
@@ -51,9 +55,12 @@ class _Profil extends State<Profil> {
               child: ElevatedButton(
                 child: const Text('Login'),
                 onPressed: () {
-                  print(nameController.text);
-                  print(passwordController.text);
+                  log(emailController.text);
+                  log(passwordController.text);
                 },
+                style: ButtonStyle(
+                    backgroundColor: MaterialStateProperty.all(Colors.deepPurple)
+                ),
               )
           ),
           Row(
@@ -65,7 +72,7 @@ class _Profil extends State<Profil> {
                   style: TextStyle(fontSize: 20),
                 ),
                 onPressed: () {
-                  print("Coucou va créer ton compte");
+                  Navigator.of(context).pushNamed(CreateAccount.route);
                 },
               )
             ],
@@ -75,4 +82,12 @@ class _Profil extends State<Profil> {
       ),
     );
   }
+
+  /*
+   si mon utilisateur
+    return profil
+    sinon return login
+    si bouton register
+    return register
+   */
 }
