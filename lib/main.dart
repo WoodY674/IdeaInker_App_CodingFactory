@@ -33,7 +33,7 @@ class _MainPageState extends State<MainPage> {
 
   int selectedIndex = 1;
   List<Widget> listWidgets = [
-    const Map(),
+    Map(),
     const Home(),
     const Profil()
   ];
