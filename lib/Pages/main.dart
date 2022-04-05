@@ -1,9 +1,9 @@
 import 'package:convex_bottom_bar/convex_bottom_bar.dart';
 import 'package:flutter/material.dart';
-import 'package:thebestatoo/createaccount.dart';
-import 'package:thebestatoo/profil.dart';
-import 'package:thebestatoo/map.dart';
-import 'package:thebestatoo/home.dart';
+import 'package:thebestatoo/Pages/createaccount.dart';
+import 'package:thebestatoo/Pages/profil.dart';
+import 'package:thebestatoo/Pages/map.dart';
+import 'package:thebestatoo/Pages/home.dart';
 
 void main() {
   runApp(MyApp());

@@ -1,7 +1,10 @@
+import 'dart:convert';
 import 'dart:developer';
-
+import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
-
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import '../Classes/Token.dart';
 import 'createaccount.dart';
 
 class Profil extends StatefulWidget {
@@ -14,6 +17,7 @@ class Profil extends StatefulWidget {
 class _Profil extends State<Profil> {
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
+  late Token token;
 
   @override
   Widget build(BuildContext context) {
@@ -57,6 +61,7 @@ class _Profil extends State<Profil> {
                 onPressed: () {
                   log(emailController.text);
                   log(passwordController.text);
+                  Login(emailController.text, passwordController.text);
                 },
                 style: ButtonStyle(
                     backgroundColor: MaterialStateProperty.all(Colors.deepPurple)
@@ -83,11 +88,47 @@ class _Profil extends State<Profil> {
     );
   }
 
-  /*
-   si mon utilisateur
-    return profil
-    sinon return login
-    si bouton register
-    return register
-   */
+  Future<void> Login(String email, String password) async {
+    final response = await http.post(
+      Uri.parse('http://k7-stories.com/authentication_token'),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+      body: jsonEncode(<String, String>{
+        'email': email,
+        'password': password,
+      }),
+    );
+    final prefs = await SharedPreferences.getInstance();
+    if (response.statusCode == 200) {
+      // If the server did return a 201 CREATED response,
+      // then parse the JSON.
+      Fluttertoast.showToast(
+          msg: "Login Success!",
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.BOTTOM,
+          timeInSecForIosWeb: 1,
+          backgroundColor: Colors.green,
+          textColor: Colors.white,
+          fontSize: 16.0
+      );
+      Map map = json.decode(response.body);
+      setState(() {
+        token = Token(map);
+      });
+      await prefs.setString('token', token.token);
+    } else {
+      // If the server did not return a 201 CREATED response,
+      // then throw an exception.
+      Fluttertoast.showToast(
+          msg: "Failed Login",
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.BOTTOM,
+          timeInSecForIosWeb: 1,
+          backgroundColor: Colors.red,
+          textColor: Colors.white,
+          fontSize: 16.0
+      );
+    }
+  }
 }
