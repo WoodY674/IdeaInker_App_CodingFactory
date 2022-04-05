@@ -1,5 +1,7 @@
+import 'dart:convert';
 import 'dart:developer';
-
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 
 class CreateAccount extends StatefulWidget {
@@ -84,10 +86,7 @@ class _CreateAccount extends State<CreateAccount> {
                 child: ElevatedButton(
                   child: const Text('Register'),
                   onPressed: () {
-                    log(firstNameController.text);
-                    log(lastNameController.text);
-                    log(emailController.text);
-                    log(passwordController.text);
+                    createAccount(firstNameController.text, lastNameController.text,emailController.text,passwordController.text);
                   },
                   style: ButtonStyle(
                     backgroundColor: MaterialStateProperty.all(Colors.deepPurple)
@@ -98,5 +97,48 @@ class _CreateAccount extends State<CreateAccount> {
         ),
       ),
     );
+  }
+  Future<void> createAccount(String firstName, String lastName, String email, String password) async {
+    final now = DateTime.now();
+    final response = await http.post(
+      Uri.parse('http://k7-stories.com/api/register'),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+      body: jsonEncode(<String, String>{
+        'email': email,
+        'password': password,
+        'lastName': lastName,
+        'firstName': firstName,
+        'createdAt': now.toString(),
+      }),
+    );
+
+    if (response.statusCode == 201) {
+      // If the server did return a 201 CREATED response,
+      // then parse the JSON.
+      Fluttertoast.showToast(
+          msg: "Account created with Success!",
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.BOTTOM,
+          timeInSecForIosWeb: 1,
+          backgroundColor: Colors.green,
+          textColor: Colors.white,
+          fontSize: 16.0
+      );
+      Navigator.pop(context);
+    } else {
+      // If the server did not return a 201 CREATED response,
+      // then throw an exception.
+      Fluttertoast.showToast(
+          msg: "Failed Create Account",
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.BOTTOM,
+          timeInSecForIosWeb: 1,
+          backgroundColor: Colors.red,
+          textColor: Colors.white,
+          fontSize: 16.0
+      );
+    }
   }
 }
