@@ -1,6 +1,8 @@
 import 'package:convex_bottom_bar/convex_bottom_bar.dart';
 import 'package:flutter/material.dart';
+import 'package:thebestatoo/Pages/addShop.dart';
 import 'package:thebestatoo/Pages/createaccount.dart';
+import 'package:thebestatoo/Pages/editUser.dart';
 import 'package:thebestatoo/Pages/menu.dart';
 import 'package:thebestatoo/Pages/profil.dart';
 import 'package:thebestatoo/Pages/map.dart';
@@ -75,6 +77,8 @@ class _MainPageState extends State<MainPage> {
       routes: {
         CreateAccount.route: (context) => const CreateAccount(),
         Menu.route: (context) => const Menu(),
+        EditUser.route: (context) => const EditUser(),
+        AddShop.route: (context) => const AddShop(),
       },
       home: Scaffold(
         appBar: AppBar(
@@ -91,7 +95,7 @@ class _MainPageState extends State<MainPage> {
           backgroundColor: Colors.deepPurple,
         ),
         body: listWidgets[selectedIndex],
-        bottomNavigationBar: ConvexAppBar.badge({3: '21+'},
+        bottomNavigationBar: ConvexAppBar.badge(const {3: '21+'},
           items: const [
             TabItem(icon: Icons.map, title: 'Map'),
             TabItem(icon: Icons.home, title: 'Home'),
@@ -140,6 +144,8 @@ class _MainPageLogState extends State<MainPageLog> {
       routes: {
         CreateAccount.route: (context) => const CreateAccount(),
         Menu.route: (context) => const Menu(),
+        EditUser.route: (context) => const EditUser(),
+        AddShop.route: (context) => const AddShop(),
       },
       home: Scaffold(
         appBar: AppBar(
@@ -156,7 +162,7 @@ class _MainPageLogState extends State<MainPageLog> {
           backgroundColor: Colors.deepPurple,
         ),
         body: listWidgets[selectedIndex],
-        bottomNavigationBar: ConvexAppBar.badge({3: '21+'},
+        bottomNavigationBar: ConvexAppBar.badge(const {3: '21+'},
           items: const [
             TabItem(icon: Icons.map, title: 'Map'),
             TabItem(icon: Icons.home, title: 'Home'),

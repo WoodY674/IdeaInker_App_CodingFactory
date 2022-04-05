@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:streaming_shared_preferences/streaming_shared_preferences.dart';
 
+import 'addShop.dart';
+import 'editUser.dart';
+
 
 class Menu extends StatefulWidget {
   const Menu({Key? key}) : super(key: key);
@@ -27,6 +30,7 @@ class _Menu extends State<Menu> {
                 child: ElevatedButton(
                   child: const Text('Mon Profil'),
                   onPressed: () {
+                    Navigator.of(context).pushNamed(EditUser.route);
                   },
                   style: ButtonStyle(
                       backgroundColor: MaterialStateProperty.all(Colors.deepPurple)
@@ -37,8 +41,9 @@ class _Menu extends State<Menu> {
                 height: 50,
                 padding: const EdgeInsets.fromLTRB(30, 15, 30, 0),
                 child: ElevatedButton(
-                  child: const Text('Ajouter Shop'),
+                  child: const Text('Ajouter salon de tatouage'),
                   onPressed: () {
+                    Navigator.of(context).pushNamed(AddShop.route);
                   },
                   style: ButtonStyle(
                       backgroundColor: MaterialStateProperty.all(Colors.deepPurple)
