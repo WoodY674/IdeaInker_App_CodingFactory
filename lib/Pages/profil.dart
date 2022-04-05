@@ -1,11 +1,12 @@
 import 'dart:convert';
-import 'dart:developer';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import '../Classes/Token.dart';
 import 'createaccount.dart';
+import 'menu.dart';
+import 'package:streaming_shared_preferences/streaming_shared_preferences.dart';
+
 
 class Profil extends StatefulWidget {
   const Profil({Key? key}) : super(key: key);
@@ -59,8 +60,6 @@ class _Profil extends State<Profil> {
               child: ElevatedButton(
                 child: const Text('Login'),
                 onPressed: () {
-                  log(emailController.text);
-                  log(passwordController.text);
                   Login(emailController.text, passwordController.text);
                 },
                 style: ButtonStyle(
@@ -99,7 +98,8 @@ class _Profil extends State<Profil> {
         'password': password,
       }),
     );
-    final prefs = await SharedPreferences.getInstance();
+    WidgetsFlutterBinding.ensureInitialized();
+    final preferences = await StreamingSharedPreferences.instance;
     if (response.statusCode == 200) {
       // If the server did return a 201 CREATED response,
       // then parse the JSON.
@@ -116,7 +116,8 @@ class _Profil extends State<Profil> {
       setState(() {
         token = Token(map);
       });
-      await prefs.setString('token', token.token);
+      preferences.setString('token', token.token);
+      //Navigator.popAndPushNamed(context, Menu.route);
     } else {
       // If the server did not return a 201 CREATED response,
       // then throw an exception.
