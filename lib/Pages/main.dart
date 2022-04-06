@@ -67,7 +67,7 @@ class _MainPageState extends State<MainPage> {
 
   int selectedIndex = 1;
   List<Widget> listWidgets = [
-    Map(),
+    MyMap(),
     const Home(),
     const Profil()
   ];
@@ -135,7 +135,7 @@ class _MainPageLogState extends State<MainPageLog> {
 
   int selectedIndex = 1;
   List<Widget> listWidgets = [
-    Map(),
+    MyMap(),
     const Home(),
     const Menu()
   ];
