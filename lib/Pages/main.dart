@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:thebestatoo/Pages/addShop.dart';
 import 'package:thebestatoo/Pages/createaccount.dart';
 import 'package:thebestatoo/Pages/editUser.dart';
+import 'package:thebestatoo/Pages/listShop.dart';
 import 'package:thebestatoo/Pages/menu.dart';
 import 'package:thebestatoo/Pages/profil.dart';
 import 'package:thebestatoo/Pages/map.dart';
@@ -79,6 +80,7 @@ class _MainPageState extends State<MainPage> {
         Menu.route: (context) => const Menu(),
         EditUser.route: (context) => const EditUser(),
         AddShop.route: (context) => const AddShop(),
+        ListShop.route: (context) => const ListShop(),
       },
       home: Scaffold(
         appBar: AppBar(
@@ -146,6 +148,7 @@ class _MainPageLogState extends State<MainPageLog> {
         Menu.route: (context) => const Menu(),
         EditUser.route: (context) => const EditUser(),
         AddShop.route: (context) => const AddShop(),
+        ListShop.route: (context) => const ListShop(),
       },
       home: Scaffold(
         appBar: AppBar(

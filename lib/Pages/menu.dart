@@ -3,6 +3,7 @@ import 'package:streaming_shared_preferences/streaming_shared_preferences.dart';
 
 import 'addShop.dart';
 import 'editUser.dart';
+import 'listShop.dart';
 
 
 class Menu extends StatefulWidget {
@@ -44,6 +45,19 @@ class _Menu extends State<Menu> {
                   child: const Text('Ajouter salon de tatouage'),
                   onPressed: () {
                     Navigator.of(context).pushNamed(AddShop.route);
+                  },
+                  style: ButtonStyle(
+                      backgroundColor: MaterialStateProperty.all(Colors.deepPurple)
+                  ),
+                )
+            ),
+            Container(
+                height: 50,
+                padding: const EdgeInsets.fromLTRB(30, 15, 30, 0),
+                child: ElevatedButton(
+                  child: const Text('Liste salons de tatouage'),
+                  onPressed: () {
+                    Navigator.of(context).pushNamed(ListShop.route);
                   },
                   style: ButtonStyle(
                       backgroundColor: MaterialStateProperty.all(Colors.deepPurple)

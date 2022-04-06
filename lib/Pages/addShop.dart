@@ -6,6 +6,8 @@ import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:thebestatoo/Classes/Salon.dart';
 
+import '../Classes/CoordinatesStore.dart';
+
 class AddShop extends StatefulWidget {
   static String route = 'addShop';
   const AddShop({Key? key}) : super(key: key);
@@ -20,6 +22,7 @@ class _AddShop extends State<AddShop> {
   TextEditingController cityController = TextEditingController();
   TextEditingController zipCodeController = TextEditingController();
   late Salon salon;
+  late CoordinatesStore coordinatesStore;
 
   @override
   Widget build(BuildContext context) {
@@ -102,77 +105,42 @@ class _AddShop extends State<AddShop> {
   }
   Future<void> addShop(String name, String address, String city, String zipCode) async {
     final now = DateTime.now();
-    final responseSalon = await http.post(
-      Uri.parse('http://k7-stories.com/api/salons'),
-      headers: <String, String>{
-        'Content-Type': 'application/json; charset=UTF-8',
-      },
-      body: jsonEncode(<String, String>{
-        'address': address,
-        'zipCode': zipCode,
-        'city': city,
-        'createdAt': now.toString(),
-        'name': name,
-      }),
-    );
-
-    if (responseSalon.statusCode == 201) {
-      // If the server did return a 201 CREATED response,
-      // then parse the JSON.
-      log("salon creer");
-      Map map = json.decode(responseSalon.body);
-      setState(() {
-        salon = Salon(map);
-      });
-      GeoCode geoCode = GeoCode();
-      final query = salon.address + ", " + salon.city + ", " + salon.zip_code;
-      try {
-        Coordinates coordinates = await geoCode.forwardGeocoding(address: query);
-        if(coordinates.latitude != null && coordinates.longitude != null){
-          final responseCoordinate = await http.post(
-            Uri.parse('http://k7-stories.com/api/coordinate_stores'),
-            headers: <String, String>{
-              'Content-Type': 'application/json; charset=UTF-8',
-            },
-            body: jsonEncode(<String, String>{
-              'company': salon.name,
-              'latitude':coordinates.latitude.toString(),
-              'longitude':coordinates.longitude.toString(),
-              'salon': 'http://k7-stories.com/api/salons/' + salon.id.toString(),
-            }),
-          );
-          if (responseCoordinate.statusCode == 201) {
-            // If the server did return a 201 CREATED response,
-            // then parse the JSON.
-            log("coordinates creer");
-
-            Fluttertoast.showToast(
-                msg: "Coordinates added with Success!",
-                toastLength: Toast.LENGTH_SHORT,
-                gravity: ToastGravity.BOTTOM,
-                timeInSecForIosWeb: 1,
-                backgroundColor: Colors.green,
-                textColor: Colors.white,
-                fontSize: 16.0
-            );
-            Navigator.pop(context);
-          }else {
-            // If the server did not return a 201 CREATED response,
-            // then throw an exception.
-            Fluttertoast.showToast(
-                msg: "Failed Add Coordinates",
-                toastLength: Toast.LENGTH_SHORT,
-                gravity: ToastGravity.BOTTOM,
-                timeInSecForIosWeb: 1,
-                backgroundColor: Colors.red,
-                textColor: Colors.white,
-                fontSize: 16.0
-            );
-          }
-        }
-      } catch (e) {
+    GeoCode geoCode = GeoCode();
+    final query = address + ", " + city + ", " + zipCode;
+    try {
+      Coordinates coordinates = await geoCode.forwardGeocoding(address: query);
+      final responseSalon = await http.post(
+        Uri.parse('http://k7-stories.com/api/salons'),
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+        },
+        body: jsonEncode(<String, String>{
+          'address': address,
+          'zipCode': zipCode,
+          'city': city,
+          'createdAt': now.toString(),
+          'name': name,
+          'latitude': coordinates.latitude.toString(),
+          'longitude': coordinates.longitude.toString(),
+        }),
+      );
+      if (responseSalon.statusCode == 201) {
+        // If the server did return a 201 CREATED response,
+        // then parse the JSON.
+        log("salon creer");
         Fluttertoast.showToast(
-            msg: "Failed Add Coordinates",
+            msg: "Salon added with Success!",
+            toastLength: Toast.LENGTH_SHORT,
+            gravity: ToastGravity.BOTTOM,
+            timeInSecForIosWeb: 1,
+            backgroundColor: Colors.green,
+            textColor: Colors.white,
+            fontSize: 16.0
+        );
+        Navigator.pop(context);
+      }else{
+        Fluttertoast.showToast(
+            msg: "Failed create salon",
             toastLength: Toast.LENGTH_SHORT,
             gravity: ToastGravity.BOTTOM,
             timeInSecForIosWeb: 1,
@@ -181,11 +149,10 @@ class _AddShop extends State<AddShop> {
             fontSize: 16.0
         );
       }
-    } else {
-      // If the server did not return a 201 CREATED response,
-      // then throw an exception.
+    }
+    catch(e){
       Fluttertoast.showToast(
-          msg: "Failed Add Shop",
+          msg: "Failed get Geolocalisation of shop",
           toastLength: Toast.LENGTH_SHORT,
           gravity: ToastGravity.BOTTOM,
           timeInSecForIosWeb: 1,
