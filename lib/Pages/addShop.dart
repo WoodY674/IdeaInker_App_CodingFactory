@@ -138,7 +138,7 @@ class _AddShop extends State<AddShop> {
               'company': salon.name,
               'latitude':coordinates.latitude.toString(),
               'longitude':coordinates.longitude.toString(),
-              'salon': '/salons/' + salon.id.toString(),
+              'salon': 'http://k7-stories.com/api/salons/' + salon.id.toString(),
             }),
           );
           if (responseCoordinate.statusCode == 201) {
