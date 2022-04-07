@@ -1,21 +1,26 @@
-class infosUser{
+class User{
 
   late String firstName;
   late String lastName;
   late String password;
   late String? zipCode;
-  late String? address;
+  late String? adress;
   late String? city;
   late DateTime? birthday;
+  late String pseudo;
+  late String? profileImage;
 
 
-  infosUser(Map map){
+
+  User(Map map){
     firstName = map["firstName"];
     lastName = map["lastName"];
     password = map["password"];
     zipCode = map["zipCode"];
-    address = map["address"];
+    adress = map["adress"];
     city = map["city"];
     birthday = map["birthday"];
+    pseudo = map["pseudo"];
+    profileImage = map["profileImage"];
   }
 }
