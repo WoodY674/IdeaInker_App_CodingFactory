@@ -17,6 +17,7 @@ class _CreateAccount extends State<CreateAccount> {
   TextEditingController passwordController = TextEditingController();
   TextEditingController firstNameController = TextEditingController();
   TextEditingController lastNameController = TextEditingController();
+  TextEditingController pseudoController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -36,6 +37,18 @@ class _CreateAccount extends State<CreateAccount> {
                   'Register',
                   style: TextStyle(fontSize: 20),
                 )
+            ),
+            Container(
+              padding: const EdgeInsets.all(10),
+              child: Center(
+                child: TextField(
+                  controller: pseudoController,
+                  decoration: const InputDecoration(
+                    border: OutlineInputBorder(),
+                    labelText: 'Pseudo',
+                  ),
+                ),
+              ),
             ),
             Container(
               padding: const EdgeInsets.all(10),
@@ -86,7 +99,7 @@ class _CreateAccount extends State<CreateAccount> {
                 child: ElevatedButton(
                   child: const Text('Register'),
                   onPressed: () {
-                    createAccount(firstNameController.text, lastNameController.text,emailController.text,passwordController.text);
+                    createAccount(firstNameController.text, lastNameController.text,emailController.text,passwordController.text, pseudoController.text);
                   },
                   style: ButtonStyle(
                     backgroundColor: MaterialStateProperty.all(Colors.deepPurple)
@@ -98,7 +111,7 @@ class _CreateAccount extends State<CreateAccount> {
       ),
     );
   }
-  Future<void> createAccount(String firstName, String lastName, String email, String password) async {
+  Future<void> createAccount(String firstName, String lastName, String email, String password, String pseudo) async {
     final now = DateTime.now();
     final response = await http.post(
       Uri.parse('http://k7-stories.com/api/register'),
@@ -111,9 +124,10 @@ class _CreateAccount extends State<CreateAccount> {
         'lastName': lastName,
         'firstName': firstName,
         'createdAt': now.toString(),
+        'pseudo': pseudo,
       }),
     );
-
+    log(response.body);
     if (response.statusCode == 201) {
       // If the server did return a 201 CREATED response,
       // then parse the JSON.

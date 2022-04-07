@@ -34,7 +34,7 @@ Future<List<Shop>> fetchShop() async {
 }
 
 class Shop {
-  final int? id;
+  final int id;
   final int? manager_id;
   final int? salon_image_id;
   final String address;
@@ -138,20 +138,20 @@ class _MyGoogleMapState extends State<MyGoogleMap> {
   Future<void> _onMapCreated(GoogleMapController controller) async {
     final googleOffices =  await http.get(Uri.parse(url));
     List<Shop> shopsMarkers = parseShop(googleOffices.body.toString());
-    print(shopsMarkers);
     setState(() {
       _markers.clear();
       for (final office in shopsMarkers) {
         final marker = Marker(
-          markerId: MarkerId(office.name),
+          markerId: MarkerId("${office.id}"),
           position: LatLng(double.parse(office.latitude), double.parse(office.longitude)),
           infoWindow: InfoWindow(
             title: office.name,
             snippet: office.address,
           ),
         );
-        _markers[office.name] = marker;
+        _markers["${office.id}"] = marker;
       }
+      print(_markers);
     });
   }
 
@@ -159,7 +159,7 @@ class _MyGoogleMapState extends State<MyGoogleMap> {
   Widget build(BuildContext context) {
     var height = MediaQuery.of(context).size.height;
     var width = MediaQuery.of(context).size.width;
-    CameraPosition _initialCameraPosition = CameraPosition(target: LatLng(20.5937, 78.9629));
+    CameraPosition _initialCameraPosition = const CameraPosition(target: LatLng(20.5937, 78.9629));
     GoogleMapController googleMapController;
 
     return Container(
