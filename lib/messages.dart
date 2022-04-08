@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:thebestatoo/chat.dart';
+import 'package:thebestatoo/chat/chat.dart';
 
 class Messages extends StatefulWidget {
   Messages({Key? key}) : super(key: key);
@@ -14,56 +14,56 @@ class _Messages extends State<Messages> {
     {
       'senderProfilePic' : './assets/woody.jpg',
       'senderName' : 'Woody',
-      'message' : 'Wesh alors ma race',
+      'message' : 'Bonjour',
       'unread' : 0,
       'date' : '16:35',
     },
     {
       'senderProfilePic' : './assets/woody.jpg',
       'senderName' : 'Lana Rhoades',
-      'message' : 'Nique zebi',
+      'message' : 'Oui',
       'unread' : 1,
       'date' : '12:57',
     },
     {
       'senderProfilePic' : './assets/woody.jpg',
       'senderName' : 'Mia khalifa',
-      'message' : 'ça dit quoi l\'équipe',
+      'message' : 'Je suis chanteuse',
       'unread' : 3,
       'date' : '13:15',
     },
     {
       'senderProfilePic' : './assets/woody.jpg',
       'senderName' : 'Gérard Depardieu',
-      'message' : 'Ho la dingz',
+      'message' : 'Vodka Russie',
       'unread' : 1,
       'date' : '13:15',
     },
-    {
+     {
       'senderProfilePic' : './assets/woody.jpg',
       'senderName' : 'Woody',
-      'message' : 'Wesh alors ma race',
+      'message' : 'Bonjour',
       'unread' : 0,
       'date' : '16:35',
     },
     {
       'senderProfilePic' : './assets/woody.jpg',
       'senderName' : 'Lana Rhoades',
-      'message' : 'Nique zebi',
+      'message' : 'Oui',
       'unread' : 1,
       'date' : '12:57',
     },
     {
       'senderProfilePic' : './assets/woody.jpg',
       'senderName' : 'Mia khalifa',
-      'message' : 'ça dit quoi l\'équipe',
+      'message' : 'Je suis chanteuse',
       'unread' : 3,
       'date' : '13:15',
     },
     {
       'senderProfilePic' : './assets/woody.jpg',
       'senderName' : 'Gérard Depardieu',
-      'message' : 'Ho la dingz',
+      'message' : 'Vodka Russie',
       'unread' : 1,
       'date' : '13:15',
     },
@@ -108,13 +108,16 @@ class _Messages extends State<Messages> {
                                   Text(
                                     message['senderName'],
                                     style: TextStyle(
-                                        color: Colors.grey[600]
+                                        color: Colors.grey[700]
                                     ),
                                   ),
                                   Wrap(
                                     children: [
                                       Text(
                                         message['message'],
+                                        style: TextStyle(
+                                          color: Colors.grey[500]
+                                        ),
                                       ),
                                     ],
                                   ),

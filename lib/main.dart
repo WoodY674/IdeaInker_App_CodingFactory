@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:thebestatoo/profil.dart';
 import 'package:thebestatoo/map.dart';
 import 'package:thebestatoo/home.dart';
-import 'package:thebestatoo/chat.dart';
+import 'package:thebestatoo/chat/chat.dart';
 import 'package:thebestatoo/messages.dart';
 
 void main() {
