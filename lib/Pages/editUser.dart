@@ -98,7 +98,7 @@ class _EditUser extends State<EditUser> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Mon Profil'),
+        title: const Text('Modifier mon Profil'),
         backgroundColor: Colors.deepPurple,
       ),
       body: Padding(

@@ -1,5 +1,6 @@
 import 'package:convex_bottom_bar/convex_bottom_bar.dart';
 import 'package:flutter/material.dart';
+import 'package:thebestatoo/Pages/ProfilUser.dart';
 import 'package:thebestatoo/Pages/addShop.dart';
 import 'package:thebestatoo/Pages/createaccount.dart';
 import 'package:thebestatoo/Pages/editUser.dart';
@@ -79,6 +80,7 @@ class _MainPageState extends State<MainPage> {
         Menu.route: (context) => const Menu(),
         EditUser.route: (context) => const EditUser(),
         AddShop.route: (context) => const AddShop(),
+        ProfilUser.route: (context) => const ProfilUser(),
       },
       home: Scaffold(
         appBar: AppBar(
@@ -146,6 +148,7 @@ class _MainPageLogState extends State<MainPageLog> {
         Menu.route: (context) => const Menu(),
         EditUser.route: (context) => const EditUser(),
         AddShop.route: (context) => const AddShop(),
+        ProfilUser.route: (context) => const ProfilUser(),
       },
       home: Scaffold(
         appBar: AppBar(

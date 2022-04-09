@@ -45,5 +45,7 @@
 	<true/>
 	<key>NSLocationWhenInUseUsageDescription</key>
     <string>Location Access.</string>
+    <key>NSPhotoLibraryUsageDescription</key>
+    <string>This app needs your photo library.</string>
 </dict>
 </plist>
