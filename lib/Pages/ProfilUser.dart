@@ -33,9 +33,18 @@ class ProfilUser extends StatefulWidget {
 }
 
 class _ProfilUser extends State<ProfilUser> {
-  late User user = getUserInfos();
+  late User user;
+  late Future<User> futureUser;
+
   String imagePath = "";
   final picker = ImagePicker();
+
+
+  @override
+  void initState() {
+    super.initState();
+    futureUser = fetchUser() as Future<User>;
+  }
 
   @override
   Widget build(BuildContext context) {
