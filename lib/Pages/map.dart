@@ -9,16 +9,17 @@ import 'package:http/http.dart' as http;
 
 
 import '../Classes/Salon.dart';
+import '../Classes/ShopMap.dart';
 
 final String url = "http://k7-stories.com/api/salons";
 
-List<Shop> parseShop(String responseBody){
+List<ShopMap> parseShop(String responseBody){
   var list = json.decode(responseBody) as List<dynamic>;
-  var salons = list.map((e) => Shop.fromJson(e)).toList();
+  var salons = list.map((e) => ShopMap.fromJson(e)).toList();
   return salons;
 }
 
-Future<List<Shop>> fetchShop() async {
+Future<List<ShopMap>> fetchShop() async {
   final http.Response response = await http.get(Uri.parse(url));
 
   if (response.statusCode == 200) {
@@ -33,75 +34,9 @@ Future<List<Shop>> fetchShop() async {
   }
 }
 
-class Shop {
-  final int id;
-  final int? manager_id;
-  final int? salon_image_id;
-  final String address;
-  final String zip_code;
-  final String city;
-  final String created_at;
-  final String? updated_at;
-  final String? deleted_at;
-  final String name;
-  final String? coordinateStore;
-  final String latitude;
-  final String longitude;
-
-  const Shop({
-    required this.id,
-    required this.manager_id,
-    required this.salon_image_id,
-    required this.address,
-    required this.zip_code,
-    required this.city,
-    required this.created_at,
-    required this.updated_at,
-    required this.deleted_at,
-    required this.name,
-    required this.coordinateStore,
-    required this.latitude,
-    required this.longitude,
-  });
-
-  factory Shop.fromJson(Map<String, dynamic> json) {
-    return Shop(
-      id: json["id"],
-      manager_id: json["manager"],
-      salon_image_id: json["salonImage"],
-      address: json["address"],
-      zip_code: json["zipCode"],
-      city: json["city"],
-      created_at: json["createdAt"],
-      updated_at: json["updatedAt"],
-      deleted_at: json["deletedAt"],
-      name: json["name"],
-      coordinateStore: json["coordinateStore"],
-      latitude: json["latitude"],
-      longitude: json["longitude"],
-    );
-  }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['id'] = this.id;
-    data['manager'] = this.manager_id;
-    data['salonImage'] = this.salon_image_id;
-    data['address'] = this.address;
-    data['zipCode'] = this.zip_code;
-    data['city'] = this.city;
-    data['createdAt'] = this.created_at;
-    data['updatedAt'] = this.updated_at;
-    data['deletedAt'] = this.deleted_at;
-    data['name'] = this.name;
-    data['coordinateStore'] = this.coordinateStore;
-    data['latitude'] = this.latitude;
-    data['longitude'] = this.longitude;
-    return data;
-  }
-}
-
 class MyMap extends StatelessWidget {
+  const MyMap({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -109,22 +44,24 @@ class MyMap extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: MyGoogleMap(),
+      home: const MyGoogleMap(),
     );
   }
 }
 
 class MyGoogleMap extends StatefulWidget {
+  const MyGoogleMap({Key? key}) : super(key: key);
+
   @override
   _MyGoogleMapState createState() => _MyGoogleMapState();
 }
 
 class _MyGoogleMapState extends State<MyGoogleMap> {
-  late Future<List<Shop>> futureShop;
+  late Future<List<ShopMap>> futureShop;
 
-  List<Shop> parseShop(String responseBody){
+  List<ShopMap> parseShop(String responseBody){
     var list = json.decode(responseBody) as List<dynamic>;
-    var salons = list.map((e) => Shop.fromJson(e)).toList();
+    var salons = list.map((e) => ShopMap.fromJson(e)).toList();
     return salons;
   }
 
@@ -137,7 +74,7 @@ class _MyGoogleMapState extends State<MyGoogleMap> {
   final Map<String, Marker> _markers = {};
   Future<void> _onMapCreated(GoogleMapController controller) async {
     final googleOffices =  await http.get(Uri.parse(url));
-    List<Shop> shopsMarkers = parseShop(googleOffices.body.toString());
+    List<ShopMap> shopsMarkers = parseShop(googleOffices.body.toString());
     setState(() {
       _markers.clear();
       for (final office in shopsMarkers) {
@@ -146,12 +83,11 @@ class _MyGoogleMapState extends State<MyGoogleMap> {
           position: LatLng(double.parse(office.latitude), double.parse(office.longitude)),
           infoWindow: InfoWindow(
             title: office.name,
-            snippet: office.address,
+            snippet: office.address + "\n" + office.zip_code + " " + office.city,
           ),
         );
         _markers["${office.id}"] = marker;
       }
-      print(_markers);
     });
   }
 
