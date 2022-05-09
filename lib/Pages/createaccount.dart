@@ -101,7 +101,7 @@ class _CreateAccount extends State<CreateAccount> {
   Future<void> createAccount(String firstName, String lastName, String email, String password) async {
     final now = DateTime.now();
     final response = await http.post(
-      Uri.parse('http://k7-stories.com/api/register'),
+      Uri.parse('http://ideainker.fr/api/register'),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
       },

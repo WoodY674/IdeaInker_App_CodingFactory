@@ -5,16 +5,27 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:http/http.dart' as http;
-
+import 'package:streaming_shared_preferences/streaming_shared_preferences.dart';
 import '../Classes/User.dart';
 
 Future<UserProfil> fetchUser() async {
+  final preferences = await StreamingSharedPreferences.instance;
+  final token = preferences.getString('token', defaultValue: '').getValue();
+  print(token);
+  print("coucou");
   final response = await http
-      .get(Uri.parse('http://k7-stories.com/api/users/28'));
+      .get(Uri.parse('http://ideainker.fr/api/me'),
+    headers: {
+      HttpHeaders.authorizationHeader: "Bearer $token",
+    },
+  );
 
+  print(response.statusCode);
   if (response.statusCode == 200) {
     // If the server did return a 200 OK response,
     // then parse the JSON.
+    print(response.body);
+    print("dfghjfghj");
     return UserProfil.fromJson(jsonDecode(response.body));
   } else {
     // If the server did not return a 200 OK response,
@@ -110,6 +121,7 @@ class _ProfilUser extends State<ProfilUser> {
                       future: futureUser,
                       builder: (context, snapshot) {
                         if (snapshot.hasData) {
+                          print(snapshot.data);
                           return ListView(
                             scrollDirection: Axis.vertical,
                             shrinkWrap: true,
@@ -144,7 +156,14 @@ class _ProfilUser extends State<ProfilUser> {
                                   : Container(),
 
                               Container(
-                                child: Text(snapshot.data!.firstName + snapshot.data!.lastName),
+                                child: Text(snapshot.data!.firstName + " " + snapshot.data!.lastName,
+                                  textAlign: TextAlign.center,
+                                  style: const TextStyle(
+                                      height: 2,
+                                      fontSize: 20,
+                                      fontWeight: FontWeight.bold,
+                                      color: Colors.white),
+                                ),
                               ),
                             ],
                           );
@@ -156,6 +175,26 @@ class _ProfilUser extends State<ProfilUser> {
                       },
                     ),
                   ),
+                  Container(
+                    margin: const EdgeInsets.symmetric(vertical: 50.0, horizontal: 25.0),
+                    height: 100.0,
+                    child: ListView(
+                      // This next line does the trick.
+                      scrollDirection: Axis.horizontal,
+                      children: <Widget>[
+                        Container(
+                          width: 150.0,
+                          margin: const EdgeInsets.only(right: 10.0, left: 15.0),
+                          color: Colors.red,
+                        ),
+                        Container(
+                          width: 150.0,
+                          margin: const EdgeInsets.only(right: 10.0, left: 5.0),
+                          color: Colors.blue,
+                        ),
+                      ],
+                    ),
+                  ),
                 ],
             ),
         ),
@@ -164,7 +203,7 @@ class _ProfilUser extends State<ProfilUser> {
 
   Future<void> getUserInfos() async {
     final response = await http.get(
-      Uri.parse('http://k7-stories.com/api/users/28'),
+      Uri.parse('http://ideainker.fr/api/me'),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
       },

@@ -7,7 +7,7 @@ import 'package:thebestatoo/Classes/User.dart';
 
 Future<UserEdit> fetchUser() async {
   final response = await http
-      .get(Uri.parse('http://k7-stories.com/api/users/6'));
+      .get(Uri.parse('http://ideainker.fr/api/me'));
 
   if (response.statusCode == 200) {
     // If the server did return a 200 OK response,
@@ -271,7 +271,7 @@ class _EditUser extends State<EditUser> {
 
   Future<void> editAccount(String firstName, String lastName, String email, String password, String address, String zipCode, String city, String birthday, String pseudo) async {
     final response = await http.put(
-      Uri.parse('http://k7-stories.com/api/users/28'),
+      Uri.parse('http://ideainker.fr/api/me'),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
       },
@@ -317,7 +317,7 @@ class _EditUser extends State<EditUser> {
 
     Future<void> getUserInfos() async {
       final response = await http.get(
-        Uri.parse('http://k7-stories.com/api/users/28'),
+        Uri.parse('http://ideainker.fr/api/me'),
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
         },
