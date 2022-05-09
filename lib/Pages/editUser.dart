@@ -1,13 +1,24 @@
+import 'dart:async';
 import 'dart:convert';
 import 'dart:developer';
+import 'dart:io';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
+import 'package:streaming_shared_preferences/streaming_shared_preferences.dart';
 import 'package:thebestatoo/Classes/User.dart';
 
 Future<UserEdit> fetchUser() async {
+  final preferences = await StreamingSharedPreferences.instance;
+  final token = preferences.getString('token', defaultValue: '').getValue();
+  print(token);
+  print("coucou");
   final response = await http
-      .get(Uri.parse('http://ideainker.fr/api/me'));
+      .get(Uri.parse('http://ideainker.fr/api/me'),
+    headers: {
+    HttpHeaders.authorizationHeader: "Bearer $token",
+    },
+  );
 
   if (response.statusCode == 200) {
     // If the server did return a 200 OK response,

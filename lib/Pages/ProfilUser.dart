@@ -151,7 +151,7 @@ class _ProfilUser extends State<ProfilUser> {
                                 color: Colors.deepPurple,
                                 //width: double.infinity,
                                 padding: const EdgeInsets.symmetric(horizontal: 15),
-                                child: Image.file(File(imagePath)),
+                                child: Image.file(File(imagePath), height: 150, width: 150),
                               )
                                   : Container(),
 
@@ -177,19 +177,19 @@ class _ProfilUser extends State<ProfilUser> {
                   ),
                   Container(
                     margin: const EdgeInsets.symmetric(vertical: 50.0, horizontal: 25.0),
-                    height: 100.0,
+                    height: 125.0,
                     child: ListView(
                       // This next line does the trick.
                       scrollDirection: Axis.horizontal,
                       children: <Widget>[
                         Container(
                           width: 150.0,
-                          margin: const EdgeInsets.only(right: 10.0, left: 15.0),
+                          margin: const EdgeInsets.only(right: 10.0, left: 5.0),
                           color: Colors.red,
                         ),
                         Container(
                           width: 150.0,
-                          margin: const EdgeInsets.only(right: 10.0, left: 5.0),
+                          margin: const EdgeInsets.only(right: 10.0, left: 15.0),
                           color: Colors.blue,
                         ),
                       ],
@@ -199,49 +199,5 @@ class _ProfilUser extends State<ProfilUser> {
             ),
         ),
     );
-  }
-
-  Future<void> getUserInfos() async {
-    final response = await http.get(
-      Uri.parse('http://ideainker.fr/api/me'),
-      headers: <String, String>{
-        'Content-Type': 'application/json; charset=UTF-8',
-      },
-    );
-
-    if (response.statusCode == 200) {
-
-      // If the server did return a 200,
-      // then parse the JSON.
-      Map map = json.decode(response.body);
-      setState(() {
-        user = User(map);
-        log(user.firstName);
-        log(user.lastName);
-      });
-
-      Fluttertoast.showToast(
-          msg: "Informations trouvés !",
-          toastLength: Toast.LENGTH_SHORT,
-          gravity: ToastGravity.BOTTOM,
-          timeInSecForIosWeb: 1,
-          backgroundColor: Colors.green,
-          textColor: Colors.white,
-          fontSize: 16.0
-      );
-      Navigator.pop(context);
-    } else {
-      // If the server did not return a 201 CREATED response,
-      // then throw an exception.
-      Fluttertoast.showToast(
-          msg: "Recherche échouée",
-          toastLength: Toast.LENGTH_SHORT,
-          gravity: ToastGravity.BOTTOM,
-          timeInSecForIosWeb: 1,
-          backgroundColor: Colors.red,
-          textColor: Colors.white,
-          fontSize: 16.0
-      );
-    }
   }
 }
