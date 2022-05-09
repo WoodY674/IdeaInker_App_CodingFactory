@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
+import 'package:thebestatoo/Pages/sideBar.dart';
 
 class EditUser extends StatefulWidget {
   static String route = 'editUser';
@@ -16,6 +17,7 @@ class _EditUser extends State<EditUser> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      drawer: SideBar(),
       appBar: AppBar(
         title: const Text('Mon Profil'),
         backgroundColor: Colors.deepPurple,

@@ -5,6 +5,7 @@ import 'package:geocode/geocode.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:thebestatoo/Classes/Salon.dart';
+import 'package:thebestatoo/Pages/sideBar.dart';
 
 import '../Classes/CoordinatesStore.dart';
 
@@ -27,6 +28,7 @@ class _AddShop extends State<AddShop> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      drawer: SideBar(),
       appBar: AppBar(
         title: const Text('Détails du salon'),
         backgroundColor: Colors.deepPurple,
@@ -110,7 +112,7 @@ class _AddShop extends State<AddShop> {
     try {
       Coordinates coordinates = await geoCode.forwardGeocoding(address: query);
       final responseSalon = await http.post(
-        Uri.parse('http://k7-stories.com/api/salons'),
+        Uri.parse('http://ideainker.fr/api/salons'),
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
         },

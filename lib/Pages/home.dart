@@ -1,18 +1,35 @@
 import 'package:convex_bottom_bar/convex_bottom_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
+import 'package:thebestatoo/Pages/sideBar.dart';
 
 class Home extends StatefulWidget {
   const Home({Key? key}) : super(key: key);
+  static String route = 'home';
 
   @override
   _Home createState() => _Home();
 }
 
 class _Home extends State<Home> {
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      drawer: SideBar(),
+      appBar: AppBar(
+        title: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Image.asset(
+              'assets/IdeaInkerBanderole.png',
+              fit: BoxFit.contain,
+              height: 40,
+            ),
+          ],
+        ),
+        backgroundColor: Colors.deepPurple,
+      ),
       backgroundColor: Colors.white,
       body: Padding(
         padding: const EdgeInsets.all(10),
