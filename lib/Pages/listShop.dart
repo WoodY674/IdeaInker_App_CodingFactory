@@ -5,6 +5,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:http/http.dart' as http;
+import 'package:thebestatoo/Pages/sideBar.dart';
 
 import '../Classes/Salon.dart';
 
@@ -111,6 +112,7 @@ class _ListShop extends State<ListShop> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      drawer: SideBar(),
       appBar: AppBar(
         title: const Text('Liste des salons'),
         backgroundColor: Colors.deepPurple,
@@ -147,7 +149,7 @@ class _ListShop extends State<ListShop> {
   Future<void> deleteShop(int? id) async {
     log(id.toString());
     final responseSalon = await http.delete(
-      Uri.parse('http://k7-stories.com/api/salons/'+id.toString()),
+      Uri.parse('http://ideainker.fr/api/salons/'+id.toString()),
     );
 
     if (responseSalon.statusCode == 204) {

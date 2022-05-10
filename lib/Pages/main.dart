@@ -11,182 +11,63 @@ import 'package:thebestatoo/Pages/map.dart';
 import 'package:thebestatoo/Pages/home.dart';
 import 'package:streaming_shared_preferences/streaming_shared_preferences.dart';
 
-class MyAppSettings {
-  MyAppSettings(StreamingSharedPreferences preferences)
-      : token = preferences.getString('token', defaultValue: '');
-
-  final Preference<String> token;
-}
+late final StreamingSharedPreferences preferences;
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  preferences = await StreamingSharedPreferences.instance;
 
-  // Obtain instance to streaming shared preferences, create MyAppSettings, and
-  // once that's done, run the app.
-  final preferences = await StreamingSharedPreferences.instance;
-  final settings = MyAppSettings(preferences);
-
-  runApp(MyApp(settings));
+  runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
-  MyApp(this.settings);
-  final MyAppSettings settings;
+  MyApp();
 
   @override
   Widget build(BuildContext context) {
-    return PreferenceBuilder<String>(
-        preference: settings.token,
-        builder: (BuildContext context, String token) {
-          if(token.isEmpty){
-            return const MaterialApp(
-              debugShowCheckedModeBanner: false,
-              home: MainPage(title: 'Find My Tattoo',),
-            );
-          }else{
-            return const MaterialApp(
-              debugShowCheckedModeBanner: false,
-              home: MainPageLog(title: 'Find My Tattoo',),
-            );
-          }
-        }
-    );
+    return const MainPage();
   }
 }
 
-//Not Log
 class MainPage extends StatefulWidget {
-  const MainPage({Key? key, required this.title}) : super(key: key);
-
-  final String title;
+  const MainPage({Key? key}) : super(key: key);
 
   @override
   _MainPageState createState() => _MainPageState();
 }
 
 class _MainPageState extends State<MainPage> {
+  late Widget currentPage;
 
-  int selectedIndex = 1;
-  List<Widget> listWidgets = [
-    MyMap(),
-    const Home(),
-    const Profil()
-  ];
+  @override
+  void initState() {
+    super.initState();
+    currentPage = const Home();
+  }
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       routes: {
+        Home.route: (context) => const Home(),
+        MyMap.route: (context) => const MyMap(),
         CreateAccount.route: (context) => const CreateAccount(),
         Menu.route: (context) => const Menu(),
         EditUser.route: (context) => const EditUser(),
         AddShop.route: (context) => const AddShop(),
         ListShop.route: (context) => const ListShop(),
         ProfilUser.route: (context) => const ProfilUser(),
+        Profil.route: (context) => const Profil(),
       },
       home: Scaffold(
-        appBar: AppBar(
-          title: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Image.asset(
-                'assets/IdeaInkerBanderole.png',
-                fit: BoxFit.contain,
-                height: 40,
-              ),
-            ],
-          ),
-          backgroundColor: Colors.deepPurple,
-        ),
-        body: listWidgets[selectedIndex],
-        bottomNavigationBar: ConvexAppBar.badge(const {3: '21+'},
-          items: const [
-            TabItem(icon: Icons.map, title: 'Map'),
-            TabItem(icon: Icons.home, title: 'Home'),
-            TabItem(icon: Icons.verified_user, title: 'Login'),
-          ],
-          onTap: onItemTapped,
-          activeColor: Colors.white,
-          backgroundColor: Colors.deepPurple,
-          initialActiveIndex: 1,
-        ),
+        body: currentPage,
       ),
     );
   }
-
-  void onItemTapped(int index){
-    setState(() {
-      selectedIndex = index;
-    });
-  }
-
 }
 
-//Log Done
-//Not Log
-class MainPageLog extends StatefulWidget {
-  const MainPageLog({Key? key, required this.title}) : super(key: key);
-
-  final String title;
-
-  @override
-  _MainPageLogState createState() => _MainPageLogState();
-}
-
-class _MainPageLogState extends State<MainPageLog> {
-
-  int selectedIndex = 1;
-  List<Widget> listWidgets = [
-    MyMap(),
-    const Home(),
-    const Menu()
-  ];
-
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      routes: {
-        CreateAccount.route: (context) => const CreateAccount(),
-        Menu.route: (context) => const Menu(),
-        EditUser.route: (context) => const EditUser(),
-        AddShop.route: (context) => const AddShop(),
-        ListShop.route: (context) => const ListShop(),
-        ProfilUser.route: (context) => const ProfilUser(),
-      },
-      home: Scaffold(
-        appBar: AppBar(
-          title: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Image.asset(
-                'assets/IdeaInkerBanderole.png',
-                fit: BoxFit.contain,
-                height: 40,
-              ),
-            ],
-          ),
-          backgroundColor: Colors.deepPurple,
-        ),
-        body: listWidgets[selectedIndex],
-        bottomNavigationBar: ConvexAppBar.badge(const {3: '21+'},
-          items: const [
-            TabItem(icon: Icons.map, title: 'Map'),
-            TabItem(icon: Icons.home, title: 'Home'),
-            TabItem(icon: Icons.verified_user, title: 'Mon Profil'),
-          ],
-          onTap: onItemTapped,
-          activeColor: Colors.white,
-          backgroundColor: Colors.deepPurple,
-          initialActiveIndex: 1,
-        ),
-      ),
-    );
-  }
-
-  void onItemTapped(int index){
-    setState(() {
-      selectedIndex = index;
-    });
-  }
-
+Future<void> Disconnect() async{
+  WidgetsFlutterBinding.ensureInitialized();
+  preferences.setString('token', '');
+  print('disconnect');
 }

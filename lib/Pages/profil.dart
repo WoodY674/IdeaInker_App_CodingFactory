@@ -3,14 +3,17 @@ import 'dart:developer';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:thebestatoo/Pages/sideBar.dart';
 import '../Classes/Token.dart';
 import 'createaccount.dart';
+import 'home.dart';
 import 'menu.dart';
 import 'package:streaming_shared_preferences/streaming_shared_preferences.dart';
 
 
 class Profil extends StatefulWidget {
   const Profil({Key? key}) : super(key: key);
+  static String route = 'profil';
 
   @override
   _Profil createState() => _Profil();
@@ -23,7 +26,23 @@ class _Profil extends State<Profil> {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
+    return Scaffold(
+      drawer: SideBar(),
+      appBar: AppBar(
+        title: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Image.asset(
+              'assets/IdeaInkerBanderole.png',
+              fit: BoxFit.contain,
+              height: 40,
+            ),
+          ],
+        ),
+        backgroundColor: Colors.deepPurple,
+      ),
+      backgroundColor: Colors.white,
+      body: Padding(
       padding: const EdgeInsets.all(10),
       child: ListView(
         children: <Widget>[
@@ -77,7 +96,10 @@ class _Profil extends State<Profil> {
                   style: TextStyle(fontSize: 20),
                 ),
                 onPressed: () {
-                  Navigator.of(context).pushNamed(CreateAccount.route);
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => const CreateAccount()),
+                  );
                 },
               )
             ],
@@ -85,6 +107,7 @@ class _Profil extends State<Profil> {
           ),
         ],
       ),
+    ),
     );
   }
 
@@ -118,7 +141,9 @@ class _Profil extends State<Profil> {
         token = Token(map);
       });
       preferences.setString('token', token.token);
-      //Navigator.popAndPushNamed(context, Menu.route);
+      Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => const Home()));
     } else {
       // If the server did not return a 201 CREATED response,
       // then throw an exception.

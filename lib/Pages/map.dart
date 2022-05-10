@@ -3,15 +3,18 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'dart:async';
 import 'dart:convert';
 import 'dart:developer';
+import 'dart:io';
 import 'package:flutter/foundation.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:http/http.dart' as http;
+import 'package:thebestatoo/Pages/sideBar.dart';
 
 
 import '../Classes/Salon.dart';
 import '../Classes/ShopMap.dart';
+import 'main.dart';
 
-final String url = "http://k7-stories.com/api/salons";
+final String url = "http://ideainker.fr/api/salons";
 
 List<ShopMap> parseShop(String responseBody){
   var list = json.decode(responseBody) as List<dynamic>;
@@ -20,14 +23,19 @@ List<ShopMap> parseShop(String responseBody){
 }
 
 Future<List<ShopMap>> fetchShop() async {
-  final http.Response response = await http.get(Uri.parse(url));
-
+  final String token = preferences.getString('token', defaultValue: '').getValue();
+  final http.Response response = await http.get(Uri.parse(url),headers: {
+    HttpHeaders.authorizationHeader: "Bearer $token",
+  },);
+  print(response.statusCode);
   if (response.statusCode == 200) {
     // If the server did return a 200 OK response,
     // then parse the JSON.
     //return Salon.fromJson(jsonDecode(response.body));
+    print(response.body);
     return compute(parseShop,response.body);
   } else {
+    print("marche pas");
     // If the server did not return a 200 OK response,
     // then throw an exception.
     throw Exception(response.statusCode);
@@ -36,6 +44,7 @@ Future<List<ShopMap>> fetchShop() async {
 
 class MyMap extends StatelessWidget {
   const MyMap({Key? key}) : super(key: key);
+  static String route = 'map';
 
   @override
   Widget build(BuildContext context) {
@@ -98,23 +107,39 @@ class _MyGoogleMapState extends State<MyGoogleMap> {
     CameraPosition _initialCameraPosition = const CameraPosition(target: LatLng(20.5937, 78.9629));
     GoogleMapController googleMapController;
 
-    return Container(
-      height: height,
-      width: width,
-      child: Scaffold(
-        body: Stack(
-          children: <Widget>[
-            GoogleMap(
-              initialCameraPosition: _initialCameraPosition ,
-              myLocationEnabled: true,
-              myLocationButtonEnabled: true,
-              mapType: MapType.normal,
-              zoomGesturesEnabled: true,
-              zoomControlsEnabled: true,
-              onMapCreated: _onMapCreated,
-              markers: _markers.values.toSet(),
+    return Scaffold(
+      drawer: SideBar(),
+      appBar: AppBar(
+        title: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Image.asset(
+              'assets/IdeaInkerBanderole.png',
+              fit: BoxFit.contain,
+              height: 40,
             ),
           ],
+        ),
+        backgroundColor: Colors.deepPurple,
+      ),
+      body: Container(
+        height: height,
+        width: width,
+        child: Scaffold(
+          body: Stack(
+            children: <Widget>[
+              GoogleMap(
+                initialCameraPosition: _initialCameraPosition ,
+                myLocationEnabled: true,
+                myLocationButtonEnabled: true,
+                mapType: MapType.normal,
+                zoomGesturesEnabled: true,
+                zoomControlsEnabled: true,
+                onMapCreated: _onMapCreated,
+                markers: _markers.values.toSet(),
+              ),
+            ],
+          ),
         ),
       ),
     );

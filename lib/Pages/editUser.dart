@@ -7,6 +7,7 @@ import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:streaming_shared_preferences/streaming_shared_preferences.dart';
 import 'package:thebestatoo/Classes/User.dart';
+import 'package:thebestatoo/Pages/sideBar.dart';
 
 Future<UserEdit> fetchUser() async {
   final preferences = await StreamingSharedPreferences.instance;
@@ -108,6 +109,7 @@ class _EditUser extends State<EditUser> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      drawer: SideBar(),
       appBar: AppBar(
         title: const Text('Modifier mon Profil'),
         backgroundColor: Colors.deepPurple,
