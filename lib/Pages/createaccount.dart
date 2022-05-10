@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:developer';
+import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
@@ -33,10 +34,13 @@ class _CreateAccount extends State<CreateAccount> {
             Container(
                 alignment: Alignment.center,
                 padding: const EdgeInsets.all(10),
-                child: const Text(
-                  'Register',
-                  style: TextStyle(fontSize: 20),
-                )
+                child: RatingBar.builder(itemBuilder: (context,_)=>
+                    Icon(Icons.star,color:Colors.amber),
+                    itemSize: 20,
+                    onRatingUpdate: (rating){
+                      setState(() {
+                      });
+                    }),
             ),
             Container(
               padding: const EdgeInsets.all(10),

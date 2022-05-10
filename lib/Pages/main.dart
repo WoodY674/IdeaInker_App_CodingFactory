@@ -1,5 +1,6 @@
 import 'package:convex_bottom_bar/convex_bottom_bar.dart';
 import 'package:flutter/material.dart';
+import 'package:thebestatoo/Pages/Avis.dart';
 import 'package:thebestatoo/Pages/addShop.dart';
 import 'package:thebestatoo/Pages/createaccount.dart';
 import 'package:thebestatoo/Pages/editUser.dart';
@@ -40,12 +41,14 @@ class MyApp extends StatelessWidget {
           if(token.isEmpty){
             return const MaterialApp(
               debugShowCheckedModeBanner: false,
-              home: MainPage(title: 'Find My Tattoo',),
+             // home: MainPage(title: 'Find My Tattoo',),
+              home: CreateAvis()
             );
           }else{
             return const MaterialApp(
               debugShowCheckedModeBanner: false,
-              home: MainPageLog(title: 'Find My Tattoo',),
+              // home: MainPageLog(title: 'Find My Tattoo',),
+              home: CreateAvis()
             );
           }
         }
