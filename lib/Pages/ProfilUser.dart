@@ -92,8 +92,10 @@ class _ProfilUser extends State<ProfilUser> {
   late User user;
   late Future<UserProfil> futureUser;
 
-  String imagePath = "";
+
+  late File imageFile = File("");
   final picker = ImagePicker();
+  String image64 = "";
 
 
   @override
@@ -126,13 +128,13 @@ class _ProfilUser extends State<ProfilUser> {
                             scrollDirection: Axis.vertical,
                             shrinkWrap: true,
                             children: <Widget>[
-                              imagePath != "" ?
+                              imageFile.path != "" ?
                               // Affichage de l'image
                               Container(
                                 color: Colors.deepPurple,
                                 //width: double.infinity,
                                 padding: const EdgeInsets.symmetric(horizontal: 15),
-                                child: Image.file(File(imagePath), height: 150, width: 150),
+                                child: Image.file(imageFile, width: 100, height: 100),
                               )
                                   : Container(),
                               Container(
@@ -143,15 +145,19 @@ class _ProfilUser extends State<ProfilUser> {
                                       MaterialStateProperty.all<Color>(Colors.black)),
                                   onPressed: () async {
                                     final pickedFile = await picker.pickImage(source: ImageSource.gallery);
-                                    // getImage à été remplacé par pickImage ?
                                     if (pickedFile != null) {
                                       setState(() {
-                                        imagePath = pickedFile.path;
+                                        imageFile = File(pickedFile.path);
+                                        print(imageFile);
+                                        List<int> fileInByte = imageFile.readAsBytesSync();
+                                        String fileInBase64 = base64Encode(fileInByte);
+                                        image64 = fileInBase64;
+                                        print("base64 donne");
+                                        print(image64);
                                       });
-                                      // Si l'image choisi n'est pas égale à null, fait un setState de imagePath = pickedFile.path;
                                     }
                                   },
-                                  child: imagePath != "" ? // C'est le if
+                                  child: imageFile.path != "" ? // C'est le if
                                       Text("Modifier la photo")
                                       : Text("Ajouter une photo") // : = else
                                 ),
@@ -159,18 +165,18 @@ class _ProfilUser extends State<ProfilUser> {
 
                               Container(
                                 child:
+                                    imageFile.path != "" ?
                                 ElevatedButton(
                                     style: ButtonStyle(
                                         backgroundColor:
                                         MaterialStateProperty.all<Color>(Colors.black)),
                                     onPressed: () {
                                         setState(() {
-                                          imagePath = "";
+                                          imageFile = File("");
                                         });
-                                        // Si l'image choisi n'est pas égale à null, fait un setState de imagePath = pickedFile.path;
                                     },
                                     child: Text("Supprimer la photo")
-                                ),
+                                ) : Container(),
                               ),
 
                               Container(
@@ -179,15 +185,13 @@ class _ProfilUser extends State<ProfilUser> {
                                     style: ButtonStyle(
                                         backgroundColor:
                                         MaterialStateProperty.all<Color>(Colors.black)),
-                                    onPressed: () {
-                                      setState(() {
-                                        imagePath = "";
-                                      });
-                                      // Si l'image choisi n'est pas égale à null, fait un setState de imagePath = pickedFile.path;
+                                    onPressed: ()  {
                                     },
-                                    child: Text("Enregistrer la photo de profil")
+                                    child:
+                                    Text("Enregistrer")
                                 ),
                               ),
+
 
                               Container(
                                 child: Text(snapshot.data!.firstName + " " + snapshot.data!.lastName,
