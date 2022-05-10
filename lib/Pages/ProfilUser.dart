@@ -181,6 +181,7 @@ class _ProfilUser extends State<ProfilUser> {
 
                               Container(
                                 child:
+                                imageFile.path != "" ?
                                 ElevatedButton(
                                     style: ButtonStyle(
                                         backgroundColor:
@@ -189,7 +190,7 @@ class _ProfilUser extends State<ProfilUser> {
                                     },
                                     child:
                                     Text("Enregistrer")
-                                ),
+                                ) : Container(),
                               ),
 
 
