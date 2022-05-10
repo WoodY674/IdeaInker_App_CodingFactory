@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:streaming_shared_preferences/streaming_shared_preferences.dart';
+import 'package:thebestatoo/Pages/ProfilUser.dart';
 
 import 'addShop.dart';
 import 'editUser.dart';
@@ -30,6 +31,20 @@ class _Menu extends State<Menu> {
                 padding: const EdgeInsets.fromLTRB(30, 15, 30, 0),
                 child: ElevatedButton(
                   child: const Text('Mon Profil'),
+                  onPressed: () {
+                    print('Sa passe bien part ici');
+                    Navigator.of(context).pushNamed(ProfilUser.route);
+                  },
+                  style: ButtonStyle(
+                      backgroundColor: MaterialStateProperty.all(Colors.deepPurple)
+                  ),
+                )
+            ),
+            Container(
+                height: 50,
+                padding: const EdgeInsets.fromLTRB(30, 15, 30, 0),
+                child: ElevatedButton(
+                  child: const Text('Modifier mon profil'),
                   onPressed: () {
                     Navigator.of(context).pushNamed(EditUser.route);
                   },
