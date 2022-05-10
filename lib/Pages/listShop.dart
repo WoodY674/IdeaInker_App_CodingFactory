@@ -41,7 +41,7 @@ Future<List<Shop>> fetchShop() async {
 class Shop {
   final int? id;
   final int? manager_id;
-  final int? salon_image_id;
+  final String? salon_image_id;
   final String address;
   final String zip_code;
   final String city;
@@ -134,7 +134,7 @@ class _ListShop extends State<ListShop> {
                     return Card(
                       child: Column(
                         children: [
-                          currentSalon != ""?
+                          currentSalon.salon_image_id != "" ?
                           Image.asset('assets/IdeaInkerBanderole.png'):
                           Container(),
                           ListTile(
