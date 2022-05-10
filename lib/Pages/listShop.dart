@@ -5,11 +5,11 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:http/http.dart' as http;
-import 'package:thebestatoo/Pages/sideBar.dart';
-
+import 'package:streaming_shared_preferences/streaming_shared_preferences.dart';
+import 'dart:io';
 import '../Classes/Salon.dart';
 
-final String url = "http://k7-stories.com/api/salons";
+final String url = "http://ideainker.fr/api/salons";
 
 List<Shop> parseShop(String responseBody){
   var list = json.decode(responseBody) as List<dynamic>;
@@ -18,7 +18,13 @@ List<Shop> parseShop(String responseBody){
 }
 
 Future<List<Shop>> fetchShop() async {
-  final http.Response response = await http.get(Uri.parse(url));
+  final preferences = await StreamingSharedPreferences.instance;
+  final token = preferences.getString('token', defaultValue: '').getValue();
+  final http.Response response = await http.get(Uri.parse(url),
+    headers: {
+    HttpHeaders.authorizationHeader: "Bearer $token",
+    },
+  );
 
   if (response.statusCode == 200) {
     // If the server did return a 200 OK response,
@@ -112,7 +118,6 @@ class _ListShop extends State<ListShop> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      drawer: SideBar(),
       appBar: AppBar(
         title: const Text('Liste des salons'),
         backgroundColor: Colors.deepPurple,

@@ -12,8 +12,6 @@ import 'package:thebestatoo/Pages/sideBar.dart';
 Future<UserEdit> fetchUser() async {
   final preferences = await StreamingSharedPreferences.instance;
   final token = preferences.getString('token', defaultValue: '').getValue();
-  print(token);
-  print("coucou");
   final response = await http
       .get(Uri.parse('http://ideainker.fr/api/me'),
     headers: {
@@ -109,7 +107,6 @@ class _EditUser extends State<EditUser> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      drawer: SideBar(),
       appBar: AppBar(
         title: const Text('Modifier mon Profil'),
         backgroundColor: Colors.deepPurple,

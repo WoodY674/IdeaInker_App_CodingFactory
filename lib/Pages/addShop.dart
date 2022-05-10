@@ -28,7 +28,6 @@ class _AddShop extends State<AddShop> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      drawer: SideBar(),
       appBar: AppBar(
         title: const Text('Détails du salon'),
         backgroundColor: Colors.deepPurple,
