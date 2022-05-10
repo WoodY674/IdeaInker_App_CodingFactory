@@ -126,6 +126,15 @@ class _ProfilUser extends State<ProfilUser> {
                             scrollDirection: Axis.vertical,
                             shrinkWrap: true,
                             children: <Widget>[
+                              imagePath != "" ?
+                              // Affichage de l'image
+                              Container(
+                                color: Colors.deepPurple,
+                                //width: double.infinity,
+                                padding: const EdgeInsets.symmetric(horizontal: 15),
+                                child: Image.file(File(imagePath), height: 150, width: 150),
+                              )
+                                  : Container(),
                               Container(
                                 child:
                                 ElevatedButton(
@@ -142,18 +151,43 @@ class _ProfilUser extends State<ProfilUser> {
                                       // Si l'image choisi n'est pas égale à null, fait un setState de imagePath = pickedFile.path;
                                     }
                                   },
-                                  child: Text('Choisi une photo'),
+                                  child: imagePath != "" ? // C'est le if
+                                      Text("Modifier la photo")
+                                      : Text("Ajouter une photo") // : = else
                                 ),
                               ),
-                              imagePath != "" ?
-                              // Affichage de l'image
+
                               Container(
-                                color: Colors.deepPurple,
-                                //width: double.infinity,
-                                padding: const EdgeInsets.symmetric(horizontal: 15),
-                                child: Image.file(File(imagePath), height: 150, width: 150),
-                              )
-                                  : Container(),
+                                child:
+                                ElevatedButton(
+                                    style: ButtonStyle(
+                                        backgroundColor:
+                                        MaterialStateProperty.all<Color>(Colors.black)),
+                                    onPressed: () {
+                                        setState(() {
+                                          imagePath = "";
+                                        });
+                                        // Si l'image choisi n'est pas égale à null, fait un setState de imagePath = pickedFile.path;
+                                    },
+                                    child: Text("Supprimer la photo")
+                                ),
+                              ),
+
+                              Container(
+                                child:
+                                ElevatedButton(
+                                    style: ButtonStyle(
+                                        backgroundColor:
+                                        MaterialStateProperty.all<Color>(Colors.black)),
+                                    onPressed: () {
+                                      setState(() {
+                                        imagePath = "";
+                                      });
+                                      // Si l'image choisi n'est pas égale à null, fait un setState de imagePath = pickedFile.path;
+                                    },
+                                    child: Text("Enregistrer la photo de profil")
+                                ),
+                              ),
 
                               Container(
                                 child: Text(snapshot.data!.firstName + " " + snapshot.data!.lastName,
