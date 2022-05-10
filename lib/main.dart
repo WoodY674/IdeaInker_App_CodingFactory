@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:thebestatoo/profil.dart';
 import 'package:thebestatoo/map.dart';
 import 'package:thebestatoo/home.dart';
-import 'package:thebestatoo/chat/chat.dart';
-import 'package:thebestatoo/messages.dart';
+import 'package:thebestatoo/chat/chatAppBar.dart';
+import 'package:thebestatoo/Channel.dart';
 
 void main() {
   runApp(MyApp());
@@ -36,7 +36,7 @@ class MainPage extends StatefulWidget {
 class _MainPageState extends State<MainPage> {
 
   int selectedIndex = 1;
-  List<Widget> listWidgets = [const Map(),const Home(),const Profil(), Messages(),];
+  List<Widget> listWidgets = [const Map(),const Home(),const Profil(),Channel()];
 
   @override
   Widget build(BuildContext context) {
