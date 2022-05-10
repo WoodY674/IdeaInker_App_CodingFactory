@@ -47,7 +47,10 @@ class _Menu extends State<Menu> {
                   child: ElevatedButton(
                     child: const Text('Mon Profil'),
                     onPressed: () {
-                      Navigator.of(context).pushNamed(EditUser.route);
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => const EditUser()),
+                      );
                     },
                     style: ButtonStyle(
                         backgroundColor: MaterialStateProperty.all(Colors.deepPurple)
@@ -60,7 +63,10 @@ class _Menu extends State<Menu> {
                   child: ElevatedButton(
                     child: const Text('Ajouter salon de tatouage'),
                     onPressed: () {
-                      Navigator.of(context).pushNamed(AddShop.route);
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => const AddShop()),
+                      );
                     },
                     style: ButtonStyle(
                         backgroundColor: MaterialStateProperty.all(Colors.deepPurple)
@@ -73,7 +79,10 @@ class _Menu extends State<Menu> {
                   child: ElevatedButton(
                     child: const Text('Liste salons de tatouage'),
                     onPressed: () {
-                      Navigator.of(context).pushNamed(ListShop.route);
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => const ListShop()),
+                      );
                     },
                     style: ButtonStyle(
                         backgroundColor: MaterialStateProperty.all(Colors.deepPurple)

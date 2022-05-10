@@ -96,7 +96,10 @@ class _Profil extends State<Profil> {
                   style: TextStyle(fontSize: 20),
                 ),
                 onPressed: () {
-                  Navigator.of(context).pushNamed(CreateAccount.route);
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => const CreateAccount()),
+                  );
                 },
               )
             ],
