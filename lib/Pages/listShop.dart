@@ -132,13 +132,20 @@ class _ListShop extends State<ListShop> {
                   itemBuilder: (context, index) {
                     Shop currentSalon = snapshot.data![index];
                     return Card(
-                      child: ListTile(
-                        title: Text(currentSalon.name),
-                        subtitle: Text(currentSalon.address + ' ' + currentSalon.zip_code + ' ' + currentSalon.city),
-                        trailing: IconButton(onPressed: () {
-                          deleteShop(currentSalon.id);
-                        }, icon: const Icon(Icons.delete)),
-                        isThreeLine: true,
+                      child: Column(
+                        children: [
+                          currentSalon != ""?
+                          Image.asset('assets/IdeaInkerBanderole.png'):
+                          Container(),
+                          ListTile(
+                            title: Text(currentSalon.name),
+                            subtitle: Text(currentSalon.address + ' ' + currentSalon.zip_code + ' ' + currentSalon.city),
+                            trailing: IconButton(onPressed: () {
+                              deleteShop(currentSalon.id);
+                            }, icon: const Icon(Icons.delete)),
+                            isThreeLine: true,
+                          )
+                        ],
                       ),
                     );
                   },
