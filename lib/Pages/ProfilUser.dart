@@ -5,14 +5,13 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:http/http.dart' as http;
+import 'package:permission_handler/permission_handler.dart';
 import 'package:streaming_shared_preferences/streaming_shared_preferences.dart';
 import '../Classes/User.dart';
 
 Future<UserProfil> fetchUser() async {
   final preferences = await StreamingSharedPreferences.instance;
   final token = preferences.getString('token', defaultValue: '').getValue();
-  print(token);
-  print("coucou");
   final response = await http
       .get(Uri.parse('http://ideainker.fr/api/me'),
     headers: {
@@ -103,133 +102,142 @@ class _ProfilUser extends State<ProfilUser> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          title: Text('Mon profil'),
-          backgroundColor: Colors.deepPurple,
-          centerTitle: true,
-        ),
-        body: Container(
-            child: Column(
-                children: [
-                  Container(
-                    color: Colors.deepPurple,
-                    padding: EdgeInsets.all(15),
-                    width: double.infinity,
-                    child: FutureBuilder<UserProfil>(
-                      future: futureUser,
-                      builder: (context, snapshot) {
-                        if (snapshot.hasData) {
-                          print(snapshot.data);
-                          return ListView(
-                            scrollDirection: Axis.vertical,
-                            shrinkWrap: true,
-                            children: <Widget>[
-                              imagePath != "" ?
-                              // Affichage de l'image
-                              Container(
-                                color: Colors.deepPurple,
-                                //width: double.infinity,
-                                padding: const EdgeInsets.symmetric(horizontal: 15),
-                                child: Image.file(File(imagePath), height: 150, width: 150),
-                              )
-                                  : Container(),
-                              Container(
-                                child:
-                                ElevatedButton(
-                                  style: ButtonStyle(
-                                      backgroundColor:
-                                      MaterialStateProperty.all<Color>(Colors.black)),
-                                  onPressed: () async {
-                                    final pickedFile = await picker.pickImage(source: ImageSource.gallery);
-                                    // getImage à été remplacé par pickImage ?
-                                    if (pickedFile != null) {
-                                      setState(() {
-                                        imagePath = pickedFile.path;
-                                      });
-                                      // Si l'image choisi n'est pas égale à null, fait un setState de imagePath = pickedFile.path;
-                                    }
-                                  },
-                                  child: imagePath != "" ? // C'est le if
-                                      Text("Modifier la photo")
-                                      : Text("Ajouter une photo") // : = else
-                                ),
-                              ),
-
-                              Container(
-                                child:
-                                ElevatedButton(
-                                    style: ButtonStyle(
-                                        backgroundColor:
-                                        MaterialStateProperty.all<Color>(Colors.black)),
-                                    onPressed: () {
-                                        setState(() {
-                                          imagePath = "";
-                                        });
-                                        // Si l'image choisi n'est pas égale à null, fait un setState de imagePath = pickedFile.path;
-                                    },
-                                    child: Text("Supprimer la photo")
-                                ),
-                              ),
-
-                              Container(
-                                child:
-                                ElevatedButton(
-                                    style: ButtonStyle(
-                                        backgroundColor:
-                                        MaterialStateProperty.all<Color>(Colors.black)),
-                                    onPressed: () {
-                                      setState(() {
-                                        imagePath = "";
-                                      });
-                                      // Si l'image choisi n'est pas égale à null, fait un setState de imagePath = pickedFile.path;
-                                    },
-                                    child: Text("Enregistrer la photo de profil")
-                                ),
-                              ),
-
-                              Container(
-                                child: Text(snapshot.data!.firstName + " " + snapshot.data!.lastName,
-                                  textAlign: TextAlign.center,
-                                  style: const TextStyle(
-                                      height: 2,
-                                      fontSize: 20,
-                                      fontWeight: FontWeight.bold,
-                                      color: Colors.white),
-                                ),
-                              ),
-                            ],
-                          );
-                        } else if (snapshot.hasError) {
-                          return Text('${snapshot.error}');
-                        }
-                        // By default, show a loading spinner.
-                        return const CircularProgressIndicator();
-                      },
-                    ),
-                  ),
-                  Container(
-                    margin: const EdgeInsets.symmetric(vertical: 50.0, horizontal: 25.0),
-                    height: 125.0,
-                    child: ListView(
-                      // This next line does the trick.
-                      scrollDirection: Axis.horizontal,
+      appBar: AppBar(
+        title: Text('Mon profil'),
+        backgroundColor: Colors.deepPurple,
+        centerTitle: true,
+      ),
+      body: Container(
+        child: Column(
+          children: [
+            Container(
+              color: Colors.deepPurple,
+              padding: EdgeInsets.all(15),
+              width: double.infinity,
+              child: FutureBuilder<UserProfil>(
+                future: futureUser,
+                builder: (context, snapshot) {
+                  if (snapshot.hasData) {
+                    print(snapshot.data);
+                    return ListView(
+                      scrollDirection: Axis.vertical,
+                      shrinkWrap: true,
                       children: <Widget>[
+                        imagePath != "" ?
+                        // Affichage de l'image
                         Container(
-                          width: 150.0,
-                          margin: const EdgeInsets.only(right: 10.0, left: 5.0),
-                          color: Colors.red,
+                          color: Colors.deepPurple,
+                          //width: double.infinity,
+                          padding: const EdgeInsets.symmetric(horizontal: 15),
+                          child: Image.file(File(imagePath), height: 150, width: 150),
+                        )
+                            : Container(),
+                        Container(
+                          child:
+                          ElevatedButton(
+                              style: ButtonStyle(
+                                  backgroundColor:
+                                  MaterialStateProperty.all<Color>(Colors.black)),
+                              onPressed: () async {
+                                if (await Permission.photos.request().isGranted) {
+                                  // Either the permission was already granted before or the user just granted it.
+                                  final pickedFile = await picker.pickImage(source: ImageSource.gallery);
+                                  // getImage à été remplacé par pickImage ?
+                                  print(pickedFile);
+                                  if (pickedFile != null) {
+                                    setState(() {
+                                      imagePath = pickedFile.path;
+                                    });
+                                  }
+                                }else{
+                                    Map<Permission, PermissionStatus> statuses = await [
+                                      Permission.photos,
+                                    ].request();
+                                    //print(statuses[Permission.photos]); print status accés photos
+                                }
+                              },
+                              child: imagePath != "" ? // C'est le if
+                              Text("Modifier la photo")
+                                  : Text("Ajouter une photo") // : = else
+                          ),
                         ),
+
                         Container(
-                          width: 150.0,
-                          margin: const EdgeInsets.only(right: 10.0, left: 15.0),
-                          color: Colors.blue,
+                          child:
+                          ElevatedButton(
+                              style: ButtonStyle(
+                                  backgroundColor:
+                                  MaterialStateProperty.all<Color>(Colors.black)),
+                              onPressed: () {
+                                setState(() {
+                                  imagePath = "";
+                                  print("done");
+                                });
+                                // Si l'image choisi n'est pas égale à null, fait un setState de imagePath = pickedFile.path;
+                              },
+                              child: Text("Supprimer la photo")
+                          ),
+                        ),
+
+                        Container(
+                          child:
+                          ElevatedButton(
+                              style: ButtonStyle(
+                                  backgroundColor:
+                                  MaterialStateProperty.all<Color>(Colors.black)),
+                              onPressed: () {
+                                setState(() {
+                                  imagePath = "";
+                                });
+                                // Si l'image choisi n'est pas égale à null, fait un setState de imagePath = pickedFile.path;
+                              },
+                              child: Text("Enregistrer la photo de profil")
+                          ),
+                        ),
+
+                        Container(
+                          child: Text(snapshot.data!.firstName + " " + snapshot.data!.lastName,
+                            textAlign: TextAlign.center,
+                            style: const TextStyle(
+                                height: 2,
+                                fontSize: 20,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.white),
+                          ),
                         ),
                       ],
-                    ),
+                    );
+                  } else if (snapshot.hasError) {
+                    return Text('${snapshot.error}');
+                  }
+                  // By default, show a loading spinner.
+                  return const CircularProgressIndicator();
+                },
+              ),
+            ),
+            Container(
+              margin: const EdgeInsets.symmetric(vertical: 50.0, horizontal: 25.0),
+              height: 125.0,
+              child: ListView(
+                // This next line does the trick.
+                scrollDirection: Axis.horizontal,
+                children: <Widget>[
+                  Container(
+                    width: 150.0,
+                    margin: const EdgeInsets.only(right: 10.0, left: 5.0),
+                    color: Colors.red,
+                  ),
+                  Container(
+                    width: 150.0,
+                    margin: const EdgeInsets.only(right: 10.0, left: 15.0),
+                    color: Colors.blue,
                   ),
                 ],
+              ),
             ),
+          ],
         ),
+      ),
     );
   }
 }

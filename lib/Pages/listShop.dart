@@ -136,7 +136,7 @@ class _ListShop extends State<ListShop> {
                         children: [
                           currentSalon.salon_image_id != "" ?
                           Image.asset('assets/IdeaInkerBanderole.png'):
-                          Container(),
+                          Image.network(currentSalon.salon_image_id!),
                           ListTile(
                             title: Text(currentSalon.name),
                             subtitle: Text(currentSalon.address + ' ' + currentSalon.zip_code + ' ' + currentSalon.city),
