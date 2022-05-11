@@ -41,6 +41,7 @@ class _Menu extends State<Menu> {
             shrinkWrap: true,
             padding: const EdgeInsets.all(20.0),
             children: <Widget>[
+              Image.asset('assets/admin.png'),
               Container(
                   height: 50,
                   padding: const EdgeInsets.fromLTRB(30, 15, 30, 0),
@@ -50,22 +51,6 @@ class _Menu extends State<Menu> {
                       Navigator.push(
                         context,
                         MaterialPageRoute(builder: (context) => const ProfilUser()),
-                      );
-                    },
-                    style: ButtonStyle(
-                        backgroundColor: MaterialStateProperty.all(Colors.deepPurple)
-                    ),
-                  )
-              ),
-              Container(
-                  height: 50,
-                  padding: const EdgeInsets.fromLTRB(30, 15, 30, 0),
-                  child: ElevatedButton(
-                    child: const Text('Ajouter salon de tatouage'),
-                    onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => const AddShop()),
                       );
                     },
                     style: ButtonStyle(

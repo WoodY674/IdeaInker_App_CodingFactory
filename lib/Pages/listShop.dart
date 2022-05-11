@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:http/http.dart' as http;
 import 'package:streaming_shared_preferences/streaming_shared_preferences.dart';
+import 'package:thebestatoo/Pages/addShop.dart';
 import 'dart:io';
 import '../Classes/Salon.dart';
 
@@ -121,6 +122,17 @@ class _ListShop extends State<ListShop> {
       appBar: AppBar(
         title: const Text('Liste des salons'),
         backgroundColor: Colors.deepPurple,
+        actions: <Widget>[
+          IconButton(
+            icon: Icon(Icons.add),
+            onPressed: (){
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => const AddShop()),
+              );
+            },
+          )
+        ],
       ),
       body: FutureBuilder<List<Shop>>(
           future: futureShop,
@@ -135,7 +147,7 @@ class _ListShop extends State<ListShop> {
                       child: Column(
                         children: [
                           currentSalon.salon_image_id != "" ?
-                          Image.asset('assets/IdeaInkerBanderole.png'):
+                          Image.asset('assets/photo-salon.png'):
                           Image.network(currentSalon.salon_image_id!),
                           ListTile(
                             title: Text(currentSalon.name),

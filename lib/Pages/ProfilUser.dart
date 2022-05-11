@@ -124,9 +124,17 @@ class _ProfilUser extends State<ProfilUser> {
                                 height: 200,
                                 child: Stack(
                                   children: <Widget>[
-                                    const Align(
-                                      alignment: Alignment.topRight,
-                                      child: Icon(Icons.access_time),
+                                     Align(
+                                      alignment: Alignment.bottomRight,
+                                      child: IconButton(
+                                        icon: Icon(Icons.edit),
+                                        onPressed: (){
+                                          Navigator.push(
+                                            context,
+                                            MaterialPageRoute(builder: (context) => const EditUser()),
+                                          );
+                                        },
+                                      ),
                                     ),
                                     Container(
                                       width: 200,
@@ -145,7 +153,7 @@ class _ProfilUser extends State<ProfilUser> {
                                   child: Stack(
                                     children: <Widget>[
                                        Align(
-                                        alignment: Alignment.topRight,
+                                        alignment: Alignment.bottomRight,
                                         child: IconButton(
                                           icon: Icon(Icons.edit),
                                           onPressed: (){
