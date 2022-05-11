@@ -5,7 +5,7 @@ import 'package:thebestatoo/chat/models/chatMessage.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
-String token = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJpYXQiOjE2NTIxNjcxMjIsImV4cCI6MTY1MjE5NzcyMiwicm9sZXMiOlsiUk9MRV9VU0VSIl0sInVzZXJuYW1lIjoiYW50b2luZS1oYWxsZXJAb3V0bG9vay5mciJ9.eE2bWVm-zpuuKq1ji3l_lwnbJfD60jFbEpFjAxalAm7SWkTuyQ8t2G7cXDFhwnv5aBkxfnphUYt8SQYNBk50aCtGd43lsf7VUImfsvHZu5OcLbCP5d7aOg0uRqwy8K1uLSPY4wHq6sJ9033TrCbIUTOsvAjo-jGlO0QXxlMxMR_3IMqvrbsG-g1HcOZ486CKLh6GvUDWFgU47vHi5oTyaKNiV2V3GAc_ua3_PsHq8fDRwFCk8AXcBHG5Qgrt27xrNvvI2oj8p5ygJ3S68t8AhAr54M8UgoAS0hdK7Mhi8KS6Qx3LCGqYCMoiZHkzh378FwMifUQp5ZIaNBk9OxjTRA';
+String token = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJpYXQiOjE2NTIyNTQ1MDAsImV4cCI6MTY1MjI4NTEwMCwicm9sZXMiOlsiUk9MRV9VU0VSIl0sInVzZXJuYW1lIjoiYW50b2luZS1oYWxsZXJAb3V0bG9vay5mciJ9.Osp_-MS6gpkBLlZXglbLglQynoeJTn4kkrUkMhi3WmuvTlLtK5uEKx-u6eEr13P9YWK2E0gMn4MRiq-8PNb_VPTgRHW0Uo5DVvyAbIt1V7V7QYJe-mSSoyApzdSaay3lDcrfOF3q--LqEAV1UNq7KL6wfInL8w47oNUK7EAGbBwk25331p_iAgW-h7nspj4y0sZU3ln8YnBczV_7ADLZ2jL7fiRV_r-J1m9-eEhhYQ9FHsRFG5EdyXag_cEsCAM-BrFDERwiTaO2JDTVHcZsBMo9XBeXvPSNEn63Fdk2Mh-6HudtpI5k0JJSDAj14UE0h2H91O0C87fK0v3fIWyppg';
 
 Future<Channel> fetchChannel() async {
   final response = await http
@@ -95,7 +95,23 @@ class _ChannelState extends State<Channel> {
       builder: (context, snapshot) {
         if (snapshot.hasData) {
           print(snapshot.data?.usersInside?.elementAt(0).email);
-          return Text(snapshot.data!.id.toString());
+          print(snapshot.data?.usersInside?.map((email) => email.email));
+          List<String?>? emails = snapshot.data?.usersInside?.map((email) => email.email).toList();
+          return ListView.builder(
+              padding: const EdgeInsets.all(8),
+              itemCount: emails?.length,
+              itemBuilder: (BuildContext context, int index) {
+                return InkWell(
+                  onTap: () => {Navigator.pushNamed(context, Chat.route)},
+                    child: Container(
+                      margin: const EdgeInsets.all(8),
+                      height: 50,
+                      color: Colors.amber,
+                      child: Center(child: Text('${emails?[index]}')),
+                    ),
+                );
+
+              });
         } else if (snapshot.hasError) {
           return Text('${snapshot.error}');
         }
@@ -128,89 +144,3 @@ class UsersInside {
 
 
 
-// return SingleChildScrollView(
-// child: Column(
-// children: messages.map((message) {
-// return InkWell(
-// onTap: () =>
-// {Navigator.pushNamed(context, Chat.route)},
-// child: Container(
-// padding: const EdgeInsets.only(top: 15, bottom: 15, left: 10, right: 10),
-// child: Row(
-// children: [
-// Container(
-// width: 62,
-// height: 62,
-// margin: const EdgeInsets.only(right: 20),
-// decoration: BoxDecoration(
-// color: Colors.purple,
-// shape: BoxShape.circle,
-// image: DecorationImage(
-// fit: BoxFit.fill,
-// image: AssetImage(message['senderProfilePic'],
-// ),
-// ),
-// ),
-// ),
-// Expanded(
-// child: Column(
-// children: [
-// Row(
-// mainAxisAlignment: MainAxisAlignment.spaceBetween,
-// children: [
-// Column(
-// crossAxisAlignment: CrossAxisAlignment.start,
-// children: [
-// Text(
-// message['senderName'],
-// style: TextStyle(
-// color: Colors.grey[700]
-// ),
-// ),
-// Wrap(
-// children: [
-// Text(
-// message['message'],
-// style: TextStyle(
-// color: Colors.grey[500]
-// ),
-// ),
-// ],
-// ),
-// ],
-// ),
-// Column(
-// children: [
-// Text(message['date']),
-// message['unread'] != 0
-// ? Container(
-// padding: const EdgeInsets.all(5),
-// decoration: const BoxDecoration(color: Colors.orange, shape: BoxShape.circle),
-// child : Text(
-// message['unread'].toString(),
-// style: const TextStyle(
-// color: Colors.white,
-// ))
-//
-// )
-//     : Container(),
-// ],
-// ),
-// ],
-// ),
-// const SizedBox(height: 20),
-// Container(
-// color: Colors.grey[400],
-// height: 0.5,
-// ),
-// ],
-// ),
-// ),
-// ],
-// )
-// ),
-// );
-// }).toList(),
-//
-// ),
-// );
