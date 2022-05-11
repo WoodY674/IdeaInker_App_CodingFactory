@@ -196,9 +196,9 @@ class _ProfilSalon extends State<ProfilSalon> {
 
 
                               Container(
-                                child: Text(snapshot.data!.firstName + " " + snapshot.data!.lastName,
+                                child: const Text("Salon de MC Ririck carré",
                                   textAlign: TextAlign.center,
-                                  style: const TextStyle(
+                                  style: TextStyle(
                                       height: 2,
                                       fontSize: 20,
                                       fontWeight: FontWeight.bold,
