@@ -6,6 +6,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:http/http.dart' as http;
 import 'package:streaming_shared_preferences/streaming_shared_preferences.dart';
+import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import '../Classes/User.dart';
 
 Future<UserProfil> fetchUser() async {
