@@ -12,9 +12,6 @@ import 'package:thebestatoo/Pages/profil.dart';
 import 'package:thebestatoo/Pages/map.dart';
 import 'package:thebestatoo/Pages/home.dart';
 import 'package:streaming_shared_preferences/streaming_shared_preferences.dart';
-
-import 'ProfilSalon.dart';
-
 late final StreamingSharedPreferences preferences;
 
 Future<void> main() async {
@@ -62,7 +59,6 @@ class _MainPageState extends State<MainPage> {
         ListShop.route: (context) => const ListShop(),
         ProfilUser.route: (context) => const ProfilUser(),
         ProfilArtiste.route: (context) => const ProfilArtiste(),
-        ProfilArtiste.route: (context) => const ProfilSalon(),
         Profil.route: (context) => const Profil(),
         Channel.route: (context) => Channel(),
       },

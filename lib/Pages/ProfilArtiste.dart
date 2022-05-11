@@ -1,32 +1,24 @@
 import 'dart:convert';
-import 'dart:developer';
 import 'dart:io';
 import 'package:flutter/material.dart';
-import 'package:fluttertoast/fluttertoast.dart';
-import 'package:image_picker/image_picker.dart';
-import 'package:http/http.dart' as http;
-import 'package:streaming_shared_preferences/streaming_shared_preferences.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
+import 'package:http/http.dart' as http;
 import '../Classes/User.dart';
+import 'editUser.dart';
+import 'main.dart';
+
+final token = preferences.getString('token', defaultValue: '').getValue();
 
 Future<UserProfil> fetchUser() async {
-  final preferences = await StreamingSharedPreferences.instance;
-  final token = preferences.getString('token', defaultValue: '').getValue();
-  print(token);
-  print("coucou");
   final response = await http
       .get(Uri.parse('http://ideainker.fr/api/me'),
     headers: {
       HttpHeaders.authorizationHeader: "Bearer $token",
     },
   );
-
-  print(response.statusCode);
   if (response.statusCode == 200) {
     // If the server did return a 200 OK response,
     // then parse the JSON.
-    print(response.body);
-    print("dfghjfghj");
     return UserProfil.fromJson(jsonDecode(response.body));
   } else {
     // If the server did not return a 200 OK response,
@@ -94,11 +86,6 @@ class _ProfilArtiste extends State<ProfilArtiste> {
   late Future<UserProfil> futureUser;
   late double stars = 0;
 
-  late File imageFile = File("");
-  final picker = ImagePicker();
-  String image64 = "";
-
-
   @override
   void initState() {
     super.initState();
@@ -108,13 +95,18 @@ class _ProfilArtiste extends State<ProfilArtiste> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          title: Text('Mon profil'),
-          backgroundColor: Colors.deepPurple,
-          centerTitle: true,
-        ),
-        body: Container(
-            child: Column(
+      appBar: AppBar(
+        title: Text('Profil Artiste/Salon'),
+        backgroundColor: Colors.deepPurple,
+        centerTitle: true,
+      ),
+      body: SingleChildScrollView(
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          children: <Widget>[
+            Container(
+              child: Column(
                 children: [
                   Container(
                     color: Colors.deepPurple,
@@ -124,77 +116,67 @@ class _ProfilArtiste extends State<ProfilArtiste> {
                       future: futureUser,
                       builder: (context, snapshot) {
                         if (snapshot.hasData) {
-                          print(snapshot.data);
                           return ListView(
                             scrollDirection: Axis.vertical,
                             shrinkWrap: true,
                             children: <Widget>[
-                              imageFile.path != "" ?
-                              // Affichage de l'image
+                              snapshot.data!.profileImage != null ?
                               Container(
-                                color: Colors.deepPurple,
-                                //width: double.infinity,
-                                padding: const EdgeInsets.symmetric(horizontal: 15),
-                                child: Image.file(imageFile, width: 100, height: 100),
-                              )
-                                  : Container(),
-                              Container(
-                                child:
-                                ElevatedButton(
-                                  style: ButtonStyle(
-                                      backgroundColor:
-                                      MaterialStateProperty.all<Color>(Colors.black)),
-                                  onPressed: () async {
-                                    final pickedFile = await picker.pickImage(source: ImageSource.gallery);
-                                    if (pickedFile != null) {
-                                      setState(() {
-                                        imageFile = File(pickedFile.path);
-                                        print(imageFile);
-                                        List<int> fileInByte = imageFile.readAsBytesSync();
-                                        String fileInBase64 = base64Encode(fileInByte);
-                                        image64 = fileInBase64;
-                                        print("base64 donne");
-                                        print(image64);
-                                      });
-                                    }
-                                  },
-                                  child: imageFile.path != "" ? // C'est le if
-                                      Text("Modifier la photo")
-                                      : Text("Ajouter une photo") // : = else
+                                width: 200,
+                                height: 200,
+                                child: Stack(
+                                  children: <Widget>[
+                                    Align(
+                                      alignment: Alignment.bottomRight,
+                                      child: IconButton(
+                                        icon: Icon(Icons.edit),
+                                        onPressed: (){
+                                          Navigator.push(
+                                            context,
+                                            MaterialPageRoute(builder: (context) => const EditUser()),
+                                          );
+                                        },
+                                      ),
+                                    ),
+                                    Container(
+                                      width: 200,
+                                      height: 200,
+                                      child: CircleAvatar(
+                                        backgroundImage: NetworkImage(snapshot.data!.profileImage!),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ) :
+                              Center(
+                                child: Container(
+                                  width: 210,
+                                  height: 200,
+                                  child: Stack(
+                                    children: <Widget>[
+                                      Align(
+                                        alignment: Alignment.bottomRight,
+                                        child: IconButton(
+                                          icon: Icon(Icons.edit),
+                                          onPressed: (){
+                                            Navigator.push(
+                                              context,
+                                              MaterialPageRoute(builder: (context) => const EditUser()),
+                                            );
+                                          },
+                                        ),
+                                      ),
+                                      Container(
+                                        width: 200,
+                                        height: 200,
+                                        child: const CircleAvatar(
+                                          backgroundImage: AssetImage("noProfile.png"),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
                                 ),
                               ),
-
-                              Container(
-                                child:
-                                    imageFile.path != "" ?
-                                ElevatedButton(
-                                    style: ButtonStyle(
-                                        backgroundColor:
-                                        MaterialStateProperty.all<Color>(Colors.black)),
-                                    onPressed: () {
-                                        setState(() {
-                                          imageFile = File("");
-                                        });
-                                    },
-                                    child: Text("Supprimer la photo")
-                                ) : Container(),
-                              ),
-
-                              Container(
-                                child:
-                                imageFile.path != "" ?
-                                ElevatedButton(
-                                    style: ButtonStyle(
-                                        backgroundColor:
-                                        MaterialStateProperty.all<Color>(Colors.black)),
-                                    onPressed: ()  {
-                                    },
-                                    child:
-                                    Text("Enregistrer")
-                                ) : Container(),
-                              ),
-
-
                               Container(
                                 child: Text(snapshot.data!.firstName + " " + snapshot.data!.lastName,
                                   textAlign: TextAlign.center,
@@ -229,29 +211,52 @@ class _ProfilArtiste extends State<ProfilArtiste> {
                       },
                     ),
                   ),
-                  Container(
-                    margin: const EdgeInsets.symmetric(vertical: 50.0, horizontal: 25.0),
-                    height: 125.0,
-                    child: ListView(
-                      // This next line does the trick.
-                      scrollDirection: Axis.horizontal,
-                      children: <Widget>[
-                        Container(
-                          width: 150.0,
-                          margin: const EdgeInsets.only(right: 10.0, left: 5.0),
-                          color: Colors.red,
-                        ),
-                        Container(
-                          width: 150.0,
-                          margin: const EdgeInsets.only(right: 10.0, left: 15.0),
-                          color: Colors.blue,
-                        ),
-                      ],
-                    ),
-                  ),
                 ],
+              ),
             ),
+            GridView.count(
+              shrinkWrap: true,
+              primary: false,
+              padding: const EdgeInsets.all(20),
+              crossAxisSpacing: 10,
+              mainAxisSpacing: 10,
+              crossAxisCount: 2,
+              children: <Widget>[
+                Container(
+                  padding: const EdgeInsets.all(8),
+                  child: const Text("He'd have you all unravel at the"),
+                  color: Colors.teal[100],
+                ),
+                Container(
+                  padding: const EdgeInsets.all(8),
+                  child: const Text('Heed not the rabble'),
+                  color: Colors.teal[200],
+                ),
+                Container(
+                  padding: const EdgeInsets.all(8),
+                  child: const Text('Sound of screams but the'),
+                  color: Colors.teal[300],
+                ),
+                Container(
+                  padding: const EdgeInsets.all(8),
+                  child: const Text('Who scream'),
+                  color: Colors.teal[400],
+                ),
+                Container(
+                  padding: const EdgeInsets.all(8),
+                  child: const Text('Revolution is coming...'),
+                  color: Colors.teal[500],
+                ),
+                Container(
+                  padding: const EdgeInsets.all(8),
+                  child: const Text('Revolution, they...'),
+                  color: Colors.teal[600],
+                ),
+              ],
+            )
+          ],
         ),
+      ),
     );
   }
 }
