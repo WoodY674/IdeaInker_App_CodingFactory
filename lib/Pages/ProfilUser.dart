@@ -1,25 +1,20 @@
 import 'dart:convert';
-import 'dart:developer';
 import 'dart:io';
 import 'package:flutter/material.dart';
-import 'package:fluttertoast/fluttertoast.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:http/http.dart' as http;
-import 'package:permission_handler/permission_handler.dart';
-import 'package:streaming_shared_preferences/streaming_shared_preferences.dart';
 import '../Classes/User.dart';
+import 'editUser.dart';
+import 'main.dart';
+
+final token = preferences.getString('token', defaultValue: '').getValue();
 
 Future<UserProfil> fetchUser() async {
-  final preferences = await StreamingSharedPreferences.instance;
-  final token = preferences.getString('token', defaultValue: '').getValue();
   final response = await http
       .get(Uri.parse('http://ideainker.fr/api/me'),
     headers: {
       HttpHeaders.authorizationHeader: "Bearer $token",
     },
   );
-
-  print(response.statusCode);
   if (response.statusCode == 200) {
     // If the server did return a 200 OK response,
     // then parse the JSON.
@@ -89,10 +84,6 @@ class _ProfilUser extends State<ProfilUser> {
   late User user;
   late Future<UserProfil> futureUser;
 
-  String imagePath = "";
-  final picker = ImagePicker();
-
-
   @override
   void initState() {
     super.initState();
@@ -107,137 +98,144 @@ class _ProfilUser extends State<ProfilUser> {
         backgroundColor: Colors.deepPurple,
         centerTitle: true,
       ),
-      body: Container(
+      body: SingleChildScrollView(
         child: Column(
-          children: [
+          mainAxisSize: MainAxisSize.min,
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          children: <Widget>[
             Container(
-              color: Colors.deepPurple,
-              padding: EdgeInsets.all(15),
-              width: double.infinity,
-              child: FutureBuilder<UserProfil>(
-                future: futureUser,
-                builder: (context, snapshot) {
-                  if (snapshot.hasData) {
-                    print(snapshot.data);
-                    return ListView(
-                      scrollDirection: Axis.vertical,
-                      shrinkWrap: true,
-                      children: <Widget>[
-                        imagePath != "" ?
-                        // Affichage de l'image
-                        Container(
-                          color: Colors.deepPurple,
-                          //width: double.infinity,
-                          padding: const EdgeInsets.symmetric(horizontal: 15),
-                          child: Image.file(File(imagePath), height: 150, width: 150),
-                        )
-                            : Container(),
-                        Container(
-                          child:
-                          ElevatedButton(
-                              style: ButtonStyle(
-                                  backgroundColor:
-                                  MaterialStateProperty.all<Color>(Colors.black)),
-                              onPressed: () async {
-                                if (await Permission.photos.request().isGranted) {
-                                  // Either the permission was already granted before or the user just granted it.
-                                  final pickedFile = await picker.pickImage(source: ImageSource.gallery);
-                                  // getImage à été remplacé par pickImage ?
-                                  print(pickedFile);
-                                  if (pickedFile != null) {
-                                    setState(() {
-                                      imagePath = pickedFile.path;
-                                    });
-                                  }
-                                }else{
-                                    Map<Permission, PermissionStatus> statuses = await [
-                                      Permission.photos,
-                                    ].request();
-                                    //print(statuses[Permission.photos]); print status accés photos
-                                }
-                              },
-                              child: imagePath != "" ? // C'est le if
-                              Text("Modifier la photo")
-                                  : Text("Ajouter une photo") // : = else
-                          ),
-                        ),
-
-                        Container(
-                          child:
-                          ElevatedButton(
-                              style: ButtonStyle(
-                                  backgroundColor:
-                                  MaterialStateProperty.all<Color>(Colors.black)),
-                              onPressed: () {
-                                setState(() {
-                                  imagePath = "";
-                                  print("done");
-                                });
-                                // Si l'image choisi n'est pas égale à null, fait un setState de imagePath = pickedFile.path;
-                              },
-                              child: Text("Supprimer la photo")
-                          ),
-                        ),
-
-                        Container(
-                          child:
-                          ElevatedButton(
-                              style: ButtonStyle(
-                                  backgroundColor:
-                                  MaterialStateProperty.all<Color>(Colors.black)),
-                              onPressed: () {
-                                setState(() {
-                                  imagePath = "";
-                                });
-                                // Si l'image choisi n'est pas égale à null, fait un setState de imagePath = pickedFile.path;
-                              },
-                              child: Text("Enregistrer la photo de profil")
-                          ),
-                        ),
-
-                        Container(
-                          child: Text(snapshot.data!.firstName + " " + snapshot.data!.lastName,
-                            textAlign: TextAlign.center,
-                            style: const TextStyle(
-                                height: 2,
-                                fontSize: 20,
-                                fontWeight: FontWeight.bold,
-                                color: Colors.white),
-                          ),
-                        ),
-                      ],
-                    );
-                  } else if (snapshot.hasError) {
-                    return Text('${snapshot.error}');
-                  }
-                  // By default, show a loading spinner.
-                  return const CircularProgressIndicator();
-                },
-              ),
-            ),
-            Container(
-              margin: const EdgeInsets.symmetric(vertical: 50.0, horizontal: 25.0),
-              height: 125.0,
-              child: ListView(
-                // This next line does the trick.
-                scrollDirection: Axis.horizontal,
-                children: <Widget>[
+              child: Column(
+                children: [
                   Container(
-                    width: 150.0,
-                    margin: const EdgeInsets.only(right: 10.0, left: 5.0),
-                    color: Colors.red,
-                  ),
-                  Container(
-                    width: 150.0,
-                    margin: const EdgeInsets.only(right: 10.0, left: 15.0),
-                    color: Colors.blue,
+                    color: Colors.deepPurple,
+                    padding: EdgeInsets.all(15),
+                    width: double.infinity,
+                    child: FutureBuilder<UserProfil>(
+                      future: futureUser,
+                      builder: (context, snapshot) {
+                        if (snapshot.hasData) {
+                          return ListView(
+                            scrollDirection: Axis.vertical,
+                            shrinkWrap: true,
+                            children: <Widget>[
+                              snapshot.data!.profileImage != null ?
+                              Container(
+                                width: 200,
+                                height: 200,
+                                child: Stack(
+                                  children: <Widget>[
+                                    const Align(
+                                      alignment: Alignment.topRight,
+                                      child: Icon(Icons.access_time),
+                                    ),
+                                    Container(
+                                      width: 200,
+                                      height: 200,
+                                      child: CircleAvatar(
+                                        backgroundImage: NetworkImage(snapshot.data!.profileImage!),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ) :
+                              Center(
+                                child: Container(
+                                  width: 210,
+                                  height: 200,
+                                  child: Stack(
+                                    children: <Widget>[
+                                       Align(
+                                        alignment: Alignment.topRight,
+                                        child: IconButton(
+                                          icon: Icon(Icons.edit),
+                                          onPressed: (){
+                                            Navigator.push(
+                                              context,
+                                              MaterialPageRoute(builder: (context) => const EditUser()),
+                                            );
+                                          },
+                                        ),
+                                      ),
+                                      Container(
+                                        width: 200,
+                                        height: 200,
+                                        child: const CircleAvatar(
+                                          backgroundImage: AssetImage("noProfile.png"),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                              Container(
+                                child: Text(snapshot.data!.firstName + " " + snapshot.data!.lastName,
+                                  textAlign: TextAlign.center,
+                                  style: const TextStyle(
+                                      height: 2,
+                                      fontSize: 20,
+                                      fontWeight: FontWeight.bold,
+                                      color: Colors.white),
+                                ),
+                              ),
+                            ],
+                          );
+                        } else if (snapshot.hasError) {
+                          return Text('${snapshot.error}');
+                        }
+                        // By default, show a loading spinner.
+                        return const CircularProgressIndicator();
+                      },
+                    ),
                   ),
                 ],
               ),
             ),
+            GridView.count(
+              shrinkWrap: true,
+              primary: false,
+              padding: const EdgeInsets.all(20),
+              crossAxisSpacing: 10,
+              mainAxisSpacing: 10,
+              crossAxisCount: 2,
+              children: <Widget>[
+                Container(
+                  padding: const EdgeInsets.all(8),
+                  child: const Text("He'd have you all unravel at the"),
+                  color: Colors.teal[100],
+                ),
+                Container(
+                  padding: const EdgeInsets.all(8),
+                  child: const Text('Heed not the rabble'),
+                  color: Colors.teal[200],
+                ),
+                Container(
+                  padding: const EdgeInsets.all(8),
+                  child: const Text('Sound of screams but the'),
+                  color: Colors.teal[300],
+                ),
+                Container(
+                  padding: const EdgeInsets.all(8),
+                  child: const Text('Who scream'),
+                  color: Colors.teal[400],
+                ),
+                Container(
+                  padding: const EdgeInsets.all(8),
+                  child: const Text('Revolution is coming...'),
+                  color: Colors.teal[500],
+                ),
+                Container(
+                  padding: const EdgeInsets.all(8),
+                  child: const Text('Revolution, they...'),
+                  color: Colors.teal[600],
+                ),
+              ],
+            )
           ],
         ),
       ),
     );
   }
+}
+
+class _showDialog {
 }

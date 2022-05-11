@@ -23,10 +23,7 @@ List<ShopMap> parseShop(String responseBody){
 }
 
 Future<List<ShopMap>> fetchShop() async {
-  final String token = preferences.getString('token', defaultValue: '').getValue();
-  final http.Response response = await http.get(Uri.parse(url),headers: {
-    HttpHeaders.authorizationHeader: "Bearer $token",
-  },);
+  final http.Response response = await http.get(Uri.parse(url));
   print(response.statusCode);
   if (response.statusCode == 200) {
     // If the server did return a 200 OK response,

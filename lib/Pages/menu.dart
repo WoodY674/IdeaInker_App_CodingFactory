@@ -58,22 +58,6 @@ class _Menu extends State<Menu> {
                   )
               ),
               Container(
-                                height: 50,
-                                padding: const EdgeInsets.fromLTRB(30, 15, 30, 0),
-                                child: ElevatedButton(
-                                  child: const Text('Modifier mon profil'),
-                                  onPressed: () {
-                                    Navigator.push(
-                                      context,
-                                      MaterialPageRoute(builder: (context) => const EditUser()),
-                                    );
-                                  },
-                                  style: ButtonStyle(
-                                      backgroundColor: MaterialStateProperty.all(Colors.deepPurple)
-                                  ),
-                                )
-                            ),
-              Container(
                   height: 50,
                   padding: const EdgeInsets.fromLTRB(30, 15, 30, 0),
                   child: ElevatedButton(
