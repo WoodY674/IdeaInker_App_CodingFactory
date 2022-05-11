@@ -30,7 +30,9 @@ class MyApp extends StatelessWidget {
 }
 
 class MainPage extends StatefulWidget {
-  const MainPage({Key? key}) : super(key: key);
+  const MainPage({Key? key, required this.title}) : super(key: key);
+
+  final String title;
 
   @override
   _MainPageState createState() => _MainPageState();
@@ -71,3 +73,4 @@ Future<void> Disconnect() async{
   preferences.setString('token', '');
   print('disconnect');
 }
+
