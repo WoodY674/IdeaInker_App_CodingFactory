@@ -48,6 +48,7 @@ dependencies:
   streaming_shared_preferences: ^2.0.0
   geocode: ^1.0.1
   permission_handler: ^9.2.0
+  flutter_rating_bar: ^4.0.0
 
 dev_dependencies:
   flutter_test:

@@ -1,6 +1,7 @@
 import 'package:convex_bottom_bar/convex_bottom_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:thebestatoo/Channel.dart';
+import 'package:thebestatoo/Pages/ProfilArtiste.dart';
 import 'package:thebestatoo/Pages/ProfilUser.dart';
 import 'package:thebestatoo/Pages/addShop.dart';
 import 'package:thebestatoo/Pages/createaccount.dart';
@@ -11,6 +12,8 @@ import 'package:thebestatoo/Pages/profil.dart';
 import 'package:thebestatoo/Pages/map.dart';
 import 'package:thebestatoo/Pages/home.dart';
 import 'package:streaming_shared_preferences/streaming_shared_preferences.dart';
+
+import 'ProfilSalon.dart';
 
 late final StreamingSharedPreferences preferences;
 
@@ -58,6 +61,8 @@ class _MainPageState extends State<MainPage> {
         AddShop.route: (context) => const AddShop(),
         ListShop.route: (context) => const ListShop(),
         ProfilUser.route: (context) => const ProfilUser(),
+        ProfilArtiste.route: (context) => const ProfilArtiste(),
+        ProfilArtiste.route: (context) => const ProfilSalon(),
         Profil.route: (context) => const Profil(),
         Channel.route: (context) => Channel(),
       },
