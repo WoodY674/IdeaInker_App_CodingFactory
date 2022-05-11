@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:streaming_shared_preferences/streaming_shared_preferences.dart';
 import 'package:thebestatoo/Pages/ProfilUser.dart';
 import 'package:thebestatoo/Pages/sideBar.dart';
+import 'ProfilArtiste.dart';
 import 'addShop.dart';
 import 'editUser.dart';
 import 'listShop.dart';
@@ -45,7 +46,7 @@ class _Menu extends State<Menu> {
                   height: 50,
                   padding: const EdgeInsets.fromLTRB(30, 15, 30, 0),
                   child: ElevatedButton(
-                    child: const Text('Mon Profil'),
+                    child: const Text('Mon Profil Utilisateur'),
                     onPressed: () {
                       Navigator.push(
                         context,
@@ -58,21 +59,37 @@ class _Menu extends State<Menu> {
                   )
               ),
               Container(
-                                height: 50,
-                                padding: const EdgeInsets.fromLTRB(30, 15, 30, 0),
-                                child: ElevatedButton(
-                                  child: const Text('Modifier mon profil'),
-                                  onPressed: () {
-                                    Navigator.push(
-                                      context,
-                                      MaterialPageRoute(builder: (context) => const EditUser()),
-                                    );
-                                  },
-                                  style: ButtonStyle(
-                                      backgroundColor: MaterialStateProperty.all(Colors.deepPurple)
-                                  ),
-                                )
-                            ),
+                  height: 50,
+                  padding: const EdgeInsets.fromLTRB(30, 15, 30, 0),
+                  child: ElevatedButton(
+                    child: const Text('Mon Profil Artiste'),
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => const ProfilArtiste()),
+                      );
+                    },
+                    style: ButtonStyle(
+                        backgroundColor: MaterialStateProperty.all(Colors.deepPurple)
+                    ),
+                  )
+              ),
+              Container(
+                  height: 50,
+                  padding: const EdgeInsets.fromLTRB(30, 15, 30, 0),
+                  child: ElevatedButton(
+                    child: const Text('Modifier mon profil'),
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => const EditUser()),
+                      );
+                      },
+                    style: ButtonStyle(
+                        backgroundColor: MaterialStateProperty.all(Colors.deepPurple)
+                    ),
+                  )
+              ),
               Container(
                   height: 50,
                   padding: const EdgeInsets.fromLTRB(30, 15, 30, 0),
