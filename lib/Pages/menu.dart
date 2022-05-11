@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:streaming_shared_preferences/streaming_shared_preferences.dart';
+import 'package:thebestatoo/Pages/ProfilSalon.dart';
 import 'package:thebestatoo/Pages/ProfilUser.dart';
 import 'package:thebestatoo/Pages/sideBar.dart';
 import 'ProfilArtiste.dart';
@@ -67,6 +68,22 @@ class _Menu extends State<Menu> {
                       Navigator.push(
                         context,
                         MaterialPageRoute(builder: (context) => const ProfilArtiste()),
+                      );
+                    },
+                    style: ButtonStyle(
+                        backgroundColor: MaterialStateProperty.all(Colors.deepPurple)
+                    ),
+                  )
+              ),
+              Container(
+                  height: 50,
+                  padding: const EdgeInsets.fromLTRB(30, 15, 30, 0),
+                  child: ElevatedButton(
+                    child: const Text('Mon Salon'),
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => const ProfilSalon()),
                       );
                     },
                     style: ButtonStyle(

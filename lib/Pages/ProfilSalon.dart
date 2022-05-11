@@ -80,16 +80,16 @@ class UserProfil {
   }
 }
 
-class ProfilArtiste extends StatefulWidget {
-  static String route = 'ProfilArtiste';
+class ProfilSalon extends StatefulWidget {
+  static String route = 'ProfilSalon';
 
-  const ProfilArtiste({Key? key}) : super(key: key);
+  const ProfilSalon({Key? key}) : super(key: key);
 
   @override
-  _ProfilArtiste createState() => _ProfilArtiste();
+  _ProfilSalon createState() => _ProfilSalon();
 }
 
-class _ProfilArtiste extends State<ProfilArtiste> {
+class _ProfilSalon extends State<ProfilSalon> {
   late User user;
   late Future<UserProfil> futureUser;
   late double stars = 0;
