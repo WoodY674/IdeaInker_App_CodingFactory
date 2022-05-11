@@ -34,6 +34,7 @@ Future<Channel> fetchChannel() async {
 
 class Channel extends StatefulWidget{
 
+  static String route = 'channel';
   @override
   _ChannelState createState() => _ChannelState();
 

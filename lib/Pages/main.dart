@@ -1,5 +1,6 @@
 import 'package:convex_bottom_bar/convex_bottom_bar.dart';
 import 'package:flutter/material.dart';
+import 'package:thebestatoo/Channel.dart';
 import 'package:thebestatoo/Pages/ProfilUser.dart';
 import 'package:thebestatoo/Pages/addShop.dart';
 import 'package:thebestatoo/Pages/createaccount.dart';
@@ -30,9 +31,7 @@ class MyApp extends StatelessWidget {
 }
 
 class MainPage extends StatefulWidget {
-  const MainPage({Key? key, required this.title}) : super(key: key);
-
-  final String title;
+  const MainPage({Key? key}) : super(key: key);
 
   @override
   _MainPageState createState() => _MainPageState();
@@ -60,6 +59,7 @@ class _MainPageState extends State<MainPage> {
         ListShop.route: (context) => const ListShop(),
         ProfilUser.route: (context) => const ProfilUser(),
         Profil.route: (context) => const Profil(),
+        Channel.route: (context) => Channel(),
       },
       home: Scaffold(
         body: currentPage,

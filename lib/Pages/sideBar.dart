@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:streaming_shared_preferences/streaming_shared_preferences.dart';
 import 'package:thebestatoo/Pages/profil.dart';
+import '../Channel.dart';
 import 'home.dart';
 import 'main.dart';
 import 'map.dart';
@@ -13,8 +14,6 @@ import 'package:http/http.dart' as http;
 Future<UserProfil> fetchUser() async {
   final preferences = await StreamingSharedPreferences.instance;
   final token = preferences.getString('token', defaultValue: '').getValue();
-  print(token);
-  print("coucou");
   final response = await http
       .get(Uri.parse('http://ideainker.fr/api/me'),
     headers: {
@@ -22,12 +21,9 @@ Future<UserProfil> fetchUser() async {
     },
   );
 
-  print(response.statusCode);
   if (response.statusCode == 200) {
     // If the server did return a 200 OK response,
     // then parse the JSON.
-    print(response.body);
-    print("dfghjfghj");
     return UserProfil.fromJson(jsonDecode(response.body));
   } else {
     // If the server did not return a 200 OK response,
@@ -189,6 +185,14 @@ class SideBar extends StatelessWidget {
                                 MaterialPageRoute(builder: (context) => const MyMap()));
                             },
                           ),
+                          ListTile(
+                            leading: Icon(Icons.chat_rounded),
+                            title: Text('Messages'),
+                            onTap: (){Navigator.pushReplacement(
+                                context,
+                                MaterialPageRoute(builder: (context) => Channel()));
+                            },
+                          ),
                           tokenPref != '' ? ListTile(
                             leading: Icon(Icons.verified_user),
                             title: Text('Mon Profil'),
@@ -197,6 +201,7 @@ class SideBar extends StatelessWidget {
                                 MaterialPageRoute(builder: (context) => const Menu()));
                             },
                           ): Text(''),
+
                           const Divider(),
                           tokenPref != '' ? ListTile(
                             title: const Text('Se déconnecter'),
