@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'package:thebestatoo/Classes/ImageTo64.dart';
 import 'package:thebestatoo/Classes/Salon.dart';
 import 'dart:io';
 import '../Classes/CoordinatesStore.dart';
@@ -65,7 +66,6 @@ class _Posts extends State<Posts> {
                       // Either the permission was already granted before or the user just granted it.
                       final pickedFile = await picker.pickImage(source: ImageSource.gallery);
                       // getImage à été remplacé par pickImage ?
-                      print(pickedFile);
                       if (pickedFile != null) {
                         setState(() {
                           imageFile = File(pickedFile.path);
@@ -116,13 +116,12 @@ class _Posts extends State<Posts> {
                 padding: const EdgeInsets.fromLTRB(30, 15, 30, 0),
                 child: ElevatedButton(
                   child: const Text('Register'),
-                  onPressed: () {
+                  onPressed: () async {
                     String fileInBase64 = "";
                     if(imageFile.path != ""){
-                      List<int> fileInByte = imageFile.readAsBytesSync();
-                      fileInBase64 = base64Encode(fileInByte);
+                      fileInBase64 = imageTo64(imageFile);
                     }
-                    String nomCreateur = "Emerick Chalet";
+                    String nomCreateur = "6";
                     addPost(contentController.text, fileInBase64,nomCreateur);
                   },
                   style: ButtonStyle(
@@ -136,27 +135,21 @@ class _Posts extends State<Posts> {
     );
   }
   Future<void> addPost(String content, String image64, String nomCreateur) async {
-    final now = DateTime.now();
-
-        print("début response");
-        final responsePost = await http.post(
-          Uri.parse('http://ideainker.fr/api/posts'),
+          final responsePost = await http.post(
+          Uri.parse('http://ideainker.fr/api2/post/'),
           headers: <String, String>{
-            'Content-Type': 'application/json; charset=UTF-8',
+            'Content-Type': 'application/json',
             HttpHeaders.authorizationHeader: "Bearer $token",
           },
           body: jsonEncode(<String, String>{
             'content': content,
             'image': image64,
-            'createdAt': now.toString(),
-            'createdBy': nomCreateur,
+            'createdBy': nomCreateur
           }),
         );
-        print(responsePost.body);
       if (responsePost.statusCode == 201) {
         // If the server did return a 201 CREATED response,
         // then parse the JSON.
-        log("Post creer");
         Fluttertoast.showToast(
             msg: "Post added with Success!",
             toastLength: Toast.LENGTH_SHORT,

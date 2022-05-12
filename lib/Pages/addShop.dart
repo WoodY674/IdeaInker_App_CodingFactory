@@ -10,6 +10,7 @@ import 'package:permission_handler/permission_handler.dart';
 import 'package:thebestatoo/Classes/Salon.dart';
 import 'dart:io';
 import '../Classes/CoordinatesStore.dart';
+import '../Classes/ImageTo64.dart';
 
 class AddShop extends StatefulWidget {
   static String route = 'addShop';
@@ -148,8 +149,7 @@ class _AddShop extends State<AddShop> {
                   onPressed: () {
                     String fileInBase64 = "";
                     if(imageFile.path != ""){
-                      List<int> fileInByte = imageFile.readAsBytesSync();
-                      fileInBase64 = base64Encode(fileInByte);
+                      fileInBase64 = imageTo64(imageFile);
                     }
                     addShop(nameController.text, addressController.text,cityController.text,zipCodeController.text,fileInBase64);
                   },
@@ -167,14 +167,10 @@ class _AddShop extends State<AddShop> {
     final now = DateTime.now();
     GeoCode geoCode = GeoCode();
     final query = address + ", " + city + ", " + zipCode;
-    print(query);
     try {
-      print('avant la');
       Coordinates coordinates = await geoCode.forwardGeocoding(address: query);
-      print('la');
       late Response responseSalon = http.Response("", 400);
       if(image64 != ""){
-        print("photo detected");
         responseSalon = await http.post(
           Uri.parse('http://ideainker.fr/api/salons'),
           headers: <String, String>{
@@ -192,7 +188,6 @@ class _AddShop extends State<AddShop> {
           }),
         );
       }else{
-        print("no photo");
         responseSalon = await http.post(
           Uri.parse('http://ideainker.fr/api/salons'),
           headers: <String, String>{
@@ -237,7 +232,7 @@ class _AddShop extends State<AddShop> {
       }
     }
     catch(e){
-      print(e);
+      log(e.toString());
       Fluttertoast.showToast(
           msg: "Failed get Geolocalisation of shop",
           toastLength: Toast.LENGTH_SHORT,

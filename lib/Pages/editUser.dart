@@ -12,6 +12,7 @@ import 'package:streaming_shared_preferences/streaming_shared_preferences.dart';
 import 'package:thebestatoo/Classes/User.dart';
 import 'package:thebestatoo/Pages/sideBar.dart';
 
+import '../Classes/ImageTo64.dart';
 import 'main.dart';
 
 final token = preferences.getString('token', defaultValue: '').getValue();
@@ -298,8 +299,7 @@ class _EditUser extends State<EditUser> {
                         onPressed: () {
                           String fileInBase64 = "";
                           if(imageFile.path != ""){
-                            List<int> fileInByte = imageFile.readAsBytesSync();
-                            fileInBase64 = base64Encode(fileInByte);
+                            fileInBase64 = imageTo64(imageFile);
                           }
                           editAccount(
                             firstNameController.text,
@@ -389,7 +389,7 @@ class _EditUser extends State<EditUser> {
       );
       Navigator.pop(context);
     } else {
-      print(response.body);
+      log(response.body);
       // If the server did not return a 201 CREATED response,
       // then throw an exception.
       Fluttertoast.showToast(
@@ -419,7 +419,6 @@ class _EditUser extends State<EditUser> {
       Map map = json.decode(response.body);
       setState(() {
         user = User(map);
-        log(user.firstName);
       });
 
       Fluttertoast.showToast(
