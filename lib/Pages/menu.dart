@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:thebestatoo/Pages/Avis.dart';
 import 'package:thebestatoo/Pages/ProfilUser.dart';
+import 'package:thebestatoo/Pages/listAvis.dart';
 import 'package:thebestatoo/Pages/posts.dart';
 import 'package:thebestatoo/Pages/sideBar.dart';
 import 'ProfilArtiste.dart';
@@ -110,11 +111,11 @@ class _Menu extends State<Menu> {
                   height: 50,
                   padding: const EdgeInsets.fromLTRB(30, 15, 30, 0),
                   child: ElevatedButton(
-                    child: const Text('Créer un avis'),
+                    child: const Text('Liste des avis'),
                     onPressed: () {
                       Navigator.push(
                         context,
-                        MaterialPageRoute(builder: (context) => const CreateAvis()),
+                        MaterialPageRoute(builder: (context) => const ListAvis()),
                       );
                     },
                     style: ButtonStyle(

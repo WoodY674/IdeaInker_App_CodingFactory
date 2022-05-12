@@ -189,7 +189,6 @@ class _CreateAvis extends State<CreateAvis> {
         "userNoting": "api/users/" + idUser.toString(),
       }),
     );
-    log(response.body);
     if (response.statusCode == 201) {
       // If the server did return a 201 CREATED response,
       // then parse the JSON.
