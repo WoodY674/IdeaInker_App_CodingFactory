@@ -8,6 +8,7 @@ import 'package:thebestatoo/Pages/createaccount.dart';
 import 'package:thebestatoo/Pages/editUser.dart';
 import 'package:thebestatoo/Pages/listShop.dart';
 import 'package:thebestatoo/Pages/menu.dart';
+import 'package:thebestatoo/Pages/posts.dart';
 import 'package:thebestatoo/Pages/profil.dart';
 import 'package:thebestatoo/Pages/map.dart';
 import 'package:thebestatoo/Pages/home.dart';
@@ -61,6 +62,7 @@ class _MainPageState extends State<MainPage> {
         ProfilArtiste.route: (context) => const ProfilArtiste(),
         Profil.route: (context) => const Profil(),
         Channel.route: (context) => Channel(),
+        Posts.route:(context) => Posts(),
       },
       home: Scaffold(
         body: currentPage,

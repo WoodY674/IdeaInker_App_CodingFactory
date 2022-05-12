@@ -7,26 +7,27 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'package:thebestatoo/Classes/ImageTo64.dart';
 import 'package:thebestatoo/Classes/Salon.dart';
 import 'dart:io';
 import '../Classes/CoordinatesStore.dart';
-import '../Classes/ImageTo64.dart';
+import 'main.dart';
 
-class AddShop extends StatefulWidget {
-  static String route = 'addShop';
-  const AddShop({Key? key}) : super(key: key);
+final token = preferences.getString('token', defaultValue: '').getValue();
+
+class Posts extends StatefulWidget {
+  static String route = 'addPost';
+  const Posts({Key? key}) : super(key: key);
 
   @override
-  _AddShop createState() => _AddShop();
+  _Posts createState() => _Posts();
 }
 
-class _AddShop extends State<AddShop> {
-  TextEditingController nameController = TextEditingController();
+class _Posts extends State<Posts> {
+  TextEditingController contentController = TextEditingController();
   TextEditingController addressController = TextEditingController();
   TextEditingController cityController = TextEditingController();
   TextEditingController zipCodeController = TextEditingController();
-  late Salon salon;
-  late CoordinatesStore coordinatesStore;
   String imagePath = "";
   final picker = ImagePicker();
   File imageFile = File("");
@@ -35,7 +36,7 @@ class _AddShop extends State<AddShop> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Détails du salon'),
+        title: const Text('Nouveau Post'),
         backgroundColor: Colors.deepPurple,
       ),
       body: Padding(
@@ -46,7 +47,7 @@ class _AddShop extends State<AddShop> {
                 alignment: Alignment.center,
                 padding: const EdgeInsets.all(10),
                 child: const Text(
-                  'Ajout Salon de Tatouage',
+                  'Créer un Post',
                   style: TextStyle(fontSize: 20),
                 )
             ),
@@ -65,7 +66,6 @@ class _AddShop extends State<AddShop> {
                       // Either the permission was already granted before or the user just granted it.
                       final pickedFile = await picker.pickImage(source: ImageSource.gallery);
                       // getImage à été remplacé par pickImage ?
-                      print(pickedFile);
                       if (pickedFile != null) {
                         setState(() {
                           imageFile = File(pickedFile.path);
@@ -103,41 +103,11 @@ class _AddShop extends State<AddShop> {
               padding: const EdgeInsets.all(10),
               child: Center(
                 child: TextField(
-                  controller: nameController,
+                  controller: contentController,
                   decoration: const InputDecoration(
                     border: OutlineInputBorder(),
-                    labelText: 'Nom du salon',
+                    labelText: 'Content',
                   ),
-                ),
-              ),
-            ),
-            Container(
-              padding: const EdgeInsets.all(10),
-              child: TextField(
-                controller: addressController,
-                decoration: const InputDecoration(
-                  border: OutlineInputBorder(),
-                  labelText: 'Adresse',
-                ),
-              ),
-            ),
-            Container(
-              padding: const EdgeInsets.all(10),
-              child: TextField(
-                controller: cityController,
-                decoration: const InputDecoration(
-                  border: OutlineInputBorder(),
-                  labelText: 'Ville',
-                ),
-              ),
-            ),
-            Container(
-              padding: const EdgeInsets.fromLTRB(10, 10, 10, 0),
-              child: TextField(
-                controller: zipCodeController,
-                decoration: const InputDecoration(
-                  border: OutlineInputBorder(),
-                  labelText: 'Code Postal',
                 ),
               ),
             ),
@@ -146,12 +116,13 @@ class _AddShop extends State<AddShop> {
                 padding: const EdgeInsets.fromLTRB(30, 15, 30, 0),
                 child: ElevatedButton(
                   child: const Text('Register'),
-                  onPressed: () {
+                  onPressed: () async {
                     String fileInBase64 = "";
                     if(imageFile.path != ""){
                       fileInBase64 = imageTo64(imageFile);
                     }
-                    addShop(nameController.text, addressController.text,cityController.text,zipCodeController.text,fileInBase64);
+                    String nomCreateur = "6";
+                    addPost(contentController.text, fileInBase64,nomCreateur);
                   },
                   style: ButtonStyle(
                       backgroundColor: MaterialStateProperty.all(Colors.deepPurple)
@@ -163,54 +134,24 @@ class _AddShop extends State<AddShop> {
       ),
     );
   }
-  Future<void> addShop(String name, String address, String city, String zipCode, String image64) async {
-    final now = DateTime.now();
-    GeoCode geoCode = GeoCode();
-    final query = address + ", " + city + ", " + zipCode;
-    try {
-      Coordinates coordinates = await geoCode.forwardGeocoding(address: query);
-      late Response responseSalon = http.Response("", 400);
-      if(image64 != ""){
-        responseSalon = await http.post(
-          Uri.parse('http://ideainker.fr/api/salons'),
+  Future<void> addPost(String content, String image64, String nomCreateur) async {
+          final responsePost = await http.post(
+          Uri.parse('http://ideainker.fr/api2/post/'),
           headers: <String, String>{
-            'Content-Type': 'application/json; charset=UTF-8',
+            'Content-Type': 'application/json',
+            HttpHeaders.authorizationHeader: "Bearer $token",
           },
           body: jsonEncode(<String, String>{
-            'address': address,
-            'zipCode': zipCode,
-            'city': city,
-            'createdAt': now.toString(),
-            'name': name,
-            'latitude': coordinates.latitude.toString(),
-            'longitude': coordinates.longitude.toString(),
-            'salonImage': image64,
+            'content': content,
+            'image': image64,
+            'createdBy': nomCreateur
           }),
         );
-      }else{
-        responseSalon = await http.post(
-          Uri.parse('http://ideainker.fr/api/salons'),
-          headers: <String, String>{
-            'Content-Type': 'application/json; charset=UTF-8',
-          },
-          body: jsonEncode(<String, String>{
-            'address': address,
-            'zipCode': zipCode,
-            'city': city,
-            'createdAt': now.toString(),
-            'name': name,
-            'latitude': coordinates.latitude.toString(),
-            'longitude': coordinates.longitude.toString(),
-          }),
-        );
-      }
-
-      if (responseSalon.statusCode == 201) {
+      if (responsePost.statusCode == 201) {
         // If the server did return a 201 CREATED response,
         // then parse the JSON.
-        log("salon creer");
         Fluttertoast.showToast(
-            msg: "Salon added with Success!",
+            msg: "Post added with Success!",
             toastLength: Toast.LENGTH_SHORT,
             gravity: ToastGravity.BOTTOM,
             timeInSecForIosWeb: 1,
@@ -221,7 +162,7 @@ class _AddShop extends State<AddShop> {
         Navigator.pop(context);
       }else{
         Fluttertoast.showToast(
-            msg: "Failed create salon",
+            msg: "Failed create Post",
             toastLength: Toast.LENGTH_SHORT,
             gravity: ToastGravity.BOTTOM,
             timeInSecForIosWeb: 1,
@@ -230,18 +171,5 @@ class _AddShop extends State<AddShop> {
             fontSize: 16.0
         );
       }
-    }
-    catch(e){
-      log(e.toString());
-      Fluttertoast.showToast(
-          msg: "Failed get Geolocalisation of shop",
-          toastLength: Toast.LENGTH_SHORT,
-          gravity: ToastGravity.BOTTOM,
-          timeInSecForIosWeb: 1,
-          backgroundColor: Colors.red,
-          textColor: Colors.white,
-          fontSize: 16.0
-      );
-    }
   }
 }
