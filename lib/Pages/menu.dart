@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:thebestatoo/Pages/Avis.dart';
 import 'package:thebestatoo/Pages/ProfilUser.dart';
 import 'package:thebestatoo/Pages/posts.dart';
 import 'package:thebestatoo/Pages/sideBar.dart';
@@ -98,6 +99,22 @@ class _Menu extends State<Menu> {
                       Navigator.push(
                         context,
                         MaterialPageRoute(builder: (context) => const Posts()),
+                      );
+                    },
+                    style: ButtonStyle(
+                        backgroundColor: MaterialStateProperty.all(Colors.deepPurple)
+                    ),
+                  )
+              ),
+              Container(
+                  height: 50,
+                  padding: const EdgeInsets.fromLTRB(30, 15, 30, 0),
+                  child: ElevatedButton(
+                    child: const Text('Créer un avis'),
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => const CreateAvis()),
                       );
                     },
                     style: ButtonStyle(

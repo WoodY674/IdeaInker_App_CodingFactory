@@ -78,19 +78,16 @@ class _CreateAvis extends State<CreateAvis> {
 
   }
   Future<void> CreateAvis(double star, String comment) async {
-    final now = DateTime.now();
     final response = await http.post(
-      Uri.parse('http://localhost:8888/tatooproject/public/api/notices'),// route pour laisser un avis
+      Uri.parse('http://ideainker.fr/api/notices'),// route pour laisser un avis
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
       },
       body: jsonEncode(<String, String>{
         "stars": star.toString(),
         "comment": comment,
-        "idUserNoted": "api/users/29",
-        "userIdNoting": "api/users/6",
-
-
+        "userNoted": "api/users/29",
+        "userNoting": "api/users/6",
       }),
     );
     log(response.body);
