@@ -211,7 +211,7 @@ class _EditUser extends State<EditUser> {
                         ),
                         validator: (value) {
                           if (value == null || value.isEmpty) {
-                            return 'Please enter some text';
+                            return 'Veuillez renseigner ce champ';
                           }
                           return null;
                         },
@@ -225,11 +225,11 @@ class _EditUser extends State<EditUser> {
                         controller: firstNameController,
                         decoration: const InputDecoration(
                           border: OutlineInputBorder(),
-                          labelText: 'First Name',
+                          labelText: 'Nom',
                         ),
                         validator: (value) {
                           if (value == null || value.isEmpty) {
-                            return 'Please enter some text';
+                            return 'Veuillez renseigner ce champ';
                           }
                           return null;
                         },
@@ -242,11 +242,11 @@ class _EditUser extends State<EditUser> {
                       controller: lastNameController,
                       decoration: const InputDecoration(
                         border: OutlineInputBorder(),
-                        labelText: 'Last Name',
+                        labelText: 'Prénom',
                       ),
                       validator: (value) {
                         if (value == null || value.isEmpty) {
-                          return 'Please enter some text';
+                          return 'Veuillez renseigner ce champ';
                         }
                         return null;
                       },
@@ -262,7 +262,7 @@ class _EditUser extends State<EditUser> {
                       ),
                       validator: (value) {
                         if (value == null || value.isEmpty) {
-                          return 'Please enter some text';
+                          return 'Veuillez renseigner ce champ';
                         }
                         return null;
                       },
@@ -274,14 +274,8 @@ class _EditUser extends State<EditUser> {
                       controller: addressController,
                       decoration: const InputDecoration(
                         border: OutlineInputBorder(),
-                        labelText: 'Address',
+                        labelText: 'Adresse',
                       ),
-                      validator: (value) {
-                        if (value == null || value.isEmpty) {
-                          return 'Please enter some text';
-                        }
-                        return null;
-                      },
                     ),
                   ),
                   Container(
@@ -290,14 +284,8 @@ class _EditUser extends State<EditUser> {
                       controller: cityController,
                       decoration: const InputDecoration(
                         border: OutlineInputBorder(),
-                        labelText: 'City Name',
+                        labelText: 'Ville',
                       ),
-                      validator: (value) {
-                        if (value == null || value.isEmpty) {
-                          return 'Please enter some text';
-                        }
-                        return null;
-                      },
                     ),
                   ),
                   Container(
@@ -306,41 +294,8 @@ class _EditUser extends State<EditUser> {
                       controller: zipCodeController,
                       decoration: const InputDecoration(
                         border: OutlineInputBorder(),
-                        labelText: 'Zip Code',
+                        labelText: 'Code Postal',
                       ),
-                      validator: (value) {
-                        if (value == null || value.isEmpty) {
-                          return 'Please enter some text';
-                        }
-                        return null;
-                      },
-                    ),
-                  ),
-                  Container(
-                    padding: const EdgeInsets.all(10),
-                    child: TextFormField(
-                      controller: birthdayController, //editing controller of this TextField
-                      decoration: const InputDecoration(
-                          icon: Icon(Icons.calendar_today), //icon of text field
-                          labelText: "Date d'anniversaire" //label text of field
-                      ),
-                      readOnly: true,  //set it true, so that user will not able to edit text
-                      onTap: () async {
-                        DateTime? pickedDate = await showDatePicker(
-                            context: context, initialDate: DateTime.now(),
-                            firstDate: DateTime(2000), //DateTime.now() - not to allow to choose before today.
-                            lastDate: DateTime(2101)
-                        );
-                        if(pickedDate != null ){
-                          String formattedDate = DateFormat('yyyy-MM-dd').format(pickedDate);
-                          setState(() {
-                            birthdayController.text = formattedDate; //set output date to TextField value.
-                            print(birthdayController.text);
-                          });
-                        }else{
-                          print("Date is not selected");
-                        }
-                      },
                     ),
                   ),
                   Container(
@@ -401,12 +356,12 @@ class _EditUser extends State<EditUser> {
           'Content-Type': 'application/json; charset=UTF-8',
         },
         body: jsonEncode(<String, String>{
+          'pseudo': pseudo,
           'email': email,
           'lastName': lastName,
           'firstName': firstName,
           'zip code': zipCode,
           'city': city,
-          'birthday': birthday,
           'address': address,
           'profileImage' : image64
         }),
@@ -419,6 +374,7 @@ class _EditUser extends State<EditUser> {
           'Content-Type': 'application/json; charset=UTF-8',
         },
         body: jsonEncode(<String, String>{
+          'pseudo': pseudo,
           'email': email,
           'lastName': lastName,
           'firstName': firstName,

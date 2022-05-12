@@ -29,6 +29,7 @@ class _AddShop extends State<AddShop> {
   String imagePath = "";
   final picker = ImagePicker();
   File imageFile = File("");
+  final _formKey = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
@@ -39,126 +40,158 @@ class _AddShop extends State<AddShop> {
       ),
       body: Padding(
         padding: const EdgeInsets.all(10),
-        child: ListView(
-          children: <Widget>[
-            Container(
-                alignment: Alignment.center,
-                padding: const EdgeInsets.all(10),
-                child: const Text(
-                  'Ajout Salon de Tatouage',
-                  style: TextStyle(fontSize: 20),
-                )
-            ),
-            imageFile.path != "" ?
-            // Affichage de l'image
-            Image.file(imageFile)
-                : Container(),
-            Container(
-              child:
-              ElevatedButton(
-                  style: ButtonStyle(
-                      backgroundColor:
-                      MaterialStateProperty.all<Color>(Colors.black)),
-                  onPressed: () async {
-                    if (await Permission.photos.request().isGranted) {
-                      // Either the permission was already granted before or the user just granted it.
-                      final pickedFile = await picker.pickImage(source: ImageSource.gallery);
-                      // getImage à été remplacé par pickImage ?
-                      print(pickedFile);
-                      if (pickedFile != null) {
-                        setState(() {
-                          imageFile = File(pickedFile.path);
-                        });
+        child: Form(
+          key: _formKey,
+          child:ListView(
+            children: <Widget>[
+              Container(
+                  alignment: Alignment.center,
+                  padding: const EdgeInsets.all(10),
+                  child: const Text(
+                    'Ajout Salon de Tatouage',
+                    style: TextStyle(fontSize: 20),
+                  )
+              ),
+              imageFile.path != "" ?
+              // Affichage de l'image
+              Image.file(imageFile)
+                  : Container(),
+              Container(
+                child:
+                ElevatedButton(
+                    style: ButtonStyle(
+                        backgroundColor:
+                        MaterialStateProperty.all<Color>(Colors.black)),
+                    onPressed: () async {
+                      if (await Permission.photos.request().isGranted) {
+                        // Either the permission was already granted before or the user just granted it.
+                        final pickedFile = await picker.pickImage(source: ImageSource.gallery);
+                        // getImage à été remplacé par pickImage ?
+                        print(pickedFile);
+                        if (pickedFile != null) {
+                          setState(() {
+                            imageFile = File(pickedFile.path);
+                          });
+                        }
+                      }else{
+                        Map<Permission, PermissionStatus> statuses = await [
+                          Permission.photos,
+                        ].request();
+                        //print(statuses[Permission.photos]); print status accés photos
                       }
-                    }else{
-                      Map<Permission, PermissionStatus> statuses = await [
-                        Permission.photos,
-                      ].request();
-                      //print(statuses[Permission.photos]); print status accés photos
-                    }
-                  },
-                  child: imageFile.path != "" ? // C'est le if
-                  const Text("Modifier la photo")
-                      : const Text("Ajouter une photo") // : = else
+                    },
+                    child: imageFile.path != "" ? // C'est le if
+                    const Text("Modifier la photo")
+                        : const Text("Ajouter une photo") // : = else
+                ),
               ),
-            ),
-            imageFile.path != "" ?
-            Container(
-              child:
-              ElevatedButton(
-                  style: ButtonStyle(
-                      backgroundColor:
-                      MaterialStateProperty.all<Color>(Colors.black)),
-                  onPressed: () {
-                    setState(() {
-                      imageFile = File("");
-                    });
-                    // Si l'image choisi n'est pas égale à null, fait un setState de imagePath = pickedFile.path;
-                  },
-                  child: const Text("Supprimer la photo")
+              imageFile.path != "" ?
+              Container(
+                child:
+                ElevatedButton(
+                    style: ButtonStyle(
+                        backgroundColor:
+                        MaterialStateProperty.all<Color>(Colors.black)),
+                    onPressed: () {
+                      setState(() {
+                        imageFile = File("");
+                      });
+                      // Si l'image choisi n'est pas égale à null, fait un setState de imagePath = pickedFile.path;
+                    },
+                    child: const Text("Supprimer la photo")
+                ),
+              ): Container(),
+              Container(
+                padding: const EdgeInsets.all(10),
+                child: Center(
+                  child: TextFormField(
+                    controller: nameController,
+                    decoration: const InputDecoration(
+                      border: OutlineInputBorder(),
+                      labelText: 'Nom du salon',
+                    ),
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Veuillez renseigner ce champ';
+                      }
+                      return null;
+                    },
+                  ),
+                ),
               ),
-            ): Container(),
-            Container(
-              padding: const EdgeInsets.all(10),
-              child: Center(
-                child: TextField(
-                  controller: nameController,
+              Container(
+                padding: const EdgeInsets.all(10),
+                child: TextFormField(
+                  controller: addressController,
                   decoration: const InputDecoration(
                     border: OutlineInputBorder(),
-                    labelText: 'Nom du salon',
+                    labelText: 'Adresse',
                   ),
-                ),
-              ),
-            ),
-            Container(
-              padding: const EdgeInsets.all(10),
-              child: TextField(
-                controller: addressController,
-                decoration: const InputDecoration(
-                  border: OutlineInputBorder(),
-                  labelText: 'Adresse',
-                ),
-              ),
-            ),
-            Container(
-              padding: const EdgeInsets.all(10),
-              child: TextField(
-                controller: cityController,
-                decoration: const InputDecoration(
-                  border: OutlineInputBorder(),
-                  labelText: 'Ville',
-                ),
-              ),
-            ),
-            Container(
-              padding: const EdgeInsets.fromLTRB(10, 10, 10, 0),
-              child: TextField(
-                controller: zipCodeController,
-                decoration: const InputDecoration(
-                  border: OutlineInputBorder(),
-                  labelText: 'Code Postal',
-                ),
-              ),
-            ),
-            Container(
-                height: 50,
-                padding: const EdgeInsets.fromLTRB(30, 15, 30, 0),
-                child: ElevatedButton(
-                  child: const Text('Register'),
-                  onPressed: () {
-                    String fileInBase64 = "";
-                    if(imageFile.path != ""){
-                      List<int> fileInByte = imageFile.readAsBytesSync();
-                      fileInBase64 = base64Encode(fileInByte);
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Veuillez renseigner ce champ';
                     }
-                    addShop(nameController.text, addressController.text,cityController.text,zipCodeController.text,fileInBase64);
+                    return null;
                   },
-                  style: ButtonStyle(
-                      backgroundColor: MaterialStateProperty.all(Colors.deepPurple)
+                ),
+              ),
+              Container(
+                padding: const EdgeInsets.all(10),
+                child: TextFormField(
+                  controller: cityController,
+                  decoration: const InputDecoration(
+                    border: OutlineInputBorder(),
+                    labelText: 'Ville',
                   ),
-                )
-            ),
-          ],
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Veuillez renseigner ce champ';
+                    }
+                    return null;
+                  },
+                ),
+              ),
+              Container(
+                padding: const EdgeInsets.fromLTRB(10, 10, 10, 0),
+                child: TextFormField(
+                  controller: zipCodeController,
+                  decoration: const InputDecoration(
+                    border: OutlineInputBorder(),
+                    labelText: 'Code Postal',
+                  ),
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Veuillez renseigner ce champ';
+                    }
+                    return null;
+                  },
+                ),
+              ),
+              Container(
+                  height: 50,
+                  padding: const EdgeInsets.fromLTRB(30, 15, 30, 0),
+                  child: ElevatedButton(
+                    child: const Text('Register'),
+                    onPressed: () {
+                      if (_formKey.currentState!.validate()) {
+                        // If the form is valid, display a snackbar. In the real world,
+                        // you'd often call a server or save the information in a database.
+                        String fileInBase64 = "";
+                        if(imageFile.path != ""){
+                          List<int> fileInByte = imageFile.readAsBytesSync();
+                          fileInBase64 = base64Encode(fileInByte);
+                        }
+                        addShop(nameController.text, addressController.text,cityController.text,zipCodeController.text,fileInBase64);
+
+                      }
+                    },
+                    style: ButtonStyle(
+                        backgroundColor: MaterialStateProperty.all(Colors.deepPurple)
+                    ),
+                  )
+              ),
+            ],
+          ),
         ),
       ),
     );
