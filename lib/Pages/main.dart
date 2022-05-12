@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:thebestatoo/Channel.dart';
 import 'package:thebestatoo/Pages/ProfilArtiste.dart';
 import 'package:thebestatoo/Pages/ProfilUser.dart';
+import 'package:thebestatoo/Pages/Avis.dart';
 import 'package:thebestatoo/Pages/addShop.dart';
 import 'package:thebestatoo/Pages/createaccount.dart';
 import 'package:thebestatoo/Pages/editUser.dart';
