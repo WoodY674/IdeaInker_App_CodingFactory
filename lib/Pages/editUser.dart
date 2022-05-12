@@ -369,7 +369,6 @@ class _EditUser extends State<EditUser> {
           'firstName': firstName,
           'zip code': zipCode,
           'city': city,
-          'birthday': birthday,
           'address': address,
         }),
       );
