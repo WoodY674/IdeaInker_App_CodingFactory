@@ -126,6 +126,15 @@ class SideBar extends StatelessWidget {
                                 MaterialPageRoute(builder: (context) => const MyMap()));
                             },
                           ),
+                          tokenPref != '' ?
+                          ListTile(
+                            leading: Icon(Icons.chat_rounded),
+                            title: Text('Messages'),
+                            onTap: (){Navigator.pushReplacement(
+                                context,
+                                MaterialPageRoute(builder: (context) => Channel()));
+                            },
+                          ):Container(),
                           tokenPref != '' ? ListTile(
                             leading: Icon(Icons.verified_user),
                             title: Text('Mon Profil'),
@@ -183,14 +192,6 @@ class SideBar extends StatelessWidget {
                             onTap: (){Navigator.pushReplacement(
                                 context,
                                 MaterialPageRoute(builder: (context) => const MyMap()));
-                            },
-                          ),
-                          ListTile(
-                            leading: Icon(Icons.chat_rounded),
-                            title: Text('Messages'),
-                            onTap: (){Navigator.pushReplacement(
-                                context,
-                                MaterialPageRoute(builder: (context) => Channel()));
                             },
                           ),
                           tokenPref != '' ? ListTile(
