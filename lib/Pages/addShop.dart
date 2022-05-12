@@ -10,6 +10,7 @@ import 'package:permission_handler/permission_handler.dart';
 import 'package:thebestatoo/Classes/Salon.dart';
 import 'dart:io';
 import '../Classes/CoordinatesStore.dart';
+import '../Classes/ImageTo64.dart';
 
 class AddShop extends StatefulWidget {
   static String route = 'addShop';
@@ -178,11 +179,9 @@ class _AddShop extends State<AddShop> {
                         // you'd often call a server or save the information in a database.
                         String fileInBase64 = "";
                         if(imageFile.path != ""){
-                          List<int> fileInByte = imageFile.readAsBytesSync();
-                          fileInBase64 = base64Encode(fileInByte);
+                          fileInBase64 = imageTo64(imageFile);
                         }
                         addShop(nameController.text, addressController.text,cityController.text,zipCodeController.text,fileInBase64);
-
                       }
                     },
                     style: ButtonStyle(

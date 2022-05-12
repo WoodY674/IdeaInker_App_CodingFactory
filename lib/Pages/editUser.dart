@@ -11,6 +11,7 @@ import 'package:intl/intl.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:streaming_shared_preferences/streaming_shared_preferences.dart';
 import 'package:thebestatoo/Classes/User.dart';
+import '../Classes/ImageTo64.dart';
 import 'main.dart';
 
 final token = preferences.getString('token', defaultValue: '').getValue();
@@ -309,8 +310,7 @@ class _EditUser extends State<EditUser> {
                             // you'd often call a server or save the information in a database.
                             String fileInBase64 = "";
                             if(imageFile.path != ""){
-                              List<int> fileInByte = imageFile.readAsBytesSync();
-                              fileInBase64 = base64Encode(fileInByte);
+                              fileInBase64 = imageTo64(imageFile);
                             }
                             editAccount(
                                 firstNameController.text,
