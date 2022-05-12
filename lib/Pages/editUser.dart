@@ -7,12 +7,10 @@ import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:http/http.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:intl/intl.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:streaming_shared_preferences/streaming_shared_preferences.dart';
 import 'package:thebestatoo/Classes/User.dart';
-import 'package:thebestatoo/Pages/sideBar.dart';
-
-import '../Classes/ImageTo64.dart';
 import 'main.dart';
 
 final token = preferences.getString('token', defaultValue: '').getValue();
@@ -102,7 +100,6 @@ class _EditUser extends State<EditUser> {
 
   TextEditingController pseudoController = TextEditingController();
   TextEditingController emailController = TextEditingController();
-  TextEditingController passwordController = TextEditingController();
   TextEditingController firstNameController = TextEditingController();
   TextEditingController lastNameController = TextEditingController();
   TextEditingController addressController = TextEditingController();
@@ -113,6 +110,7 @@ class _EditUser extends State<EditUser> {
   String imagePath = "";
   final picker = ImagePicker();
   File imageFile = File("");
+  final _formKey = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
@@ -131,12 +129,17 @@ class _EditUser extends State<EditUser> {
               firstNameController.text = snapshot.data!.firstName.toString();
               lastNameController.text = snapshot.data!.lastName.toString();
               emailController.text = snapshot.data!.email.toString();
-              passwordController.text = snapshot.data!.password.toString();
-              addressController.text = snapshot.data!.adress.toString();
-              zipCodeController.text = snapshot.data!.zipCode.toString();
-              cityController.text = snapshot.data!.city.toString();
-              birthdayController.text = snapshot.data!.birthday.toString();
-              return ListView(
+              snapshot.data!.adress != null ?
+              addressController.text = snapshot.data!.adress.toString() : addressController.text = "";
+              snapshot.data!.zipCode != null ?
+              zipCodeController.text = snapshot.data!.zipCode.toString() : zipCodeController.text = "";
+              snapshot.data!.city != null ?
+              cityController.text = snapshot.data!.city.toString(): cityController.text = "";
+              snapshot.data!.birthday != null ?
+              birthdayController.text = snapshot.data!.birthday.toString(): birthdayController.text = "";
+              return Form(
+                  key: _formKey,
+                  child: ListView(
                 children: <Widget>[
                   Container(
                     alignment: Alignment.center,
@@ -200,94 +203,98 @@ class _EditUser extends State<EditUser> {
                   Container(
                     padding: const EdgeInsets.all(10),
                     child: Center(
-                      child: TextField(
+                      child: TextFormField(
                         controller: pseudoController,
                         decoration: const InputDecoration(
                           border: OutlineInputBorder(),
                           labelText: 'Pseudo',
                         ),
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'Veuillez renseigner ce champ';
+                          }
+                          return null;
+                        },
                       ),
                     ),
                   ),
                   Container(
                     padding: const EdgeInsets.all(10),
                     child: Center(
-                      child: TextField(
+                      child: TextFormField(
                         controller: firstNameController,
                         decoration: const InputDecoration(
                           border: OutlineInputBorder(),
-                          labelText: 'First Name',
+                          labelText: 'Nom',
                         ),
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'Veuillez renseigner ce champ';
+                          }
+                          return null;
+                        },
                       ),
                     ),
                   ),
                   Container(
                     padding: const EdgeInsets.all(10),
-                    child: TextField(
+                    child: TextFormField(
                       controller: lastNameController,
                       decoration: const InputDecoration(
                         border: OutlineInputBorder(),
-                        labelText: 'Last Name',
+                        labelText: 'Prénom',
                       ),
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Veuillez renseigner ce champ';
+                        }
+                        return null;
+                      },
                     ),
                   ),
                   Container(
                     padding: const EdgeInsets.all(10),
-                    child: TextField(
+                    child: TextFormField(
                       controller: emailController,
                       decoration: const InputDecoration(
                         border: OutlineInputBorder(),
                         labelText: 'Email',
                       ),
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Veuillez renseigner ce champ';
+                        }
+                        return null;
+                      },
                     ),
                   ),
                   Container(
                     padding: const EdgeInsets.all(10),
-                    child: TextField(
-                      controller: passwordController,
-                      decoration: const InputDecoration(
-                        border: OutlineInputBorder(),
-                        labelText: 'Password',
-                      ),
-                    ),
-                  ),
-                  Container(
-                    padding: const EdgeInsets.all(10),
-                    child: TextField(
+                    child: TextFormField(
                       controller: addressController,
                       decoration: const InputDecoration(
                         border: OutlineInputBorder(),
-                        labelText: 'Address',
+                        labelText: 'Adresse',
                       ),
                     ),
                   ),
                   Container(
                     padding: const EdgeInsets.all(10),
-                    child: TextField(
+                    child: TextFormField(
                       controller: cityController,
                       decoration: const InputDecoration(
                         border: OutlineInputBorder(),
-                        labelText: 'City Name',
+                        labelText: 'Ville',
                       ),
                     ),
                   ),
                   Container(
                     padding: const EdgeInsets.all(10),
-                    child: TextField(
+                    child: TextFormField(
                       controller: zipCodeController,
                       decoration: const InputDecoration(
                         border: OutlineInputBorder(),
-                        labelText: 'Zip Code',
-                      ),
-                    ),
-                  ),
-                  Container(
-                    padding: const EdgeInsets.all(10),
-                    child: TextField(
-                      controller: birthdayController,
-                      decoration: const InputDecoration(
-                        border: OutlineInputBorder(),
-                        labelText: 'Birthday',
+                        labelText: 'Code Postal',
                       ),
                     ),
                   ),
@@ -297,23 +304,27 @@ class _EditUser extends State<EditUser> {
                       child: ElevatedButton(
                         child: const Text('Register'),
                         onPressed: () {
-                          String fileInBase64 = "";
-                          if(imageFile.path != ""){
-                            fileInBase64 = imageTo64(imageFile);
+                          if (_formKey.currentState!.validate()) {
+                            // If the form is valid, display a snackbar. In the real world,
+                            // you'd often call a server or save the information in a database.
+                            String fileInBase64 = "";
+                            if(imageFile.path != ""){
+                              List<int> fileInByte = imageFile.readAsBytesSync();
+                              fileInBase64 = base64Encode(fileInByte);
+                            }
+                            editAccount(
+                                firstNameController.text,
+                                lastNameController.text,
+                                emailController.text,
+                                addressController.text,
+                                zipCodeController.text,
+                                cityController.text,
+                                birthdayController.text,
+                                pseudoController.text,
+                                fileInBase64,
+                                snapshot.data!.id
+                            );
                           }
-                          editAccount(
-                            firstNameController.text,
-                            lastNameController.text,
-                            emailController.text,
-                            passwordController.text,
-                            addressController.text,
-                            zipCodeController.text,
-                            cityController.text,
-                            birthdayController.text,
-                            pseudoController.text,
-                            fileInBase64,
-                            snapshot.data!.id
-                          );
                         },
                         style: ButtonStyle(
                             backgroundColor: MaterialStateProperty.all(Colors.deepPurple)
@@ -321,6 +332,7 @@ class _EditUser extends State<EditUser> {
                       )
                   ),
                 ],
+                  ),
               );
             } else if (snapshot.hasError) {
               return Text('${snapshot.error}');
@@ -334,7 +346,7 @@ class _EditUser extends State<EditUser> {
     );
   }
 
-  Future<void> editAccount(String firstName, String lastName, String email, String password, String address, String zipCode, String city, String birthday, String pseudo, String image64, int idUser) async {
+  Future<void> editAccount(String firstName, String lastName, String email, String address, String zipCode, String city, String birthday, String pseudo, String image64, int idUser) async {
     late Response response = http.Response("", 400);
     if(image64 != ""){
       print("photo detected");
@@ -344,13 +356,12 @@ class _EditUser extends State<EditUser> {
           'Content-Type': 'application/json; charset=UTF-8',
         },
         body: jsonEncode(<String, String>{
+          'pseudo': pseudo,
           'email': email,
-          'password': password,
           'lastName': lastName,
           'firstName': firstName,
           'zip code': zipCode,
           'city': city,
-          'birthday': birthday,
           'address': address,
           'profileImage' : image64
         }),
@@ -363,8 +374,8 @@ class _EditUser extends State<EditUser> {
           'Content-Type': 'application/json; charset=UTF-8',
         },
         body: jsonEncode(<String, String>{
+          'pseudo': pseudo,
           'email': email,
-          'password': password,
           'lastName': lastName,
           'firstName': firstName,
           'zip code': zipCode,
@@ -388,7 +399,7 @@ class _EditUser extends State<EditUser> {
       );
       Navigator.pop(context);
     } else {
-      log(response.body);
+      print(response.body);
       // If the server did not return a 201 CREATED response,
       // then throw an exception.
       Fluttertoast.showToast(
@@ -418,6 +429,7 @@ class _EditUser extends State<EditUser> {
       Map map = json.decode(response.body);
       setState(() {
         user = User(map);
+        log(user.firstName);
       });
 
       Fluttertoast.showToast(
