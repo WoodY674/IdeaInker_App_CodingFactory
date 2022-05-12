@@ -23,6 +23,7 @@ class _Profil extends State<Profil> {
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
   late Token token;
+  final _formKey = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
@@ -43,71 +44,90 @@ class _Profil extends State<Profil> {
       ),
       backgroundColor: Colors.white,
       body: Padding(
-      padding: const EdgeInsets.all(10),
-      child: ListView(
-        children: <Widget>[
-          Container(
-              alignment: Alignment.center,
-              padding: const EdgeInsets.all(10),
-              child: const Text(
-                'Sign in',
-                style: TextStyle(fontSize: 20),
-              )),
-          Container(
-            padding: const EdgeInsets.all(10),
-            child: TextField(
-              controller: emailController,
-              decoration: const InputDecoration(
-                border: OutlineInputBorder(),
-                labelText: 'E-mail',
-              ),
-            ),
-          ),
-          Container(
-            padding: const EdgeInsets.fromLTRB(10, 10, 10, 0),
-            child: TextField(
-              obscureText: true,
-              controller: passwordController,
-              decoration: const InputDecoration(
-                border: OutlineInputBorder(),
-                labelText: 'Password',
-              ),
-            ),
-          ),
-          Container(
-              height: 50,
-              padding: const EdgeInsets.fromLTRB(30, 15, 30, 0),
-              child: ElevatedButton(
-                child: const Text('Login'),
-                onPressed: () {
-                  Login(emailController.text, passwordController.text);
-                },
-                style: ButtonStyle(
-                    backgroundColor: MaterialStateProperty.all(Colors.deepPurple)
-                ),
-              )
-          ),
-          Row(
+        padding: const EdgeInsets.all(10),
+        child:Form(
+          key: _formKey,
+          child:ListView(
             children: <Widget>[
-              const Text('Does not have account?'),
-              TextButton(
-                child: const Text(
-                  'Create an account',
-                  style: TextStyle(fontSize: 20),
+              Container(
+                  alignment: Alignment.center,
+                  padding: const EdgeInsets.all(10),
+                  child: const Text(
+                    'Sign in',
+                    style: TextStyle(fontSize: 20),
+                  )),
+              Container(
+                padding: const EdgeInsets.all(10),
+                child: TextFormField(
+                  controller: emailController,
+                  decoration: const InputDecoration(
+                    border: OutlineInputBorder(),
+                    labelText: 'E-mail',
+                  ),
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Veuillez renseigner ce champ';
+                    }
+                    return null;
+                  },
                 ),
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => const CreateAccount()),
-                  );
-                },
-              )
+              ),
+              Container(
+                padding: const EdgeInsets.fromLTRB(10, 10, 10, 0),
+                child: TextFormField(
+                  obscureText: true,
+                  controller: passwordController,
+                  decoration: const InputDecoration(
+                    border: OutlineInputBorder(),
+                    labelText: 'Password',
+                  ),
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Veuillez renseigner ce champ';
+                    }
+                    return null;
+                  },
+                ),
+              ),
+              Container(
+                  height: 50,
+                  padding: const EdgeInsets.fromLTRB(30, 15, 30, 0),
+                  child: ElevatedButton(
+                    child: const Text('Login'),
+                    onPressed: () {
+                      if (_formKey.currentState!.validate()) {
+                        // If the form is valid, display a snackbar. In the real world,
+                        // you'd often call a server or save the information in a database.
+                        Login(emailController.text, passwordController.text);
+                      }
+                    },
+                    style: ButtonStyle(
+                        backgroundColor: MaterialStateProperty.all(Colors.deepPurple)
+                    ),
+                  )
+              ),
+              Row(
+                children: <Widget>[
+                  const Text('Does not have account?'),
+                  TextButton(
+                    child: const Text(
+                      'Create an account',
+                      style: TextStyle(fontSize: 20),
+                    ),
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => const CreateAccount()),
+                      );
+                    },
+                  )
+                ],
+                mainAxisAlignment: MainAxisAlignment.center,
+              ),
             ],
-            mainAxisAlignment: MainAxisAlignment.center,
           ),
-        ],
+        ),
       ),
-    ),
     );
   }
 
