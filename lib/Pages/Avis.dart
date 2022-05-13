@@ -136,7 +136,6 @@ class _CreateAvis extends State<CreateAvis> {
                               Icon(Icons.star,color:Colors.amber),
                               itemSize: 30,
                               onRatingUpdate: (rating){
-                                print(rating);
                                 setState(() {
                                   stars = rating;
                                 });

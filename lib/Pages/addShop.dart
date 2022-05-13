@@ -68,7 +68,6 @@ class _AddShop extends State<AddShop> {
                         // Either the permission was already granted before or the user just granted it.
                         final pickedFile = await picker.pickImage(source: ImageSource.gallery);
                         // getImage à été remplacé par pickImage ?
-                        print(pickedFile);
                         if (pickedFile != null) {
                           setState(() {
                             imageFile = File(pickedFile.path);
@@ -199,11 +198,8 @@ class _AddShop extends State<AddShop> {
     final now = DateTime.now();
     GeoCode geoCode = GeoCode();
     final query = address + ", " + city + ", " + zipCode;
-    print(query);
     try {
-      print('avant la');
       Coordinates coordinates = await geoCode.forwardGeocoding(address: query);
-      print('la');
       late Response responseSalon = http.Response("", 400);
       if(image64 != ""){
         print("photo detected");
@@ -245,7 +241,6 @@ class _AddShop extends State<AddShop> {
       if (responseSalon.statusCode == 201) {
         // If the server did return a 201 CREATED response,
         // then parse the JSON.
-        log("salon creer");
         Fluttertoast.showToast(
             msg: "Salon added with Success!",
             toastLength: Toast.LENGTH_SHORT,

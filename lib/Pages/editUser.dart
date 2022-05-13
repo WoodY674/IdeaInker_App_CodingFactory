@@ -1,13 +1,11 @@
 import 'dart:async';
 import 'dart:convert';
-import 'dart:developer';
 import 'dart:io';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:http/http.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:intl/intl.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:streaming_shared_preferences/streaming_shared_preferences.dart';
 import 'package:thebestatoo/Classes/User.dart';
@@ -337,7 +335,6 @@ class _EditUser extends State<EditUser> {
             } else if (snapshot.hasError) {
               return Text('${snapshot.error}');
             }
-
             // By default, show a loading spinner.
             return const CircularProgressIndicator();
           },
@@ -399,54 +396,10 @@ class _EditUser extends State<EditUser> {
       );
       Navigator.pop(context);
     } else {
-      print(response.body);
       // If the server did not return a 201 CREATED response,
       // then throw an exception.
       Fluttertoast.showToast(
           msg: "Edit Failed !",
-          toastLength: Toast.LENGTH_SHORT,
-          gravity: ToastGravity.BOTTOM,
-          timeInSecForIosWeb: 1,
-          backgroundColor: Colors.red,
-          textColor: Colors.white,
-          fontSize: 16.0
-      );
-    }
-  }
-
-  Future<void> getUserInfos() async {
-    final response = await http.get(
-      Uri.parse('http://ideainker.fr/api/me'),
-      headers: <String, String>{
-        'Content-Type': 'application/json; charset=UTF-8',
-      },
-    );
-
-    if (response.statusCode == 200) {
-
-      // If the server did return a 201 CREATED response,
-      // then parse the JSON.
-      Map map = json.decode(response.body);
-      setState(() {
-        user = User(map);
-        log(user.firstName);
-      });
-
-      Fluttertoast.showToast(
-          msg: "Informations trouvés !",
-          toastLength: Toast.LENGTH_SHORT,
-          gravity: ToastGravity.BOTTOM,
-          timeInSecForIosWeb: 1,
-          backgroundColor: Colors.green,
-          textColor: Colors.white,
-          fontSize: 16.0
-      );
-      Navigator.pop(context);
-    } else {
-      // If the server did not return a 201 CREATED response,
-      // then throw an exception.
-      Fluttertoast.showToast(
-          msg: "Recherche échouée",
           toastLength: Toast.LENGTH_SHORT,
           gravity: ToastGravity.BOTTOM,
           timeInSecForIosWeb: 1,

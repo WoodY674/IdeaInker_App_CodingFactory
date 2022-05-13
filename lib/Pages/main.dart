@@ -75,6 +75,5 @@ class _MainPageState extends State<MainPage> {
 Future<void> Disconnect() async{
   WidgetsFlutterBinding.ensureInitialized();
   preferences.setString('token', '');
-  print('disconnect');
 }
 

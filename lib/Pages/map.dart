@@ -24,15 +24,12 @@ List<ShopMap> parseShop(String responseBody){
 
 Future<List<ShopMap>> fetchShop() async {
   final http.Response response = await http.get(Uri.parse(url));
-  print(response.statusCode);
   if (response.statusCode == 200) {
     // If the server did return a 200 OK response,
     // then parse the JSON.
     //return Salon.fromJson(jsonDecode(response.body));
-    print(response.body);
     return compute(parseShop,response.body);
   } else {
-    print("marche pas");
     // If the server did not return a 200 OK response,
     // then throw an exception.
     throw Exception(response.statusCode);

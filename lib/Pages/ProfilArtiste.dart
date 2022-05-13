@@ -194,7 +194,6 @@ class _ProfilArtiste extends State<ProfilArtiste> {
                                         Icon(Icons.star,color:Colors.yellow),
                                         itemSize: 50,
                                         onRatingUpdate: (rating){
-                                          print(rating);
                                           setState(() {
                                             stars = rating;
                                           });
