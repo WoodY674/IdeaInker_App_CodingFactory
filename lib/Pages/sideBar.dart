@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:streaming_shared_preferences/streaming_shared_preferences.dart';
 import 'package:thebestatoo/Pages/profil.dart';
 import '../Channel.dart';
+import '../Classes/User.dart';
 import 'home.dart';
 import 'main.dart';
 import 'map.dart';
@@ -11,86 +12,19 @@ import 'menu.dart';
 import 'dart:io';
 import 'package:http/http.dart' as http;
 
-Future<UserProfil> fetchUser() async {
-  final preferences = await StreamingSharedPreferences.instance;
-  final token = preferences.getString('token', defaultValue: '').getValue();
-  final response = await http
-      .get(Uri.parse('http://ideainker.fr/api/me'),
-    headers: {
-      HttpHeaders.authorizationHeader: "Bearer $token",
-    },
-  );
-
-  if (response.statusCode == 200) {
-    // If the server did return a 200 OK response,
-    // then parse the JSON.
-    return UserProfil.fromJson(jsonDecode(response.body));
-  } else {
-    // If the server did not return a 200 OK response,
-    // then throw an exception.
-    throw Exception('Failed to load album');
-  }
-}
-
-class UserProfil {
-  final int id;
-  final String email;
-  final String password;
-  final String? adress;
-  final String? zipCode;
-  final String? city;
-  final String lastName;
-  final String firstName;
-  final String? profileImage;
-  final String? birthday;
-  final String? pseudo;
-
-
-  const UserProfil({
-    required this.id,
-    required this.email,
-    required this.password,
-    required this.adress,
-    required this.zipCode,
-    required this.city,
-    required this.lastName,
-    required this.firstName,
-    required this.profileImage,
-    required this.birthday,
-    required this.pseudo,
-  });
-
-  factory UserProfil.fromJson(Map<String, dynamic> json) {
-    return UserProfil(
-      id: json['id'],
-      email: json['email'],
-      password: json['password'],
-      adress: json['adress'],
-      zipCode: json['zipCode'],
-      city: json['city'],
-      lastName: json['lastName'],
-      firstName: json['firstName'],
-      profileImage: json['profileImage'],
-      birthday: json['birthday'],
-      pseudo: json['pseudo'],
-    );
-  }
-}
-
-
 class SideBar extends StatelessWidget {
-  late Future<UserProfil> futureUser = fetchUser();
+  late Future<User> futureUser = fetchUser();
   @override
   Widget build(BuildContext context) {
     return PreferenceBuilder<String>(
         preference: preferences.getString('token', defaultValue: ''),
         builder: (context, String tokenPref) {
           return Drawer(
-              child: FutureBuilder<UserProfil>(
+              child: FutureBuilder<User>(
                   future: futureUser,
-                  builder: (BuildContext context, AsyncSnapshot<UserProfil> snapshot) {
+                  builder: (BuildContext context, AsyncSnapshot<User> snapshot) {
                     if (snapshot.hasData) {
-                      UserProfil? user = snapshot.data;
+                      User? user = snapshot.data;
                       return ListView(
                         // Remove padding
                         padding: EdgeInsets.zero,

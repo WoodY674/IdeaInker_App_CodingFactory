@@ -7,71 +7,6 @@ import '../Classes/User.dart';
 import 'editUser.dart';
 import 'main.dart';
 
-final token = preferences.getString('token', defaultValue: '').getValue();
-
-Future<UserProfil> fetchUser() async {
-  final response = await http
-      .get(Uri.parse('http://ideainker.fr/api/me'),
-    headers: {
-      HttpHeaders.authorizationHeader: "Bearer $token",
-    },
-  );
-  if (response.statusCode == 200) {
-    // If the server did return a 200 OK response,
-    // then parse the JSON.
-    return UserProfil.fromJson(jsonDecode(response.body));
-  } else {
-    // If the server did not return a 200 OK response,
-    // then throw an exception.
-    throw Exception('Failed to load album');
-  }
-}
-
-class UserProfil {
-  final int id;
-  final String email;
-  final String password;
-  final String? adress;
-  final String? zipCode;
-  final String? city;
-  final String lastName;
-  final String firstName;
-  final String? profileImage;
-  final String? birthday;
-  final String? pseudo;
-
-
-  const UserProfil({
-    required this.id,
-    required this.email,
-    required this.password,
-    required this.adress,
-    required this.zipCode,
-    required this.city,
-    required this.lastName,
-    required this.firstName,
-    required this.profileImage,
-    required this.birthday,
-    required this.pseudo,
-  });
-
-  factory UserProfil.fromJson(Map<String, dynamic> json) {
-    return UserProfil(
-      id: json['id'],
-      email: json['email'],
-      password: json['password'],
-      adress: json['adress'],
-      zipCode: json['zipCode'],
-      city: json['city'],
-      lastName: json['lastName'],
-      firstName: json['firstName'],
-      profileImage: json['profileImage'],
-      birthday: json['birthday'],
-      pseudo: json['pseudo'],
-    );
-  }
-}
-
 class ProfilArtiste extends StatefulWidget {
   static String route = 'ProfilArtiste';
 
@@ -83,7 +18,7 @@ class ProfilArtiste extends StatefulWidget {
 
 class _ProfilArtiste extends State<ProfilArtiste> {
   late User user;
-  late Future<UserProfil> futureUser;
+  late Future<User> futureUser;
   late double stars = 0;
 
   @override
@@ -112,7 +47,7 @@ class _ProfilArtiste extends State<ProfilArtiste> {
                     color: Colors.deepPurple,
                     padding: EdgeInsets.all(15),
                     width: double.infinity,
-                    child: FutureBuilder<UserProfil>(
+                    child: FutureBuilder<User>(
                       future: futureUser,
                       builder: (context, snapshot) {
                         if (snapshot.hasData) {

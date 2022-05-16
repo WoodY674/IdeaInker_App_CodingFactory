@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:thebestatoo/Pages/Avis.dart';
 import 'package:thebestatoo/Pages/ProfilUser.dart';
 import 'package:thebestatoo/Pages/listAvis.dart';
-import 'package:thebestatoo/Pages/posts.dart';
+import 'package:thebestatoo/Pages/postsPage.dart';
 import 'package:thebestatoo/Pages/sideBar.dart';
 import 'ProfilArtiste.dart';
 import 'listShop.dart';
@@ -99,7 +99,7 @@ class _Menu extends State<Menu> {
                     onPressed: () {
                       Navigator.push(
                         context,
-                        MaterialPageRoute(builder: (context) => const Posts()),
+                        MaterialPageRoute(builder: (context) => const PostsPage()),
                       );
                     },
                     style: ButtonStyle(

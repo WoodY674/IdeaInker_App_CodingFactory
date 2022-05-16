@@ -6,73 +6,8 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 
+import '../Classes/User.dart';
 import 'main.dart';
-
-final token = preferences.getString('token', defaultValue: '').getValue();
-
-Future<UserEdit> fetchUser() async {
-  final response = await http
-      .get(Uri.parse('http://ideainker.fr/api/me'),
-    headers: {
-      HttpHeaders.authorizationHeader: "Bearer $token",
-    },
-  );
-
-  if (response.statusCode == 200) {
-    // If the server did return a 200 OK response,
-    // then parse the JSON.
-    return UserEdit.fromJson(jsonDecode(response.body));
-  } else {
-    // If the server did not return a 200 OK response,
-    // then throw an exception.
-    throw Exception('Failed to load album');
-  }
-}
-
-class UserEdit {
-  final int id;
-  final String email;
-  final String password;
-  final String? adress;
-  final String? zipCode;
-  final String? city;
-  final String lastName;
-  final String firstName;
-  final String? profileImage;
-  final String? birthday;
-  final String? pseudo;
-
-
-  const UserEdit({
-    required this.id,
-    required this.email,
-    required this.password,
-    required this.adress,
-    required this.zipCode,
-    required this.city,
-    required this.lastName,
-    required this.firstName,
-    required this.profileImage,
-    required this.birthday,
-    required this.pseudo,
-  });
-
-  factory UserEdit.fromJson(Map<String, dynamic> json) {
-    return UserEdit(
-      id: json['id'],
-      email: json['email'],
-      password: json['password'],
-      adress: json['adress'],
-      zipCode: json['zipCode'],
-      city: json['city'],
-      lastName: json['lastName'],
-      firstName: json['firstName'],
-      profileImage: json['profileImage'],
-      birthday: json['birthday'],
-      pseudo: json['pseudo'],
-    );
-  }
-}
 
 class CreateAvis extends StatefulWidget {
   static String route = 'register';
@@ -86,7 +21,7 @@ class _CreateAvis extends State<CreateAvis> {
   late double stars = 0;
   TextEditingController commentController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
-  late Future<UserEdit> futureUser;
+  late Future<User> futureUser;
 
   @override
   void initState() {
@@ -101,7 +36,7 @@ class _CreateAvis extends State<CreateAvis> {
         title: const Text('Donnez-nous votre avis'),
         backgroundColor: Colors.deepPurple,
       ),
-      body: FutureBuilder<UserEdit>(
+      body: FutureBuilder<User>(
         future: futureUser,
         builder: (context, snapshot) {
           if (snapshot.hasData) {

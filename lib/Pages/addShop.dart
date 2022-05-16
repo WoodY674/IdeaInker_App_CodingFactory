@@ -7,10 +7,10 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:permission_handler/permission_handler.dart';
-import 'package:thebestatoo/Classes/Salon.dart';
 import 'dart:io';
 import '../Classes/CoordinatesStore.dart';
 import '../Classes/ImageTo64.dart';
+import '../Classes/Shop.dart';
 
 class AddShop extends StatefulWidget {
   static String route = 'addShop';
@@ -25,7 +25,7 @@ class _AddShop extends State<AddShop> {
   TextEditingController addressController = TextEditingController();
   TextEditingController cityController = TextEditingController();
   TextEditingController zipCodeController = TextEditingController();
-  late Salon salon;
+  late Shop salon;
   late CoordinatesStore coordinatesStore;
   String imagePath = "";
   final picker = ImagePicker();

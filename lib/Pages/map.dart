@@ -5,36 +5,9 @@ import 'dart:convert';
 import 'dart:developer';
 import 'dart:io';
 import 'package:flutter/foundation.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:http/http.dart' as http;
 import 'package:thebestatoo/Pages/sideBar.dart';
-
-
-import '../Classes/Salon.dart';
-import '../Classes/ShopMap.dart';
-import 'main.dart';
-
-final String url = "http://ideainker.fr/api/salons";
-
-List<ShopMap> parseShop(String responseBody){
-  var list = json.decode(responseBody) as List<dynamic>;
-  var salons = list.map((e) => ShopMap.fromJson(e)).toList();
-  return salons;
-}
-
-Future<List<ShopMap>> fetchShop() async {
-  final http.Response response = await http.get(Uri.parse(url));
-  if (response.statusCode == 200) {
-    // If the server did return a 200 OK response,
-    // then parse the JSON.
-    //return Salon.fromJson(jsonDecode(response.body));
-    return compute(parseShop,response.body);
-  } else {
-    // If the server did not return a 200 OK response,
-    // then throw an exception.
-    throw Exception(response.statusCode);
-  }
-}
+import '../Classes/Shop.dart';
 
 class MyMap extends StatelessWidget {
   const MyMap({Key? key}) : super(key: key);
@@ -60,13 +33,7 @@ class MyGoogleMap extends StatefulWidget {
 }
 
 class _MyGoogleMapState extends State<MyGoogleMap> {
-  late Future<List<ShopMap>> futureShop;
-
-  List<ShopMap> parseShop(String responseBody){
-    var list = json.decode(responseBody) as List<dynamic>;
-    var salons = list.map((e) => ShopMap.fromJson(e)).toList();
-    return salons;
-  }
+  late Future<List<Shop>> futureShop;
 
   @override
   void initState() {
@@ -77,7 +44,7 @@ class _MyGoogleMapState extends State<MyGoogleMap> {
   final Map<String, Marker> _markers = {};
   Future<void> _onMapCreated(GoogleMapController controller) async {
     final googleOffices =  await http.get(Uri.parse(url));
-    List<ShopMap> shopsMarkers = parseShop(googleOffices.body.toString());
+    List<Shop> shopsMarkers = parseShop(googleOffices.body.toString());
     setState(() {
       _markers.clear();
       for (final office in shopsMarkers) {

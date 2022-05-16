@@ -7,78 +7,8 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:permission_handler/permission_handler.dart';
-import 'package:streaming_shared_preferences/streaming_shared_preferences.dart';
 import 'package:thebestatoo/Classes/User.dart';
 import '../Classes/ImageTo64.dart';
-import 'main.dart';
-
-final token = preferences.getString('token', defaultValue: '').getValue();
-
-Future<UserEdit> fetchUser() async {
-  final preferences = await StreamingSharedPreferences.instance;
-  final token = preferences.getString('token', defaultValue: '').getValue();
-  final response = await http
-      .get(Uri.parse('http://ideainker.fr/api/me'),
-    headers: {
-      HttpHeaders.authorizationHeader: "Bearer $token",
-    },
-  );
-
-  if (response.statusCode == 200) {
-    // If the server did return a 200 OK response,
-    // then parse the JSON.
-    return UserEdit.fromJson(jsonDecode(response.body));
-  } else {
-    // If the server did not return a 200 OK response,
-    // then throw an exception.
-    throw Exception('Failed to load album');
-  }
-}
-
-class UserEdit {
-  final int id;
-  final String email;
-  final String password;
-  final String? adress;
-  final String? zipCode;
-  final String? city;
-  final String lastName;
-  final String firstName;
-  final String? profileImage;
-  final String? birthday;
-  final String? pseudo;
-
-
-  const UserEdit({
-    required this.id,
-    required this.email,
-    required this.password,
-    required this.adress,
-    required this.zipCode,
-    required this.city,
-    required this.lastName,
-    required this.firstName,
-    required this.profileImage,
-    required this.birthday,
-    required this.pseudo,
-  });
-
-  factory UserEdit.fromJson(Map<String, dynamic> json) {
-    return UserEdit(
-      id: json['id'],
-      email: json['email'],
-      password: json['password'],
-      adress: json['adress'],
-      zipCode: json['zipCode'],
-      city: json['city'],
-      lastName: json['lastName'],
-      firstName: json['firstName'],
-      profileImage: json['profileImage'],
-      birthday: json['birthday'],
-      pseudo: json['pseudo'],
-    );
-  }
-}
 
 class EditUser extends StatefulWidget {
   static String route = 'editUser';
@@ -89,7 +19,7 @@ class EditUser extends StatefulWidget {
 }
 
 class _EditUser extends State<EditUser> {
-  late Future<UserEdit> futureUser;
+  late Future<User> futureUser;
 
   @override
   void initState() {
@@ -120,7 +50,7 @@ class _EditUser extends State<EditUser> {
       ),
       body: Padding(
         padding: const EdgeInsets.all(10),
-        child: FutureBuilder<UserEdit>(
+        child: FutureBuilder<User>(
           future: futureUser,
           builder: (context, snapshot) {
             if (snapshot.hasData) {

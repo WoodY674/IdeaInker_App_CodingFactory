@@ -9,86 +9,20 @@ import 'package:image_picker/image_picker.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:streaming_shared_preferences/streaming_shared_preferences.dart';
 import 'package:thebestatoo/Classes/ImageTo64.dart';
-import 'package:thebestatoo/Classes/Salon.dart';
 import 'dart:io';
 import '../Classes/CoordinatesStore.dart';
+import '../Classes/User.dart';
 import 'main.dart';
 
-final token = preferences.getString('token', defaultValue: '').getValue();
-
-Future<UserEdit> fetchUser() async {
-  final response = await http
-      .get(Uri.parse('http://ideainker.fr/api/me'),
-    headers: {
-      HttpHeaders.authorizationHeader: "Bearer $token",
-    },
-  );
-
-  if (response.statusCode == 200) {
-    // If the server did return a 200 OK response,
-    // then parse the JSON.
-    return UserEdit.fromJson(jsonDecode(response.body));
-  } else {
-    // If the server did not return a 200 OK response,
-    // then throw an exception.
-    throw Exception('Failed to load album');
-  }
-}
-
-class UserEdit {
-  final int id;
-  final String email;
-  final String password;
-  final String? adress;
-  final String? zipCode;
-  final String? city;
-  final String lastName;
-  final String firstName;
-  final String? profileImage;
-  final String? birthday;
-  final String? pseudo;
-
-
-  const UserEdit({
-    required this.id,
-    required this.email,
-    required this.password,
-    required this.adress,
-    required this.zipCode,
-    required this.city,
-    required this.lastName,
-    required this.firstName,
-    required this.profileImage,
-    required this.birthday,
-    required this.pseudo,
-  });
-
-  factory UserEdit.fromJson(Map<String, dynamic> json) {
-    return UserEdit(
-      id: json['id'],
-      email: json['email'],
-      password: json['password'],
-      adress: json['adress'],
-      zipCode: json['zipCode'],
-      city: json['city'],
-      lastName: json['lastName'],
-      firstName: json['firstName'],
-      profileImage: json['profileImage'],
-      birthday: json['birthday'],
-      pseudo: json['pseudo'],
-    );
-  }
-}
-
-class Posts extends StatefulWidget {
+class PostsPage extends StatefulWidget {
   static String route = 'addPost';
-  const Posts({Key? key}) : super(key: key);
+  const PostsPage({Key? key}) : super(key: key);
 
   @override
   _Posts createState() => _Posts();
 }
 
-class _Posts extends State<Posts> {
+class _Posts extends State<PostsPage> {
   TextEditingController contentController = TextEditingController();
   TextEditingController addressController = TextEditingController();
   TextEditingController cityController = TextEditingController();
@@ -97,7 +31,7 @@ class _Posts extends State<Posts> {
   final picker = ImagePicker();
   File imageFile = File("");
   final _formKey = GlobalKey<FormState>();
-  late Future<UserEdit> futureUser;
+  late Future<User> futureUser;
 
   @override
   void initState() {
@@ -112,7 +46,7 @@ class _Posts extends State<Posts> {
         title: const Text('Nouveau Post'),
         backgroundColor: Colors.deepPurple,
       ),
-      body: FutureBuilder<UserEdit>(
+      body: FutureBuilder<User>(
         future: futureUser,
         builder: (context, snapshot) {
           if (snapshot.hasData) {
@@ -244,6 +178,7 @@ class _Posts extends State<Posts> {
     );
   }
   Future<void> addPost(String content, String image64, int userId) async {
+    final token = preferences.getString('token', defaultValue: '').getValue();
     final responsePost = await http.post(
       Uri.parse('http://ideainker.fr/api2/post/'),
       headers: <String, String>{
