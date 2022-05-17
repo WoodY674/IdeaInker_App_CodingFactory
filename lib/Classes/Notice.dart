@@ -3,7 +3,9 @@ import 'dart:io';
 import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
 
-final String url = "http://ideainker.fr/api/notices";
+import '../Pages/main.dart';
+
+final String url = urlSite + "notices";
 
 List<Notice> parseNotice(String responseBody){
   var list = json.decode(responseBody) as List<dynamic>;

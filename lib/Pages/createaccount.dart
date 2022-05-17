@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
+import 'package:thebestatoo/Pages/main.dart';
 
 class CreateAccount extends StatefulWidget {
   static String route = 'register';
@@ -152,7 +153,7 @@ class _CreateAccount extends State<CreateAccount> {
   Future<void> createAccount(String firstName, String lastName, String email, String password, String pseudo) async {
     final now = DateTime.now();
     final response = await http.post(
-      Uri.parse('http://ideainker.fr/api/register'),
+      Uri.parse(urlSite + 'register'),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
       },

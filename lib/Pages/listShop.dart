@@ -7,6 +7,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:http/http.dart' as http;
 import 'package:streaming_shared_preferences/streaming_shared_preferences.dart';
 import 'package:thebestatoo/Pages/addShop.dart';
+import 'package:thebestatoo/Pages/main.dart';
 import 'dart:io';
 import '../Classes/Shop.dart';
 
@@ -85,7 +86,7 @@ class _ListShop extends State<ListShop> {
   Future<void> deleteShop(int? id) async {
     log(id.toString());
     final responseSalon = await http.delete(
-      Uri.parse('http://ideainker.fr/api/salons/'+id.toString()),
+      Uri.parse(urlSite + 'salons/'+id.toString()),
     );
 
     if (responseSalon.statusCode == 204) {

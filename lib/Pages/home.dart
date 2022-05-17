@@ -3,6 +3,7 @@ import 'dart:math';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
+import 'package:thebestatoo/Pages/main.dart';
 import 'package:thebestatoo/Pages/sideBar.dart';
 
 import '../Classes/Posts.dart';
@@ -60,7 +61,7 @@ class _Home extends State<Home> {
                         ClipRRect(
                           borderRadius: BorderRadius.circular(15),
                           child: Image.network(
-                            'http://ideainker.fr/'+currentSalon.image!.imagePath!,
+                            urlImage+currentSalon.image!.imagePath!,
                             fit: BoxFit.cover,
                           ),
                         ),
@@ -224,58 +225,6 @@ class Post {
       this.title,
       );
 }
-
-final List<Post> posts = [
-  Post(
-    'id0',
-    'https://i0.wp.com/www.tattoo-mistika.fr/wp-content/uploads/2018/10/31351293_1850598344992042_5738909438235876539_n.jpg?ssl=1',
-    'IntTattoo',
-  ),
-  Post(
-    'id1',
-    'https://astucesdefilles.com/medias/2021/06/24_100-top-idees-de-tatouages-lion.jpg',
-    'InkTattoo1',
-  ),
-  Post(
-    'id2',
-    'https://i.pinimg.com/originals/45/86/09/45860947bb65b922ab12e768e5b595b9.jpg',
-    'InkTattoo2',
-  ),
-  Post(
-    'id3',
-    'https://image.jimcdn.com/app/cms/image/transf/dimension=1920x1024:format=jpg/path/s6e3bb4a7f0125942/image/i7c73e8295e77ca4d/version/1635157430/image.jpg',    'InkTattoo3',
-  ),
-  Post(
-    'id4',
-    'https://inkin.fr/wp-content/sabai/File/files/l_b1d89c65367922e734a6091be807fec2.jpg',
-    'InkTattoo4',
-  ),
-  Post(
-    'id5',
-    'https://i.pinimg.com/originals/ca/95/9a/ca959a97fc661b4e4430a223a3c0c593.jpg',
-    'InkTattoo5',
-  ),
-  Post(
-    'id6',
-    'https://i.pinimg.com/736x/d7/b7/88/d7b7887b643ad9a9e1addc43a93c913a.jpg',
-    'InkTattoo6',
-  ),
-  Post(
-    'id7',
-    'https://cdn.shopify.com/s/files/1/0243/6058/3202/files/tatouage-horloge_e7863279-3753-4b37-8b13-c4ba0debd00a.jpg?v=1626011176',
-    'InkTattoo7',
-  ),
-  Post(
-    'id8',
-    'http://www.lesaffaires.com/uploads/images/normal/f1e8952b379d84d7dc3d8f0e4722c2d4.jpg',
-    'InkTattoo8',
-  ),
-  Post(
-    'id9',
-    'https://www.mon-tatoueur.fr/assets/tatoueurs/monsieur_berdah-1003/2509789351851906731.jpg',
-    'InkTattoo9',
-  ),
-];
 
 final List<Post> sharePosts = [
   Post(

@@ -5,9 +5,9 @@ import 'dart:math';
 import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
 import 'package:streaming_shared_preferences/streaming_shared_preferences.dart';
+import '../Pages/main.dart';
 
-final String url = "http://ideainker.fr/api/salons";
-
+final String url = urlSite +"salons";
 List<Shop> parseShop(String responseBody){
   var list = json.decode(responseBody) as List<dynamic>;
   var salons = list.map((e) => Shop.fromJson(e)).toList();
@@ -16,6 +16,8 @@ List<Shop> parseShop(String responseBody){
 }
 
 Future<List<Shop>> fetchShop() async {
+  print(url);
+
   final preferences = await StreamingSharedPreferences.instance;
   final token = preferences.getString('token', defaultValue: '').getValue();
   final http.Response response = await http.get(Uri.parse(url),

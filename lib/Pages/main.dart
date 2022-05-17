@@ -15,11 +15,14 @@ import 'package:thebestatoo/Pages/map.dart';
 import 'package:thebestatoo/Pages/home.dart';
 import 'package:streaming_shared_preferences/streaming_shared_preferences.dart';
 late final StreamingSharedPreferences preferences;
+late final String urlSite;
+late final String urlImage;
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   preferences = await StreamingSharedPreferences.instance;
-
+  urlSite = "http://ideainker.fr/api/";
+  urlImage = "http://ideainker.fr/";
   runApp(MyApp());
 }
 

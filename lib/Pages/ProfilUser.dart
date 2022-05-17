@@ -50,6 +50,7 @@ class _ProfilUser extends State<ProfilUser> {
                       future: futureUser,
                       builder: (context, snapshot) {
                         if (snapshot.hasData) {
+                          print(snapshot.data!.roles);
                           return ListView(
                             scrollDirection: Axis.vertical,
                             shrinkWrap: true,
@@ -112,7 +113,7 @@ class _ProfilUser extends State<ProfilUser> {
                                 ),
                               ),
                               Container(
-                                child: Text(snapshot.data!.firstName + " " + snapshot.data!.lastName,
+                                child: Text(snapshot.data!.firstName! + " " + snapshot.data!.lastName!,
                                   textAlign: TextAlign.center,
                                   style: const TextStyle(
                                       height: 2,

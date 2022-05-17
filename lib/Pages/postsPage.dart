@@ -144,7 +144,7 @@ class _Posts extends State<PostsPage> {
                                 fileInBase64 = imageTo64(imageFile);
                               }
                               if(fileInBase64 != ""){
-                                addPost(contentController.text, fileInBase64,snapshot.data!.id);
+                                addPost(contentController.text, fileInBase64,snapshot.data!.id!);
                               }else{
                                 Fluttertoast.showToast(
                                     msg: "Veuillez insérer une image",

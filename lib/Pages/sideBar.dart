@@ -2,6 +2,8 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:streaming_shared_preferences/streaming_shared_preferences.dart';
+import 'package:thebestatoo/Pages/ProfilArtiste.dart';
+import 'package:thebestatoo/Pages/ProfilUser.dart';
 import 'package:thebestatoo/Pages/profil.dart';
 import '../Channel.dart';
 import '../Classes/User.dart';
@@ -25,13 +27,14 @@ class SideBar extends StatelessWidget {
                   builder: (BuildContext context, AsyncSnapshot<User> snapshot) {
                     if (snapshot.hasData) {
                       User? user = snapshot.data;
+                      print(user!.roles![0]);
                       return ListView(
                         // Remove padding
                         padding: EdgeInsets.zero,
                         children: [
                           UserAccountsDrawerHeader(
-                            accountName: Text(user!.lastName + " " + user.firstName),
-                            accountEmail: Text(user.email),
+                            accountName: Text(user.lastName! + " " + user.firstName!),
+                            accountEmail: Text(user.email!),
                             currentAccountPicture: user.email != '' ? const CircleAvatar(
                               backgroundImage: AssetImage("assets/noProfile.png"),
                             ):const CircleAvatar(
@@ -60,7 +63,7 @@ class SideBar extends StatelessWidget {
                                 MaterialPageRoute(builder: (context) => const MyMap()));
                             },
                           ),
-                          tokenPref != '' ?
+                          user.roles![0] == "ROLE_ADMIN" ?
                           ListTile(
                             leading: Icon(Icons.chat_rounded),
                             title: Text('Messages'),
@@ -69,14 +72,36 @@ class SideBar extends StatelessWidget {
                                 MaterialPageRoute(builder: (context) => Channel()));
                             },
                           ):Container(),
-                          tokenPref != '' ? ListTile(
+                          user.roles![0] == "ROLE_ADMIN" ?
+                          ListTile(
                             leading: Icon(Icons.verified_user),
                             title: Text('Mon Profil'),
                             onTap: (){Navigator.pushReplacement(
                                 context,
                                 MaterialPageRoute(builder: (context) => const Menu()));
                             },
-                          ): Text(''),
+                          )
+                          :Container(),
+                          user.roles![0] == "ROLE_ARTIST" || user.roles![0] == "ROLE_SHOP" ?
+                          ListTile(
+                            leading: Icon(Icons.verified_user),
+                            title: Text('Mon Profil'),
+                            onTap: (){Navigator.pushReplacement(
+                                context,
+                                MaterialPageRoute(builder: (context) => const ProfilArtiste()));
+                            },
+                          )
+                              :Container(),
+                          user.roles![0] == "ROLE_USER" ?
+                          ListTile(
+                            leading: Icon(Icons.verified_user),
+                            title: Text('Mon Profil'),
+                            onTap: (){Navigator.pushReplacement(
+                                context,
+                                MaterialPageRoute(builder: (context) => const ProfilUser()));
+                            },
+                          )
+                          : Container(),
                           const Divider(),
                           tokenPref != '' ? ListTile(
                             title: const Text('Se déconnecter'),

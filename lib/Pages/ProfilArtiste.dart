@@ -113,7 +113,7 @@ class _ProfilArtiste extends State<ProfilArtiste> {
                                 ),
                               ),
                               Container(
-                                child: Text(snapshot.data!.firstName + " " + snapshot.data!.lastName,
+                                child: Text(snapshot.data!.firstName! + " " + snapshot.data!.lastName!,
                                   textAlign: TextAlign.center,
                                   style: const TextStyle(
                                       height: 2,

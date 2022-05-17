@@ -86,7 +86,7 @@ class _CreateAvis extends State<CreateAvis> {
                             if (_formKey.currentState!.validate()) {
                               // If the form is valid, display a snackbar. In the real world,
                               // you'd often call a server or save the information in a database.
-                              CreateAvis(stars, commentController.text, snapshot.data!.id);
+                              CreateAvis(stars, commentController.text, snapshot.data!.id!);
                             }
                           },
                           style: ButtonStyle(
@@ -112,7 +112,7 @@ class _CreateAvis extends State<CreateAvis> {
   }
   Future<void> CreateAvis(double star, String comment, int idUser) async {
     final response = await http.post(
-      Uri.parse('http://ideainker.fr/api/notices'),// route pour laisser un avis
+      Uri.parse(urlSite + 'notices'),// route pour laisser un avis
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
       },

@@ -8,6 +8,7 @@ import 'package:http/http.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:thebestatoo/Classes/User.dart';
+import 'package:thebestatoo/Pages/main.dart';
 import '../Classes/ImageTo64.dart';
 
 class EditUser extends StatefulWidget {
@@ -250,7 +251,7 @@ class _EditUser extends State<EditUser> {
                                 birthdayController.text,
                                 pseudoController.text,
                                 fileInBase64,
-                                snapshot.data!.id
+                                snapshot.data!.id!
                             );
                           }
                         },
@@ -278,7 +279,7 @@ class _EditUser extends State<EditUser> {
     if(image64 != ""){
       print("photo detected");
       response = await http.put(
-        Uri.parse('http://ideainker.fr/api/users/' + idUser.toString()),
+        Uri.parse(urlSite + 'users/' + idUser.toString()),
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
         },
@@ -296,7 +297,7 @@ class _EditUser extends State<EditUser> {
     }else{
       print("no photo");
       response = await http.put(
-        Uri.parse('http://ideainker.fr/api/users/' + idUser.toString()),
+        Uri.parse(urlSite + 'users/' + idUser.toString()),
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
         },
