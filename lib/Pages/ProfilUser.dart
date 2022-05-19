@@ -2,8 +2,11 @@ import 'dart:convert';
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:thebestatoo/Pages/informations.dart';
+import 'package:thebestatoo/Pages/toggleBar.dart';
 import '../Classes/User.dart';
 import 'editUser.dart';
+import 'favoritesPage.dart';
 import 'main.dart';
 
 
@@ -19,6 +22,8 @@ class ProfilUser extends StatefulWidget {
 class _ProfilUser extends State<ProfilUser> {
   late User user;
   late Future<User> futureUser;
+  List<String> labels = ["Favoris","Informations"];
+  int currentIndex = 0;
 
   @override
   void initState() {
@@ -50,7 +55,7 @@ class _ProfilUser extends State<ProfilUser> {
                       future: futureUser,
                       builder: (context, snapshot) {
                         if (snapshot.hasData) {
-                          print(snapshot.data!.roles);
+                          user = snapshot.data!;
                           return ListView(
                             scrollDirection: Axis.vertical,
                             shrinkWrap: true,
@@ -132,55 +137,23 @@ class _ProfilUser extends State<ProfilUser> {
                       },
                     ),
                   ),
+                  ToggleBar(
+                    labels: labels,
+                    backgroundColor: Colors.grey.withOpacity(0.1),
+                    backgroundBorder: Border.all(color: Colors.deepPurple),
+                    onSelectionUpdated: (index) =>
+                        setState(() => currentIndex = index),
+                  )
                 ],
               ),
             ),
-            GridView.count(
-              shrinkWrap: true,
-              primary: false,
-              padding: const EdgeInsets.all(20),
-              crossAxisSpacing: 10,
-              mainAxisSpacing: 10,
-              crossAxisCount: 2,
-              children: <Widget>[
-                Container(
-                  padding: const EdgeInsets.all(8),
-                  child: const Text("He'd have you all unravel at the"),
-                  color: Colors.teal[100],
-                ),
-                Container(
-                  padding: const EdgeInsets.all(8),
-                  child: const Text('Heed not the rabble'),
-                  color: Colors.teal[200],
-                ),
-                Container(
-                  padding: const EdgeInsets.all(8),
-                  child: const Text('Sound of screams but the'),
-                  color: Colors.teal[300],
-                ),
-                Container(
-                  padding: const EdgeInsets.all(8),
-                  child: const Text('Who scream'),
-                  color: Colors.teal[400],
-                ),
-                Container(
-                  padding: const EdgeInsets.all(8),
-                  child: const Text('Revolution is coming...'),
-                  color: Colors.teal[500],
-                ),
-                Container(
-                  padding: const EdgeInsets.all(8),
-                  child: const Text('Revolution, they...'),
-                  color: Colors.teal[600],
-                ),
-              ],
-            )
+            if(currentIndex == 0)
+               const FavoritesPage()
+            else if(currentIndex == 1)
+               Informations(user)
           ],
         ),
       ),
     );
   }
-}
-
-class _showDialog {
 }

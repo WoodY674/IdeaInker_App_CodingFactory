@@ -286,7 +286,7 @@ class _Home extends State<Home> {
   }
 }
 
-StreamController<List<Posts>> _streamController = StreamController<List<Posts>>();
+StreamController<List<Posts>> _streamController = StreamController<List<Posts>>.broadcast();
 Stream<List<Posts>> get _stream => _streamController.stream;
 _filter(String searchQuery) {
   List<Posts> _filteredList = posts
