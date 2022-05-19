@@ -2,7 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-import 'package:thebestatoo/Pages/informations.dart';
+import 'package:thebestatoo/Pages/informationsUser.dart';
 import 'package:thebestatoo/Pages/toggleBar.dart';
 import '../Classes/User.dart';
 import 'editUser.dart';
