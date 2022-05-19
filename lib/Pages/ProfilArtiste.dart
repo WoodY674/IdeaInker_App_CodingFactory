@@ -3,8 +3,15 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:http/http.dart' as http;
+import 'package:thebestatoo/Pages/ArtistesLies.dart';
+import 'package:thebestatoo/Pages/informationsSalon.dart';
+import 'package:thebestatoo/Pages/toggleBar.dart';
+import '../Classes/Shop.dart';
 import '../Classes/User.dart';
+import 'Creations.dart';
 import 'editUser.dart';
+import 'favoritesPage.dart';
+import 'informationsUser.dart';
 import 'main.dart';
 
 class ProfilArtiste extends StatefulWidget {
@@ -20,6 +27,8 @@ class _ProfilArtiste extends State<ProfilArtiste> {
   late User user;
   late Future<User> futureUser;
   late double stars = 0;
+  List<String> labels = ["Créations","Informations","Artistes liés"];
+  int currentIndex = 0;
 
   @override
   void initState() {
@@ -51,6 +60,7 @@ class _ProfilArtiste extends State<ProfilArtiste> {
                       future: futureUser,
                       builder: (context, snapshot) {
                         if (snapshot.hasData) {
+                          user = snapshot.data!;
                           return ListView(
                             scrollDirection: Axis.vertical,
                             shrinkWrap: true,
@@ -145,49 +155,22 @@ class _ProfilArtiste extends State<ProfilArtiste> {
                       },
                     ),
                   ),
+                  ToggleBar(
+                    labels: labels,
+                    backgroundColor: Colors.grey.withOpacity(0.1),
+                    backgroundBorder: Border.all(color: Colors.deepPurple),
+                    onSelectionUpdated: (index) =>
+                        setState(() => currentIndex = index),
+                  )
                 ],
               ),
             ),
-            GridView.count(
-              shrinkWrap: true,
-              primary: false,
-              padding: const EdgeInsets.all(20),
-              crossAxisSpacing: 10,
-              mainAxisSpacing: 10,
-              crossAxisCount: 2,
-              children: <Widget>[
-                Container(
-                  padding: const EdgeInsets.all(8),
-                  child: const Text("He'd have you all unravel at the"),
-                  color: Colors.teal[100],
-                ),
-                Container(
-                  padding: const EdgeInsets.all(8),
-                  child: const Text('Heed not the rabble'),
-                  color: Colors.teal[200],
-                ),
-                Container(
-                  padding: const EdgeInsets.all(8),
-                  child: const Text('Sound of screams but the'),
-                  color: Colors.teal[300],
-                ),
-                Container(
-                  padding: const EdgeInsets.all(8),
-                  child: const Text('Who scream'),
-                  color: Colors.teal[400],
-                ),
-                Container(
-                  padding: const EdgeInsets.all(8),
-                  child: const Text('Revolution is coming...'),
-                  color: Colors.teal[500],
-                ),
-                Container(
-                  padding: const EdgeInsets.all(8),
-                  child: const Text('Revolution, they...'),
-                  color: Colors.teal[600],
-                ),
-              ],
-            )
+            if(currentIndex == 0)
+              const Creations()
+            else if(currentIndex == 1)
+               InformationsSalon(user)
+            else if (currentIndex == 2)
+              ArtistesLies(user),
           ],
         ),
       ),
