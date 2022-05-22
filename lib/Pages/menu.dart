@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:thebestatoo/Pages/Avis.dart';
+import 'package:thebestatoo/Pages/ProfilArtiste.dart';
 import 'package:thebestatoo/Pages/ProfilUser.dart';
 import 'package:thebestatoo/Pages/listAvis.dart';
 import 'package:thebestatoo/Pages/postsPage.dart';
@@ -81,7 +82,26 @@ class _Menu extends State<Menu> {
                             height: 50,
                             padding: const EdgeInsets.fromLTRB(30, 15, 30, 0),
                             child: ElevatedButton(
-                              child: const Text('Profil Artiste/Salon'),
+                              child: const Text('Profil Artiste'),
+                              onPressed: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(builder: (
+                                      context) => const ProfilArtiste()),
+                                );
+                              },
+                              style: ButtonStyle(
+                                  backgroundColor: MaterialStateProperty.all(
+                                      Colors.deepPurple)
+                              ),
+                            )
+                        ):Container(),
+                        user.roles![0] == "ROLE_ADMIN" ?
+                        Container(
+                            height: 50,
+                            padding: const EdgeInsets.fromLTRB(30, 15, 30, 0),
+                            child: ElevatedButton(
+                              child: const Text('Profil Salon'),
                               onPressed: () {
                                 Navigator.push(
                                   context,

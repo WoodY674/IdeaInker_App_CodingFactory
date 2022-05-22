@@ -14,6 +14,8 @@ import 'package:thebestatoo/Pages/profil.dart';
 import 'package:thebestatoo/Pages/map.dart';
 import 'package:thebestatoo/Pages/home.dart';
 import 'package:streaming_shared_preferences/streaming_shared_preferences.dart';
+
+import 'ProfilArtiste.dart';
 late final StreamingSharedPreferences preferences;
 late final String urlSite;
 late final String urlImage;
@@ -64,6 +66,7 @@ class _MainPageState extends State<MainPage> {
         ListShop.route: (context) => const ListShop(),
         ProfilUser.route: (context) => const ProfilUser(),
         ProfilSalon.route: (context) => const ProfilSalon(),
+        ProfilArtiste.route: (context) => const ProfilArtiste(),
         Profil.route: (context) => const Profil(),
         Channel.route: (context) => Channel(),
         PostsPage.route:(context) => const PostsPage(),
