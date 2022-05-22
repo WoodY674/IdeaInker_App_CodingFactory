@@ -5,7 +5,7 @@ import 'package:thebestatoo/Pages/listAvis.dart';
 import 'package:thebestatoo/Pages/postsPage.dart';
 import 'package:thebestatoo/Pages/sideBar.dart';
 import '../Classes/User.dart';
-import 'ProfilArtiste.dart';
+import 'ProfilSalon.dart';
 import 'listShop.dart';
 
 
@@ -86,7 +86,7 @@ class _Menu extends State<Menu> {
                                 Navigator.push(
                                   context,
                                   MaterialPageRoute(builder: (
-                                      context) => const ProfilArtiste()),
+                                      context) => const ProfilSalon()),
                                 );
                               },
                               style: ButtonStyle(

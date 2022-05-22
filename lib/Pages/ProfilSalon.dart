@@ -14,16 +14,16 @@ import 'favoritesPage.dart';
 import 'informationsUser.dart';
 import 'main.dart';
 
-class ProfilArtiste extends StatefulWidget {
+class ProfilSalon extends StatefulWidget {
   static String route = 'ProfilArtiste';
 
-  const ProfilArtiste({Key? key}) : super(key: key);
+  const ProfilSalon({Key? key}) : super(key: key);
 
   @override
-  _ProfilArtiste createState() => _ProfilArtiste();
+  _ProfilSalon createState() => _ProfilSalon();
 }
 
-class _ProfilArtiste extends State<ProfilArtiste> {
+class _ProfilSalon extends State<ProfilSalon> {
   late User user;
   late Future<User> futureUser;
   late double stars = 0;
