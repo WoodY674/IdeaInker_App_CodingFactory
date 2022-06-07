@@ -53,7 +53,7 @@ dependencies:
   mime: ^1.0.2
 
 dev_dependencies:
-  flutter_driver:
+  flutter_test:
     sdk: flutter
   test:
 

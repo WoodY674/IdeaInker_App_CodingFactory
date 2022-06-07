@@ -5,7 +5,7 @@ import 'package:http/http.dart' as http;
 
 import '../Pages/main.dart';
 
-final String url = urlSite + "posts";
+final String url = "http://ideainker.fr/api/" + "posts";
 
 List<Posts> parsePosts(String responseBody){
   var list = json.decode(responseBody) as List<dynamic>;
