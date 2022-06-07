@@ -40,34 +40,56 @@ class _ProfilSalon extends State<ProfilSalon> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Profil Artiste/Salon'),
+        title: const Text('Profil Salon'),
         backgroundColor: Colors.deepPurple,
         centerTitle: true,
       ),
-      body: SingleChildScrollView(
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
-          children: <Widget>[
-            Container(
-              child: Column(
-                children: [
-                  Container(
-                    color: Colors.deepPurple,
-                    padding: EdgeInsets.all(15),
-                    width: double.infinity,
-                    child: FutureBuilder<User>(
-                      future: futureUser,
-                      builder: (context, snapshot) {
-                        if (snapshot.hasData) {
-                          user = snapshot.data!;
-                          return ListView(
-                            scrollDirection: Axis.vertical,
-                            shrinkWrap: true,
-                            children: <Widget>[
-                              snapshot.data!.profileImage != null ?
-                              Container(
-                                width: 200,
+      body: FutureBuilder<User>(
+        future: futureUser,
+        builder: (context, snapshot) {
+          if (snapshot.hasData) {
+            user = snapshot.data!;
+            return NestedScrollView(headerSliverBuilder: (context, _) {
+              return [
+                SliverList(
+                  delegate: SliverChildListDelegate(
+                    [
+                      Container(
+                        color: Colors.deepPurple,
+                        child: Column(
+                          children: [
+                            const SizedBox(height: 10),
+                            snapshot.data!.profileImage != null ?
+                            Container(
+                              width: 200,
+                              height: 200,
+                              child: Stack(
+                                children: <Widget>[
+                                  Align(
+                                    alignment: Alignment.bottomRight,
+                                    child: IconButton(
+                                      icon: const Icon(Icons.edit),
+                                      onPressed: (){
+                                        Navigator.push(
+                                          context,
+                                          MaterialPageRoute(builder: (context) => const EditUser()),
+                                        );
+                                      },
+                                    ),
+                                  ),
+                                  Container(
+                                    width: 200,
+                                    height: 200,
+                                    child: CircleAvatar(
+                                      backgroundImage: NetworkImage(snapshot.data!.profileImage!),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ) :
+                            Center(
+                              child: Container(
+                                width: 210,
                                 height: 200,
                                 child: Stack(
                                   children: <Widget>[
@@ -86,93 +108,82 @@ class _ProfilSalon extends State<ProfilSalon> {
                                     Container(
                                       width: 200,
                                       height: 200,
-                                      child: CircleAvatar(
-                                        backgroundImage: NetworkImage(snapshot.data!.profileImage!),
+                                      child: const CircleAvatar(
+                                        backgroundImage: AssetImage("noProfile.png"),
                                       ),
                                     ),
                                   ],
                                 ),
-                              ) :
-                              Center(
-                                child: Container(
-                                  width: 210,
-                                  height: 200,
-                                  child: Stack(
-                                    children: <Widget>[
-                                      Align(
-                                        alignment: Alignment.bottomRight,
-                                        child: IconButton(
-                                          icon: Icon(Icons.edit),
-                                          onPressed: (){
-                                            Navigator.push(
-                                              context,
-                                              MaterialPageRoute(builder: (context) => const EditUser()),
-                                            );
-                                          },
-                                        ),
-                                      ),
-                                      Container(
-                                        width: 200,
-                                        height: 200,
-                                        child: const CircleAvatar(
-                                          backgroundImage: AssetImage("noProfile.png"),
-                                        ),
-                                      ),
-                                    ],
+                              ),
+                            ),
+                            Container(
+                              child: Text(snapshot.data!.firstName! + " " + snapshot.data!.lastName!,
+                                textAlign: TextAlign.center,
+                                style: const TextStyle(
+                                    height: 2,
+                                    fontSize: 20,
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.white),
+                              ),
+                            ),
+                            Container(
+                                child: Align(
+                                  alignment: Alignment.center,
+                                  child: RatingBar.builder(itemBuilder: (context,_)=>
+                                      Icon(Icons.star,color:Colors.yellow),
+                                      itemSize: 50,
+                                      onRatingUpdate: (rating){
+                                        setState(() {
+                                          stars = rating;
+                                        });
+                                      }) ,
+                                )
+                            ),
+                            Container(
+                              color: Colors.white,
+                              child: Column(
+                                children: [
+                                  ToggleBar(
+                                    labels: labels,
+                                    backgroundColor: Colors.grey.withOpacity(0.1),
+                                    backgroundBorder: Border.all(color: Colors.deepPurple),
+                                    onSelectionUpdated: (index) =>
+                                        setState(() => currentIndex = index),
                                   ),
-                                ),
+                                ],
                               ),
-                              Container(
-                                child: Text(snapshot.data!.firstName! + " " + snapshot.data!.lastName!,
-                                  textAlign: TextAlign.center,
-                                  style: const TextStyle(
-                                      height: 2,
-                                      fontSize: 20,
-                                      fontWeight: FontWeight.bold,
-                                      color: Colors.white),
-                                ),
-                              ),
-                              Container(
-                                  child: Align(
-                                    alignment: Alignment.center,
-                                    child: RatingBar.builder(itemBuilder: (context,_)=>
-                                        Icon(Icons.star,color:Colors.yellow),
-                                        itemSize: 50,
-                                        onRatingUpdate: (rating){
-                                          setState(() {
-                                            stars = rating;
-                                          });
-                                        }) ,
-                                  )
-                              ),
-                            ],
-                          );
-                        } else if (snapshot.hasError) {
-                          return Text('${snapshot.error}');
-                        }
-                        // By default, show a loading spinner.
-                        return const CircularProgressIndicator();
-                      },
-                    ),
+                            )
+                          ],
+                        ),
+                      ),
+                    ],
                   ),
-                  ToggleBar(
-                    labels: labels,
-                    backgroundColor: Colors.grey.withOpacity(0.1),
-                    backgroundBorder: Border.all(color: Colors.deepPurple),
-                    onSelectionUpdated: (index) =>
-                        setState(() => currentIndex = index),
-                  )
-                ],
+                ),
+              ];
+            },
+              body: Container(
+                child: LayoutBuilder(builder: (context, constraints) {
+                  if (currentIndex == 0) {
+                    return FavoritesPage(user);
+                  }
+                  else if (currentIndex == 1) {
+                    return InformationsSalon(user);
+                  }
+                  else if (currentIndex == 2) {
+                    return ArtistesLies(user);
+                  }else{
+                    return const CircularProgressIndicator();
+                  }
+                }
+                ),
               ),
-            ),
-            if(currentIndex == 0)
-              const Creations()
-            else if(currentIndex == 1)
-               InformationsSalon(user)
-            else if (currentIndex == 2)
-              ArtistesLies(user),
-          ],
-        ),
+            );
+          } else if (snapshot.hasError) {
+            return Text('${snapshot.error}');
+          }
+          // By default, show a loading spinner.
+          return const CircularProgressIndicator();
+        },
       ),
     );
   }
