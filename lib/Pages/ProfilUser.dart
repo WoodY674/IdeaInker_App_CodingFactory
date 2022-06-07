@@ -45,28 +45,22 @@ class _ProfilUser extends State<ProfilUser> {
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: <Widget>[
             Container(
-              child: Column(
-                children: [
-                  Container(
-                    color: Colors.deepPurple,
-                    padding: EdgeInsets.all(15),
-                    width: double.infinity,
-                    child: FutureBuilder<User>(
-                      future: futureUser,
-                      builder: (context, snapshot) {
-                        if (snapshot.hasData) {
-                          user = snapshot.data!;
-                          return ListView(
-                            scrollDirection: Axis.vertical,
-                            shrinkWrap: true,
-                            children: <Widget>[
+              child: FutureBuilder<User>(
+                future: futureUser,
+                builder: (context, snapshot) {
+                  if (snapshot.hasData) {
+                    user = snapshot.data!;
+                    return Container(
+                          color: Colors.deepPurple,
+                          child: Column(
+                            children: [
                               snapshot.data!.profileImage != null ?
                               Container(
                                 width: 200,
                                 height: 200,
                                 child: Stack(
                                   children: <Widget>[
-                                     Align(
+                                    Align(
                                       alignment: Alignment.bottomRight,
                                       child: IconButton(
                                         icon: Icon(Icons.edit),
@@ -94,7 +88,7 @@ class _ProfilUser extends State<ProfilUser> {
                                   height: 200,
                                   child: Stack(
                                     children: <Widget>[
-                                       Align(
+                                      Align(
                                         alignment: Alignment.bottomRight,
                                         child: IconButton(
                                           icon: Icon(Icons.edit),
@@ -127,30 +121,36 @@ class _ProfilUser extends State<ProfilUser> {
                                       color: Colors.white),
                                 ),
                               ),
+                              Container(
+                                color: Colors.white,
+                                child: Column(
+                                  children: [
+                                    ToggleBar(
+                                      labels: labels,
+                                      backgroundColor: Colors.grey.withOpacity(0.1),
+                                      backgroundBorder: Border.all(color: Colors.deepPurple),
+                                      onSelectionUpdated: (index) =>
+                                          setState(() => currentIndex = index),
+                                    ),
+                                    if(currentIndex == 0)
+                                      FavoritesPage(user)
+                                    else if(currentIndex == 1)
+                                      Informations(user)
+                                  ],
+                                ),
+                              )
                             ],
-                          );
-                        } else if (snapshot.hasError) {
-                          return Text('${snapshot.error}');
-                        }
-                        // By default, show a loading spinner.
-                        return const CircularProgressIndicator();
-                      },
-                    ),
-                  ),
-                  ToggleBar(
-                    labels: labels,
-                    backgroundColor: Colors.grey.withOpacity(0.1),
-                    backgroundBorder: Border.all(color: Colors.deepPurple),
-                    onSelectionUpdated: (index) =>
-                        setState(() => currentIndex = index),
-                  )
-                ],
-              ),
+                          ),
+                        );
+
+                  } else if (snapshot.hasError) {
+                    return Text('${snapshot.error}');
+                  }
+                  // By default, show a loading spinner.
+                  return const CircularProgressIndicator();
+                },
+              )
             ),
-            if(currentIndex == 0)
-               const FavoritesPage()
-            else if(currentIndex == 1)
-               Informations(user)
           ],
         ),
       ),
