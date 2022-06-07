@@ -5,7 +5,7 @@ import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:http/http.dart' as http;
 import '../Classes/User.dart';
 import 'editUser.dart';
-import 'main.dart';
+import '../main.dart';
 
 class ProfilArtiste extends StatefulWidget {
   static String route = 'ProfilArtiste';

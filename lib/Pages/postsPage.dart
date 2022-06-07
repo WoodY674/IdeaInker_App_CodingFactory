@@ -12,7 +12,7 @@ import 'package:thebestatoo/Classes/ImageTo64.dart';
 import 'dart:io';
 import '../Classes/CoordinatesStore.dart';
 import '../Classes/User.dart';
-import 'main.dart';
+import '../main.dart';
 
 class PostsPage extends StatefulWidget {
   static String route = 'addPost';

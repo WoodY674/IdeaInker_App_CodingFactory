@@ -1,7 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 import 'package:http/http.dart' as http;
-import '../Pages/main.dart';
+import '../main.dart';
 
 Future<User> fetchUser() async {
   final token = preferences.getString('token', defaultValue: '').getValue();

@@ -7,7 +7,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:http/http.dart' as http;
 import 'package:streaming_shared_preferences/streaming_shared_preferences.dart';
 import 'package:thebestatoo/Pages/addShop.dart';
-import 'package:thebestatoo/Pages/main.dart';
+import 'package:thebestatoo/main.dart';
 import 'dart:io';
 import '../Classes/Shop.dart';
 

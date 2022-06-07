@@ -3,7 +3,7 @@ import 'dart:developer';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
-import 'package:thebestatoo/Pages/main.dart';
+import 'package:thebestatoo/main.dart';
 
 class CreateAccount extends StatefulWidget {
   static String route = 'register';

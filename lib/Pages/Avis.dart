@@ -7,7 +7,7 @@ import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 
 import '../Classes/User.dart';
-import 'main.dart';
+import '../main.dart';
 
 class CreateAvis extends StatefulWidget {
   static String route = 'register';

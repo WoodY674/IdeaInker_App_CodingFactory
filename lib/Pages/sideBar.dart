@@ -8,7 +8,7 @@ import 'package:thebestatoo/Pages/profil.dart';
 import '../Channel.dart';
 import '../Classes/User.dart';
 import 'home.dart';
-import 'main.dart';
+import '../main.dart';
 import 'map.dart';
 import 'menu.dart';
 import 'dart:io';

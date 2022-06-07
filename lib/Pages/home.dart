@@ -5,7 +5,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:thebestatoo/Pages/main.dart';
+import 'package:thebestatoo/main.dart';
 import 'package:thebestatoo/Pages/sideBar.dart';
 import 'package:http/http.dart' as http;
 import '../Classes/Posts.dart';

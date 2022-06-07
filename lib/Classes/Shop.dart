@@ -5,7 +5,7 @@ import 'dart:math';
 import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
 import 'package:streaming_shared_preferences/streaming_shared_preferences.dart';
-import '../Pages/main.dart';
+import '../main.dart';
 
 final String url = urlSite +"salons";
 List<Shop> parseShop(String responseBody){

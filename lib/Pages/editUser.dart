@@ -8,7 +8,7 @@ import 'package:http/http.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:thebestatoo/Classes/User.dart';
-import 'package:thebestatoo/Pages/main.dart';
+import 'package:thebestatoo/main.dart';
 import '../Classes/ImageTo64.dart';
 
 class EditUser extends StatefulWidget {

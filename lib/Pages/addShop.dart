@@ -7,7 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:permission_handler/permission_handler.dart';
-import 'package:thebestatoo/Pages/main.dart';
+import 'package:thebestatoo/main.dart';
 import 'dart:io';
 import '../Classes/CoordinatesStore.dart';
 import '../Classes/ImageTo64.dart';
