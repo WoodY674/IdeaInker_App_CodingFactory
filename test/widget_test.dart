@@ -11,7 +11,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:thebestatoo/Pages/main.dart';
 
 void main() {
-  testWidgets('Counter increments smoke test', (WidgetTester tester) async {
+  testWidgets('Début du test login', (WidgetTester tester) async {
     // Build our app and trigger a frame.
     await tester.pumpWidget(MyApp());
 
