@@ -5,6 +5,7 @@ import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
+import 'package:smooth_star_rating/smooth_star_rating.dart';
 
 import '../Classes/User.dart';
 import '../main.dart';
@@ -18,7 +19,7 @@ class CreateAvis extends StatefulWidget {
 }
 
 class _CreateAvis extends State<CreateAvis> {
-  late double stars = 0;
+  var rating = 0.0;
   TextEditingController commentController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
   late Future<User> futureUser;
@@ -67,14 +68,24 @@ class _CreateAvis extends State<CreateAvis> {
                     Container(
                         child: Align(
                           alignment: Alignment.center,
-                          child: RatingBar.builder(itemBuilder: (context,_)=>
-                              Icon(Icons.star,color:Colors.amber),
-                              itemSize: 30,
-                              onRatingUpdate: (rating){
-                                setState(() {
-                                  stars = rating;
-                                });
-                              }) ,
+                          child: SmoothStarRating(
+                            rating: rating,
+                            isReadOnly: false,
+                            size: 50,
+                            filledIconData: Icons.star,
+                            halfFilledIconData: Icons.star_half,
+                            defaultIconData: Icons.star_border,
+                            color: Colors.yellow,
+                            borderColor: Colors.deepPurple,
+                            starCount: 5,
+                            allowHalfRating: false,
+                            spacing: 2.0,
+                            onRated: (value) {
+                              setState(() {
+                                rating = value;
+                              });
+                            },
+                          ) ,
                         )
                     ),
                     Container(
@@ -86,7 +97,7 @@ class _CreateAvis extends State<CreateAvis> {
                             if (_formKey.currentState!.validate()) {
                               // If the form is valid, display a snackbar. In the real world,
                               // you'd often call a server or save the information in a database.
-                              CreateAvis(stars, commentController.text, snapshot.data!.id!);
+                              CreateAvis(rating, commentController.text, snapshot.data!.id!);
                             }
                           },
                           style: ButtonStyle(

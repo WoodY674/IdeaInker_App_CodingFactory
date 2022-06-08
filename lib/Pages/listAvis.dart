@@ -2,6 +2,7 @@ import 'dart:async';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
+import 'package:smooth_star_rating/smooth_star_rating.dart';
 import 'package:thebestatoo/Pages/Avis.dart';
 import '../Classes/Notice.dart';
 
@@ -58,13 +59,18 @@ class _ListAvis extends State<ListAvis> {
                           ListTile(
                             title: Align(
                               alignment: Alignment.center,
-                              child: RatingBar.builder(
-                                  initialRating: double.parse(currentNotice.stars.toString()),
-                                  itemBuilder: (context,_)=>
-                                  const Icon(Icons.star,color:Colors.amber),
-                                  itemSize: 30,
-                                  onRatingUpdate: (double value) {
-                                  },
+                              child: SmoothStarRating(
+                                rating: double.parse(currentNotice.stars.toString()),
+                                isReadOnly: true,
+                                size: 30,
+                                filledIconData: Icons.star,
+                                halfFilledIconData: Icons.star_half,
+                                defaultIconData: Icons.star_border,
+                                color: Colors.yellow,
+                                borderColor: Colors.deepPurple,
+                                starCount: 5,
+                                allowHalfRating: false,
+                                spacing: 2.0,
                               ) ,
                             ),
                             subtitle: Align(
