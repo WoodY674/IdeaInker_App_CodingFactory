@@ -65,6 +65,7 @@ class _Profil extends State<Profil> {
                     border: OutlineInputBorder(),
                     labelText: 'E-mail',
                   ),
+                  key: const Key('email'),
                   validator: (value) {
                     if (value == null || value.isEmpty) {
                       return 'Veuillez renseigner ce champ';
@@ -82,6 +83,7 @@ class _Profil extends State<Profil> {
                     border: OutlineInputBorder(),
                     labelText: 'Password',
                   ),
+                  key: const Key('password'),
                   validator: (value) {
                     if (value == null || value.isEmpty) {
                       return 'Veuillez renseigner ce champ';
@@ -94,6 +96,7 @@ class _Profil extends State<Profil> {
                   height: 50,
                   padding: const EdgeInsets.fromLTRB(30, 15, 30, 0),
                   child: ElevatedButton(
+                    key: const Key('btn'),
                     child: const Text('Login'),
                     onPressed: () {
                       if (_formKey.currentState!.validate()) {
