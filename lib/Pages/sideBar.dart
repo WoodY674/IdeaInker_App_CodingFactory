@@ -1,5 +1,4 @@
 import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:streaming_shared_preferences/streaming_shared_preferences.dart';
 import 'package:thebestatoo/Pages/ProfilArtiste.dart';
@@ -14,7 +13,6 @@ import 'Admin/ProfilArtisteAdmin.dart';
 import 'home.dart';
 import '../main.dart';
 import 'map.dart';
-import 'menu.dart';
 import 'dart:io';
 import 'package:http/http.dart' as http;
 
@@ -92,16 +90,6 @@ class SideBar extends StatelessWidget {
                                 MaterialPageRoute(builder: (context) => Channel()));
                             },
                           ):Container(),
-                          user.roles![0] == "ROLE_ADMIN" ?
-                          ListTile(
-                            leading: Icon(Icons.verified_user),
-                            title: Text('Mon Profil'),
-                            onTap: (){Navigator.pushReplacement(
-                                context,
-                                MaterialPageRoute(builder: (context) => const Menu()));
-                            },
-                          )
-                          :Container(),
                           user.roles![0] == "ROLE_SHOP" ?
                           ListTile(
                             leading: Icon(Icons.verified_user),
@@ -122,7 +110,7 @@ class SideBar extends StatelessWidget {
                             },
                           )
                               :Container(),
-                          user.roles![0] == "ROLE_USER" ?
+                          user.roles![0] == "ROLE_USER" || user.roles![0] == "ROLE_ADMIN" ?
                           ListTile(
                             leading: Icon(Icons.verified_user),
                             title: Text('Mon Profil'),
@@ -188,7 +176,7 @@ class SideBar extends StatelessWidget {
                             title: Text('Mon Profil'),
                             onTap: (){Navigator.pushReplacement(
                                 context,
-                                MaterialPageRoute(builder: (context) => const Menu()));
+                                MaterialPageRoute(builder: (context) => const ProfilUser()));
                             },
                           ): Text(''),
 

@@ -20,6 +20,7 @@ import '../favoritesPage.dart';
 import '../informationsArtiste.dart';
 import '../informationsUser.dart';
 import '../../main.dart';
+import '../postsPage.dart';
 
 class ProfilArtisteAdmin extends StatefulWidget {
   static String route = 'ProfilArtiste';
@@ -53,6 +54,16 @@ class _ProfilArtisteAdmin extends State<ProfilArtisteAdmin> {
         title: Text('Profil Artiste'),
         backgroundColor: Colors.deepPurple,
         centerTitle: true,
+        actions: [
+          IconButton(onPressed: (){
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => const PostsPage()),
+            );
+          },
+              icon: const Icon(Icons.add))
+        ],
       ),
       body: FutureBuilder<User>(
         future: futureUser,

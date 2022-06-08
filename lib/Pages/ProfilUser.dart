@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:thebestatoo/Pages/informationsUser.dart';
+import 'package:thebestatoo/Pages/postsPage.dart';
 import 'package:thebestatoo/Pages/sideBar.dart';
 import 'package:thebestatoo/Pages/toggleBar.dart';
 import '../Classes/User.dart';
@@ -39,6 +40,16 @@ class _ProfilUser extends State<ProfilUser> {
         title: Text('Mon profil'),
         backgroundColor: Colors.deepPurple,
         centerTitle: true,
+        actions: [
+          IconButton(onPressed: (){
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => const PostsPage()),
+            );
+          },
+              icon: const Icon(Icons.add))
+        ],
       ),
       body: FutureBuilder<User>(
         future: futureUser,

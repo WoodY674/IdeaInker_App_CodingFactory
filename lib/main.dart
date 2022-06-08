@@ -8,7 +8,6 @@ import 'package:thebestatoo/Pages/addShop.dart';
 import 'package:thebestatoo/Pages/createaccount.dart';
 import 'package:thebestatoo/Pages/editUser.dart';
 import 'package:thebestatoo/Pages/Admin/listShopAdmin.dart';
-import 'package:thebestatoo/Pages/menu.dart';
 import 'package:thebestatoo/Pages/postsPage.dart';
 import 'package:thebestatoo/Pages/profil.dart';
 import 'package:thebestatoo/Pages/map.dart';
@@ -59,7 +58,6 @@ class _MainPageState extends State<MainPage> {
         Home.route: (context) => const Home(),
         MyMap.route: (context) => const MyMap(),
         CreateAccount.route: (context) => const CreateAccount(),
-        Menu.route: (context) => const Menu(),
         EditUser.route: (context) => const EditUser(),
         AddShop.route: (context) => const AddShop(),
         ListShopAdmin.route: (context) => const ListShopAdmin(),

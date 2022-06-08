@@ -5,6 +5,7 @@ import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:http/http.dart' as http;
 import 'package:thebestatoo/Pages/ArtistesLies.dart';
 import 'package:thebestatoo/Pages/informationsSalon.dart';
+import 'package:thebestatoo/Pages/postsPage.dart';
 import 'package:thebestatoo/Pages/toggleBar.dart';
 import '../Classes/Shop.dart';
 import '../Classes/User.dart';

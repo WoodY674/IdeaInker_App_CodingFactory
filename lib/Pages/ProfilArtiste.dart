@@ -7,6 +7,7 @@ import 'package:smooth_star_rating/smooth_star_rating.dart';
 import 'package:thebestatoo/Pages/ArtistesLies.dart';
 import 'package:thebestatoo/Pages/informationsSalon.dart';
 import 'package:thebestatoo/Pages/listAvis.dart';
+import 'package:thebestatoo/Pages/postsPage.dart';
 import 'package:thebestatoo/Pages/sideBar.dart';
 import 'package:thebestatoo/Pages/toggleBar.dart';
 import '../Classes/Notice.dart';

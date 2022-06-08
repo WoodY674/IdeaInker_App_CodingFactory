@@ -14,6 +14,7 @@ import '../editUser.dart';
 import '../favoritesPage.dart';
 import '../informationsUser.dart';
 import '../../main.dart';
+import '../postsPage.dart';
 
 class ProfilSalonAdmin extends StatefulWidget {
   static String route = 'ProfilArtiste';
@@ -42,6 +43,16 @@ class _ProfilSalonAdmin extends State<ProfilSalonAdmin> {
         title: const Text('Profil Salon'),
         backgroundColor: Colors.deepPurple,
         centerTitle: true,
+        actions: [
+          IconButton(onPressed: (){
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => const PostsPage()),
+            );
+          },
+              icon: const Icon(Icons.add))
+        ],
       ),
       body:NestedScrollView(headerSliverBuilder: (context, _) {
               return [
