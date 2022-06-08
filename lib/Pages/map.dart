@@ -6,8 +6,10 @@ import 'dart:developer';
 import 'dart:io';
 import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
+import 'package:thebestatoo/Pages/ProfilSalon.dart';
 import 'package:thebestatoo/Pages/sideBar.dart';
 import '../Classes/Shop.dart';
+import 'Admin/listShopAdmin.dart';
 
 class MyMap extends StatelessWidget {
   const MyMap({Key? key}) : super(key: key);
@@ -53,7 +55,12 @@ class _MyGoogleMapState extends State<MyGoogleMap> {
           position: LatLng(double.parse(office.latitude), double.parse(office.longitude)),
           infoWindow: InfoWindow(
             title: office.name,
-            snippet: office.address + "\n" + office.zip_code + " " + office.city,
+            snippet: office.address + " " + office.zip_code + " " + office.city,
+            onTap: (){
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) =>  ProfilSalon(office)));
+            }
           ),
         );
         _markers["${office.id}"] = marker;
