@@ -9,6 +9,7 @@ import 'package:thebestatoo/Pages/toggleBar.dart';
 import '../../Classes/Shop.dart';
 import '../../Classes/User.dart';
 import '../Creations.dart';
+import '../editShop.dart';
 import '../editUser.dart';
 import '../favoritesPage.dart';
 import '../informationsUser.dart';
@@ -65,7 +66,7 @@ class _ProfilSalonAdmin extends State<ProfilSalonAdmin> {
                                       onPressed: (){
                                         Navigator.push(
                                           context,
-                                          MaterialPageRoute(builder: (context) => const EditUser()),
+                                          MaterialPageRoute(builder: (context) =>  EditShop(shop)),
                                         );
                                       },
                                     ),
@@ -93,7 +94,7 @@ class _ProfilSalonAdmin extends State<ProfilSalonAdmin> {
                                         onPressed: (){
                                           Navigator.push(
                                             context,
-                                            MaterialPageRoute(builder: (context) => const EditUser()),
+                                            MaterialPageRoute(builder: (context) =>  EditShop(shop)),
                                           );
                                         },
                                       ),
