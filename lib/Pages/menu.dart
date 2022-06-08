@@ -7,7 +7,7 @@ import 'package:thebestatoo/Pages/postsPage.dart';
 import 'package:thebestatoo/Pages/sideBar.dart';
 import '../Classes/User.dart';
 import 'ProfilSalon.dart';
-import 'listShop.dart';
+import 'Admin/listShopAdmin.dart';
 
 
 class Menu extends StatefulWidget {
@@ -96,44 +96,6 @@ class _Menu extends State<Menu> {
                               ),
                             )
                         ):Container(),
-                        user.roles![0] == "ROLE_ADMIN" ?
-                        Container(
-                            height: 50,
-                            padding: const EdgeInsets.fromLTRB(30, 15, 30, 0),
-                            child: ElevatedButton(
-                              child: const Text('Profil Salon'),
-                              onPressed: () {
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(builder: (
-                                      context) => const ProfilSalon()),
-                                );
-                              },
-                              style: ButtonStyle(
-                                  backgroundColor: MaterialStateProperty.all(
-                                      Colors.deepPurple)
-                              ),
-                            )
-                        ):Container(),
-                        user.roles![0] == "ROLE_ADMIN" ?
-                        Container(
-                            height: 50,
-                            padding: const EdgeInsets.fromLTRB(30, 15, 30, 0),
-                            child: ElevatedButton(
-                              child: const Text('Liste salons de tatouage'),
-                              onPressed: () {
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) => const ListShop()),
-                                );
-                              },
-                              style: ButtonStyle(
-                                  backgroundColor: MaterialStateProperty.all(
-                                      Colors.deepPurple)
-                              ),
-                            )
-                        ): Container(),
                         user.roles![0] == "ROLE_ADMIN" ?
                         Container(
                             height: 50,

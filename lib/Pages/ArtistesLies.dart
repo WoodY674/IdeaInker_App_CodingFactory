@@ -5,8 +5,8 @@ import 'package:flutter/widgets.dart';
 import 'package:thebestatoo/Classes/User.dart';
 
 class ArtistesLies extends StatelessWidget {
-  final dynamic users;
-  const ArtistesLies( this.users, {Key? key}) : super(key: key);
+  final dynamic shop;
+  const ArtistesLies( this.shop, {Key? key}) : super(key: key);
 
   TextStyle _style(){
     return TextStyle(
@@ -27,7 +27,7 @@ class ArtistesLies extends StatelessWidget {
 
               Text("Identité"),
               SizedBox(height: 4,),
-              Text(users.firstName! + " " + users.lastName!, style: _style(),),
+              Text(shop.name!, style: _style(),),
               Divider(color: Colors.deepPurple,),
               SizedBox(height: 16,)
             ],

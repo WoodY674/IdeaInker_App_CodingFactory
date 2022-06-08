@@ -7,19 +7,21 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:http/http.dart' as http;
 import 'package:streaming_shared_preferences/streaming_shared_preferences.dart';
 import 'package:thebestatoo/Pages/addShop.dart';
+import 'package:thebestatoo/Pages/sideBar.dart';
 import 'package:thebestatoo/main.dart';
 import 'dart:io';
-import '../Classes/Shop.dart';
+import '../../Classes/Shop.dart';
+import 'ProfilSalonAdmin.dart';
 
-class ListShop extends StatefulWidget {
-  const ListShop({Key? key}) : super(key: key);
+class ListShopAdmin extends StatefulWidget {
+  const ListShopAdmin({Key? key}) : super(key: key);
   static String route = 'listShop';
 
   @override
-  _ListShop createState() => _ListShop();
+  _ListShopAdmin createState() => _ListShopAdmin();
 }
 
-class _ListShop extends State<ListShop> {
+class _ListShopAdmin extends State<ListShopAdmin> {
   late Future<List<Shop>> futureShop;
   late Shop salonToDelete;
 
@@ -32,6 +34,7 @@ class _ListShop extends State<ListShop> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      drawer: SideBar(),
       appBar: AppBar(
         title: const Text('Liste des salons'),
         backgroundColor: Colors.deepPurple,
@@ -56,21 +59,30 @@ class _ListShop extends State<ListShop> {
                   itemCount: snapshot.data?.length,
                   itemBuilder: (context, index) {
                     Shop currentSalon = snapshot.data![index];
-                    return Card(
-                      child: Column(
-                        children: [
-                          currentSalon.salon_image_id != "" ?
-                          Image.asset('assets/photo-salon.png'):
-                          Image.network(currentSalon.salon_image_id!),
-                          ListTile(
-                            title: Text(currentSalon.name),
-                            subtitle: Text(currentSalon.address + ' ' + currentSalon.zip_code + ' ' + currentSalon.city),
-                            trailing: IconButton(onPressed: () {
-                              deleteShop(currentSalon.id);
-                            }, icon: const Icon(Icons.delete)),
-                            isThreeLine: true,
-                          )
-                        ],
+                    return GestureDetector(
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => ProfilSalonAdmin(currentSalon)),
+                        );
+                      },
+                      child: Card(
+                        child: Column(
+                          children: [
+                            currentSalon.salon_image_id != "" ?
+                            Image.asset('assets/photo-salon.png'):
+                            Image.network(currentSalon.salon_image_id!),
+                            ListTile(
+                              title: Text(currentSalon.name),
+                              subtitle: Text(currentSalon.address + ' ' + currentSalon.zip_code + ' ' + currentSalon.city),
+                              trailing: IconButton(onPressed: () {
+                                deleteShop(currentSalon.id);
+                              }, icon: const Icon(Icons.delete)),
+                              isThreeLine: true,
+                            )
+                          ],
+                        ),
                       ),
                     );
                   },

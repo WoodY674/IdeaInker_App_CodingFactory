@@ -5,6 +5,7 @@ import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:http/http.dart' as http;
 import 'package:thebestatoo/Pages/ArtistesLies.dart';
 import 'package:thebestatoo/Pages/informationsSalon.dart';
+import 'package:thebestatoo/Pages/sideBar.dart';
 import 'package:thebestatoo/Pages/toggleBar.dart';
 import '../Classes/Shop.dart';
 import '../Classes/User.dart';
@@ -41,6 +42,7 @@ class _ProfilArtiste extends State<ProfilArtiste> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      drawer: SideBar(),
       appBar: AppBar(
         title: Text('Profil Artiste'),
         backgroundColor: Colors.deepPurple,

@@ -2,8 +2,11 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:streaming_shared_preferences/streaming_shared_preferences.dart';
+import 'package:thebestatoo/Pages/ProfilArtiste.dart';
 import 'package:thebestatoo/Pages/ProfilSalon.dart';
 import 'package:thebestatoo/Pages/ProfilUser.dart';
+import 'package:thebestatoo/Pages/Admin/listShopAdmin.dart';
+import 'package:thebestatoo/Pages/listShopUsers.dart';
 import 'package:thebestatoo/Pages/profil.dart';
 import '../Channel.dart';
 import '../Classes/User.dart';
@@ -65,6 +68,22 @@ class SideBar extends StatelessWidget {
                           ),
                           user.roles![0] == "ROLE_ADMIN" ?
                           ListTile(
+                            leading: Icon(Icons.shop),
+                            title: Text('Liste des shops'),
+                            onTap: (){Navigator.pushReplacement(
+                                context,
+                                MaterialPageRoute(builder: (context) => const ListShopAdmin()));
+                            },
+                          ): ListTile(
+                            leading: Icon(Icons.shop),
+                            title: Text('Liste des shops'),
+                            onTap: (){Navigator.pushReplacement(
+                                context,
+                                MaterialPageRoute(builder: (context) => const ListShopUsers()));
+                            },
+                          ),
+                          user.roles![0] == "ROLE_ADMIN" ?
+                          ListTile(
                             leading: Icon(Icons.chat_rounded),
                             title: Text('Messages'),
                             onTap: (){Navigator.pushReplacement(
@@ -82,13 +101,23 @@ class SideBar extends StatelessWidget {
                             },
                           )
                           :Container(),
-                          user.roles![0] == "ROLE_ARTIST" || user.roles![0] == "ROLE_SHOP" ?
+                          user.roles![0] == "ROLE_SHOP" ?
                           ListTile(
                             leading: Icon(Icons.verified_user),
                             title: Text('Mon Profil'),
                             onTap: (){Navigator.pushReplacement(
                                 context,
-                                MaterialPageRoute(builder: (context) => const ProfilSalon()));
+                                MaterialPageRoute(builder: (context) => ProfilSalon(user)));
+                            },
+                          )
+                              :Container(),
+                          user.roles![0] == "ROLE_ARTIST" ?
+                          ListTile(
+                            leading: Icon(Icons.verified_user),
+                            title: Text('Mon Profil'),
+                            onTap: (){Navigator.pushReplacement(
+                                context,
+                                MaterialPageRoute(builder: (context) => ProfilArtiste()));
                             },
                           )
                               :Container(),

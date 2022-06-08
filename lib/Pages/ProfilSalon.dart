@@ -16,24 +16,22 @@ import '../main.dart';
 
 class ProfilSalon extends StatefulWidget {
   static String route = 'ProfilArtiste';
-
-  const ProfilSalon({Key? key}) : super(key: key);
-
+  final dynamic shop;
+  const ProfilSalon(this.shop,{Key? key}) : super(key: key);
   @override
   _ProfilSalon createState() => _ProfilSalon();
 }
 
 class _ProfilSalon extends State<ProfilSalon> {
-  late User user;
-  late Future<User> futureUser;
   late double stars = 0;
   List<String> labels = ["Créations","Informations","Artistes liés"];
   int currentIndex = 0;
+  late Shop shop;
 
   @override
   void initState() {
     super.initState();
-    futureUser = fetchUser();
+    shop = widget.shop;
   }
 
   @override
@@ -44,12 +42,7 @@ class _ProfilSalon extends State<ProfilSalon> {
         backgroundColor: Colors.deepPurple,
         centerTitle: true,
       ),
-      body: FutureBuilder<User>(
-        future: futureUser,
-        builder: (context, snapshot) {
-          if (snapshot.hasData) {
-            user = snapshot.data!;
-            return NestedScrollView(headerSliverBuilder: (context, _) {
+      body:NestedScrollView(headerSliverBuilder: (context, _) {
               return [
                 SliverList(
                   delegate: SliverChildListDelegate(
@@ -59,29 +52,17 @@ class _ProfilSalon extends State<ProfilSalon> {
                         child: Column(
                           children: [
                             const SizedBox(height: 10),
-                            snapshot.data!.profileImage != null ?
+                            shop.salon_image_id != null ?
                             Container(
                               width: 200,
                               height: 200,
                               child: Stack(
                                 children: <Widget>[
-                                  Align(
-                                    alignment: Alignment.bottomRight,
-                                    child: IconButton(
-                                      icon: const Icon(Icons.edit),
-                                      onPressed: (){
-                                        Navigator.push(
-                                          context,
-                                          MaterialPageRoute(builder: (context) => const EditUser()),
-                                        );
-                                      },
-                                    ),
-                                  ),
                                   Container(
                                     width: 200,
                                     height: 200,
                                     child: CircleAvatar(
-                                      backgroundImage: NetworkImage(snapshot.data!.profileImage!),
+                                      backgroundImage: NetworkImage(shop.salon_image_id!),
                                     ),
                                   ),
                                 ],
@@ -93,18 +74,6 @@ class _ProfilSalon extends State<ProfilSalon> {
                                 height: 200,
                                 child: Stack(
                                   children: <Widget>[
-                                    Align(
-                                      alignment: Alignment.bottomRight,
-                                      child: IconButton(
-                                        icon: Icon(Icons.edit),
-                                        onPressed: (){
-                                          Navigator.push(
-                                            context,
-                                            MaterialPageRoute(builder: (context) => const EditUser()),
-                                          );
-                                        },
-                                      ),
-                                    ),
                                     Container(
                                       width: 200,
                                       height: 200,
@@ -117,7 +86,7 @@ class _ProfilSalon extends State<ProfilSalon> {
                               ),
                             ),
                             Container(
-                              child: Text(snapshot.data!.firstName! + " " + snapshot.data!.lastName!,
+                              child: Text(shop.name,
                                 textAlign: TextAlign.center,
                                 style: const TextStyle(
                                     height: 2,
@@ -164,27 +133,20 @@ class _ProfilSalon extends State<ProfilSalon> {
               body: Container(
                 child: LayoutBuilder(builder: (context, constraints) {
                   if (currentIndex == 0) {
-                    return FavoritesPage(user);
+                    return FavoritesPage(shop);
                   }
                   else if (currentIndex == 1) {
-                    return InformationsSalon(user);
+                    return InformationsSalon(shop);
                   }
                   else if (currentIndex == 2) {
-                    return ArtistesLies(user);
+                    return ArtistesLies(shop);
                   }else{
                     return const CircularProgressIndicator();
                   }
                 }
                 ),
               ),
-            );
-          } else if (snapshot.hasError) {
-            return Text('${snapshot.error}');
-          }
-          // By default, show a loading spinner.
-          return const CircularProgressIndicator();
-        },
-      ),
-    );
+            ),
+      );
   }
 }

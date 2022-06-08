@@ -7,7 +7,7 @@ import 'package:thebestatoo/Pages/Avis.dart';
 import 'package:thebestatoo/Pages/addShop.dart';
 import 'package:thebestatoo/Pages/createaccount.dart';
 import 'package:thebestatoo/Pages/editUser.dart';
-import 'package:thebestatoo/Pages/listShop.dart';
+import 'package:thebestatoo/Pages/Admin/listShopAdmin.dart';
 import 'package:thebestatoo/Pages/menu.dart';
 import 'package:thebestatoo/Pages/postsPage.dart';
 import 'package:thebestatoo/Pages/profil.dart';
@@ -62,9 +62,8 @@ class _MainPageState extends State<MainPage> {
         Menu.route: (context) => const Menu(),
         EditUser.route: (context) => const EditUser(),
         AddShop.route: (context) => const AddShop(),
-        ListShop.route: (context) => const ListShop(),
+        ListShopAdmin.route: (context) => const ListShopAdmin(),
         ProfilUser.route: (context) => const ProfilUser(),
-        ProfilSalon.route: (context) => const ProfilSalon(),
         ProfilArtiste.route: (context) => const ProfilArtiste(),
         Profil.route: (context) => const Profil(),
         Channel.route: (context) => Channel(),

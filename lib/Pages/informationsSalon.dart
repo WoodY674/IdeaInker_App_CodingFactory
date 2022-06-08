@@ -6,8 +6,8 @@ import 'package:thebestatoo/Classes/Shop.dart';
 import 'package:thebestatoo/Classes/User.dart';
 
 class InformationsSalon extends StatelessWidget {
-  final dynamic user;
-  const InformationsSalon( this.user, {Key? key}) : super(key: key);
+  final dynamic shop;
+  const InformationsSalon( this.shop, {Key? key}) : super(key: key);
 
   TextStyle _style(){
     return TextStyle(
@@ -28,7 +28,7 @@ class InformationsSalon extends StatelessWidget {
 
               Text("Nom"),
               SizedBox(height: 4,),
-              Text(user.firstName!, style: _style(),),
+              Text(shop.name!, style: _style(),),
               Divider(color: Colors.deepPurple,),
               SizedBox(height: 16,)
             ],

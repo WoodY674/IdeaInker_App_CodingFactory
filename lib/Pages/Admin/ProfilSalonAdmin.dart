@@ -1,51 +1,48 @@
 import 'dart:convert';
 import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:http/http.dart' as http;
-import 'package:thebestatoo/Pages/informationsUser.dart';
-import 'package:thebestatoo/Pages/sideBar.dart';
+import 'package:thebestatoo/Pages/ArtistesLies.dart';
+import 'package:thebestatoo/Pages/informationsSalon.dart';
 import 'package:thebestatoo/Pages/toggleBar.dart';
-import '../Classes/User.dart';
-import 'editUser.dart';
-import '../main.dart';
-import 'favoritesPage.dart';
+import '../../Classes/Shop.dart';
+import '../../Classes/User.dart';
+import '../Creations.dart';
+import '../editUser.dart';
+import '../favoritesPage.dart';
+import '../informationsUser.dart';
+import '../../main.dart';
 
-
-class ProfilUser extends StatefulWidget {
-  static String route = 'ProfilUser';
-  const ProfilUser({Key? key}) : super(key: key);
-
+class ProfilSalonAdmin extends StatefulWidget {
+  static String route = 'ProfilArtiste';
+  final dynamic shop;
+  const ProfilSalonAdmin(this.shop,{Key? key}) : super(key: key);
   @override
-  _ProfilUser createState() => _ProfilUser();
+  _ProfilSalonAdmin createState() => _ProfilSalonAdmin();
 }
 
-class _ProfilUser extends State<ProfilUser> {
-  late User user;
-  late Future<User> futureUser;
-  List<String> labels = ["Favoris","Informations"];
+class _ProfilSalonAdmin extends State<ProfilSalonAdmin> {
+  late double stars = 0;
+  List<String> labels = ["Créations","Informations","Artistes liés"];
   int currentIndex = 0;
+  late Shop shop;
 
   @override
   void initState() {
     super.initState();
-    futureUser = fetchUser();
+    shop = widget.shop;
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      drawer: SideBar(),
       appBar: AppBar(
-        title: Text('Mon profil'),
+        title: const Text('Profil Salon'),
         backgroundColor: Colors.deepPurple,
         centerTitle: true,
       ),
-      body: FutureBuilder<User>(
-        future: futureUser,
-        builder: (context, snapshot) {
-          if (snapshot.hasData) {
-            user = snapshot.data!;
-            return NestedScrollView(headerSliverBuilder: (context, _) {
+      body:NestedScrollView(headerSliverBuilder: (context, _) {
               return [
                 SliverList(
                   delegate: SliverChildListDelegate(
@@ -55,7 +52,7 @@ class _ProfilUser extends State<ProfilUser> {
                         child: Column(
                           children: [
                             const SizedBox(height: 10),
-                            snapshot.data!.profileImage != null ?
+                            shop.salon_image_id != null ?
                             Container(
                               width: 200,
                               height: 200,
@@ -77,7 +74,7 @@ class _ProfilUser extends State<ProfilUser> {
                                     width: 200,
                                     height: 200,
                                     child: CircleAvatar(
-                                      backgroundImage: NetworkImage(snapshot.data!.profileImage!),
+                                      backgroundImage: NetworkImage(shop.salon_image_id!),
                                     ),
                                   ),
                                 ],
@@ -113,7 +110,7 @@ class _ProfilUser extends State<ProfilUser> {
                               ),
                             ),
                             Container(
-                              child: Text(snapshot.data!.firstName! + " " + snapshot.data!.lastName!,
+                              child: Text(shop.name,
                                 textAlign: TextAlign.center,
                                 style: const TextStyle(
                                     height: 2,
@@ -121,6 +118,19 @@ class _ProfilUser extends State<ProfilUser> {
                                     fontWeight: FontWeight.bold,
                                     color: Colors.white),
                               ),
+                            ),
+                            Container(
+                                child: Align(
+                                  alignment: Alignment.center,
+                                  child: RatingBar.builder(itemBuilder: (context,_)=>
+                                      Icon(Icons.star,color:Colors.yellow),
+                                      itemSize: 50,
+                                      onRatingUpdate: (rating){
+                                        setState(() {
+                                          stars = rating;
+                                        });
+                                      }) ,
+                                )
                             ),
                             Container(
                               color: Colors.white,
@@ -144,19 +154,23 @@ class _ProfilUser extends State<ProfilUser> {
                 ),
               ];
             },
-                body: Container(
-                  child: currentIndex == 0 ?
-                          FavoritesPage(user) :
-                          Informations(user)
+              body: Container(
+                child: LayoutBuilder(builder: (context, constraints) {
+                  if (currentIndex == 0) {
+                    return FavoritesPage(shop);
+                  }
+                  else if (currentIndex == 1) {
+                    return InformationsSalon(shop);
+                  }
+                  else if (currentIndex == 2) {
+                    return ArtistesLies(shop);
+                  }else{
+                    return const CircularProgressIndicator();
+                  }
+                }
                 ),
-            );
-          } else if (snapshot.hasError) {
-          return Text('${snapshot.error}');
-          }
-          // By default, show a loading spinner.
-          return const CircularProgressIndicator();
-        },
-      ),
-    );
+              ),
+            ),
+      );
   }
 }

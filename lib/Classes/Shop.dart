@@ -16,7 +16,6 @@ List<Shop> parseShop(String responseBody){
 }
 
 Future<List<Shop>> fetchShop() async {
-  print(url);
 
   final preferences = await StreamingSharedPreferences.instance;
   final token = preferences.getString('token', defaultValue: '').getValue();
