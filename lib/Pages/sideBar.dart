@@ -2,7 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:streaming_shared_preferences/streaming_shared_preferences.dart';
-import 'package:thebestatoo/Pages/ProfilArtiste.dart';
+import 'package:thebestatoo/Pages/ProfilSalon.dart';
 import 'package:thebestatoo/Pages/ProfilUser.dart';
 import 'package:thebestatoo/Pages/profil.dart';
 import '../Channel.dart';
@@ -88,7 +88,7 @@ class SideBar extends StatelessWidget {
                             title: Text('Mon Profil'),
                             onTap: (){Navigator.pushReplacement(
                                 context,
-                                MaterialPageRoute(builder: (context) => const ProfilArtiste()));
+                                MaterialPageRoute(builder: (context) => const ProfilSalon()));
                             },
                           )
                               :Container(),

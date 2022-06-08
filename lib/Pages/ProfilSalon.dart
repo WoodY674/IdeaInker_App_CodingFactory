@@ -10,26 +10,24 @@ import '../Classes/Shop.dart';
 import '../Classes/User.dart';
 import 'Creations.dart';
 import 'editUser.dart';
-import '../main.dart';
 import 'favoritesPage.dart';
-import 'informationsArtiste.dart';
 import 'informationsUser.dart';
 import 'main.dart';
 
-class ProfilArtiste extends StatefulWidget {
+class ProfilSalon extends StatefulWidget {
   static String route = 'ProfilArtiste';
 
-  const ProfilArtiste({Key? key}) : super(key: key);
+  const ProfilSalon({Key? key}) : super(key: key);
 
   @override
-  _ProfilArtiste createState() => _ProfilArtiste();
+  _ProfilSalon createState() => _ProfilSalon();
 }
 
-class _ProfilArtiste extends State<ProfilArtiste> {
+class _ProfilSalon extends State<ProfilSalon> {
   late User user;
   late Future<User> futureUser;
   late double stars = 0;
-  List<String> labels = ["Créations","Informations"];
+  List<String> labels = ["Créations","Informations","Artistes liés"];
   int currentIndex = 0;
 
   @override
@@ -42,7 +40,7 @@ class _ProfilArtiste extends State<ProfilArtiste> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Profil Artiste'),
+        title: const Text('Profil Salon'),
         backgroundColor: Colors.deepPurple,
         centerTitle: true,
       ),
@@ -132,7 +130,7 @@ class _ProfilArtiste extends State<ProfilArtiste> {
                                 child: Align(
                                   alignment: Alignment.center,
                                   child: RatingBar.builder(itemBuilder: (context,_)=>
-                                      const Icon(Icons.star,color:Colors.yellow),
+                                      Icon(Icons.star,color:Colors.yellow),
                                       itemSize: 50,
                                       onRatingUpdate: (rating){
                                         setState(() {
@@ -164,9 +162,20 @@ class _ProfilArtiste extends State<ProfilArtiste> {
               ];
             },
               body: Container(
-                  child: currentIndex == 0 ?
-                  FavoritesPage(user) :
-                  InformationsArtiste(user)
+                child: LayoutBuilder(builder: (context, constraints) {
+                  if (currentIndex == 0) {
+                    return FavoritesPage(user);
+                  }
+                  else if (currentIndex == 1) {
+                    return InformationsSalon(user);
+                  }
+                  else if (currentIndex == 2) {
+                    return ArtistesLies(user);
+                  }else{
+                    return const CircularProgressIndicator();
+                  }
+                }
+                ),
               ),
             );
           } else if (snapshot.hasError) {
