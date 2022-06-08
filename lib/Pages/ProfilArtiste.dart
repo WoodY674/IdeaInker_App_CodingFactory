@@ -14,7 +14,7 @@ import '../main.dart';
 import 'favoritesPage.dart';
 import 'informationsArtiste.dart';
 import 'informationsUser.dart';
-import 'main.dart';
+import '../main.dart';
 
 class ProfilArtiste extends StatefulWidget {
   static String route = 'ProfilArtiste';

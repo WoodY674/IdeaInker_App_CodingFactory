@@ -6,7 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import '../Classes/Posts.dart';
-import 'main.dart';
+import '../main.dart';
 
 late List<Posts> posts = [];
 

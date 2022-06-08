@@ -12,7 +12,7 @@ import 'Creations.dart';
 import 'editUser.dart';
 import 'favoritesPage.dart';
 import 'informationsUser.dart';
-import 'main.dart';
+import '../main.dart';
 
 class ProfilSalon extends StatefulWidget {
   static String route = 'ProfilArtiste';

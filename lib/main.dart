@@ -14,8 +14,7 @@ import 'package:thebestatoo/Pages/profil.dart';
 import 'package:thebestatoo/Pages/map.dart';
 import 'package:thebestatoo/Pages/home.dart';
 import 'package:streaming_shared_preferences/streaming_shared_preferences.dart';
-
-import 'ProfilArtiste.dart';
+import 'package:thebestatoo/Pages/ProfilArtiste.dart';
 late final StreamingSharedPreferences preferences;
 late final String urlSite;
 late final String urlImage;
