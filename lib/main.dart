@@ -1,5 +1,6 @@
 import 'package:convex_bottom_bar/convex_bottom_bar.dart';
 import 'package:flutter/material.dart';
+import 'package:jwt_decoder/jwt_decoder.dart';
 import 'package:thebestatoo/Channel.dart';
 import 'package:thebestatoo/Pages/ProfilSalon.dart';
 import 'package:thebestatoo/Pages/ProfilUser.dart';
@@ -21,6 +22,11 @@ late final String urlImage;
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   preferences = await StreamingSharedPreferences.instance;
+  bool isTokenExpired = JwtDecoder.isExpired(preferences.getString('token', defaultValue: '').getValue());
+  print(isTokenExpired);
+  if(isTokenExpired == true){
+    Disconnect();
+  }
   urlSite = "http://ideainker.fr/api/";
   urlImage = "http://ideainker.fr/";
   runApp(MyApp());
