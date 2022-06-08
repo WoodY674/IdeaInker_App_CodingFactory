@@ -4,32 +4,33 @@ import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:http/http.dart' as http;
 import 'package:smooth_star_rating/smooth_star_rating.dart';
+import 'package:thebestatoo/Pages/Admin/listAvisAdmin.dart';
 import 'package:thebestatoo/Pages/ArtistesLies.dart';
 import 'package:thebestatoo/Pages/informationsSalon.dart';
 import 'package:thebestatoo/Pages/listAvis.dart';
 import 'package:thebestatoo/Pages/sideBar.dart';
 import 'package:thebestatoo/Pages/toggleBar.dart';
-import '../Classes/Notice.dart';
-import '../Classes/Shop.dart';
-import '../Classes/User.dart';
-import 'Creations.dart';
-import 'editUser.dart';
-import '../main.dart';
-import 'favoritesPage.dart';
-import 'informationsArtiste.dart';
-import 'informationsUser.dart';
-import '../main.dart';
+import '../../Classes/Notice.dart';
+import '../../Classes/Shop.dart';
+import '../../Classes/User.dart';
+import '../Creations.dart';
+import '../editUser.dart';
+import '../../main.dart';
+import '../favoritesPage.dart';
+import '../informationsArtiste.dart';
+import '../informationsUser.dart';
+import '../../main.dart';
 
-class ProfilArtiste extends StatefulWidget {
+class ProfilArtisteAdmin extends StatefulWidget {
   static String route = 'ProfilArtiste';
 
-  const ProfilArtiste({Key? key}) : super(key: key);
+  const ProfilArtisteAdmin({Key? key}) : super(key: key);
 
   @override
-  _ProfilArtiste createState() => _ProfilArtiste();
+  _ProfilArtisteAdmin createState() => _ProfilArtisteAdmin();
 }
 
-class _ProfilArtiste extends State<ProfilArtiste> {
+class _ProfilArtisteAdmin extends State<ProfilArtisteAdmin> {
   late User user;
   late Future<User> futureUser;
   late double stars = 0;
@@ -74,6 +75,18 @@ class _ProfilArtiste extends State<ProfilArtiste> {
                               height: 200,
                               child: Stack(
                                 children: <Widget>[
+                                  Align(
+                                    alignment: Alignment.bottomRight,
+                                    child: IconButton(
+                                      icon: const Icon(Icons.edit),
+                                      onPressed: (){
+                                        Navigator.push(
+                                          context,
+                                          MaterialPageRoute(builder: (context) => const EditUser()),
+                                        );
+                                      },
+                                    ),
+                                  ),
                                   Container(
                                     width: 200,
                                     height: 200,
@@ -90,6 +103,18 @@ class _ProfilArtiste extends State<ProfilArtiste> {
                                 height: 200,
                                 child: Stack(
                                   children: <Widget>[
+                                    Align(
+                                      alignment: Alignment.bottomRight,
+                                      child: IconButton(
+                                        icon: Icon(Icons.edit),
+                                        onPressed: (){
+                                          Navigator.push(
+                                            context,
+                                            MaterialPageRoute(builder: (context) => const EditUser()),
+                                          );
+                                        },
+                                      ),
+                                    ),
                                     Container(
                                       width: 200,
                                       height: 200,
@@ -116,7 +141,7 @@ class _ProfilArtiste extends State<ProfilArtiste> {
                                   onTap: (){
                                     Navigator.push(
                                       context,
-                                      MaterialPageRoute(builder: (context) => ListAvis(snapshot.data!.id)),
+                                      MaterialPageRoute(builder: (context) => ListAvisAdmin(snapshot.data!.id)),
                                     );
                                   },
                                   child: Align(

@@ -5,20 +5,22 @@ import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
+import 'package:smooth_star_rating/smooth_star_rating.dart';
 
 import '../Classes/User.dart';
 import '../main.dart';
 
 class CreateAvis extends StatefulWidget {
   static String route = 'register';
-  const CreateAvis({Key? key}) : super(key: key);
+  final dynamic id;
+  const CreateAvis(this.id,{Key? key}) : super(key: key);
 
   @override
   _CreateAvis createState() => _CreateAvis();
 }
 
 class _CreateAvis extends State<CreateAvis> {
-  late double stars = 0;
+  var rating = 0.0;
   TextEditingController commentController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
   late Future<User> futureUser;
@@ -67,14 +69,24 @@ class _CreateAvis extends State<CreateAvis> {
                     Container(
                         child: Align(
                           alignment: Alignment.center,
-                          child: RatingBar.builder(itemBuilder: (context,_)=>
-                              Icon(Icons.star,color:Colors.amber),
-                              itemSize: 30,
-                              onRatingUpdate: (rating){
-                                setState(() {
-                                  stars = rating;
-                                });
-                              }) ,
+                          child: SmoothStarRating(
+                            rating: rating,
+                            isReadOnly: false,
+                            size: 50,
+                            filledIconData: Icons.star,
+                            halfFilledIconData: Icons.star_half,
+                            defaultIconData: Icons.star_border,
+                            color: Colors.yellow,
+                            borderColor: Colors.deepPurple,
+                            starCount: 5,
+                            allowHalfRating: false,
+                            spacing: 2.0,
+                            onRated: (value) {
+                              setState(() {
+                                rating = value;
+                              });
+                            },
+                          ) ,
                         )
                     ),
                     Container(
@@ -86,7 +98,7 @@ class _CreateAvis extends State<CreateAvis> {
                             if (_formKey.currentState!.validate()) {
                               // If the form is valid, display a snackbar. In the real world,
                               // you'd often call a server or save the information in a database.
-                              CreateAvis(stars, commentController.text, snapshot.data!.id!);
+                              CreateAvis(rating, commentController.text, snapshot.data!.id!);
                             }
                           },
                           style: ButtonStyle(
@@ -111,6 +123,7 @@ class _CreateAvis extends State<CreateAvis> {
 
   }
   Future<void> CreateAvis(double star, String comment, int idUser) async {
+    print("heeeeeeere");
     final response = await http.post(
       Uri.parse(urlSite + 'notices'),// route pour laisser un avis
       headers: <String, String>{
@@ -119,7 +132,7 @@ class _CreateAvis extends State<CreateAvis> {
       body: jsonEncode(<String, String>{
         "stars": star.toString(),
         "comment": comment,
-        "userNoted": "api/users/29",
+        "userNoted": "api/users/" + widget.id.toString(),
         "userNoting": "api/users/" + idUser.toString(),
       }),
     );
@@ -137,6 +150,7 @@ class _CreateAvis extends State<CreateAvis> {
       );
       Navigator.pop(context);
     }else{
+      print(response.body);
       Fluttertoast.showToast(
           msg: "Echec de la création d'un avis",
           toastLength: Toast.LENGTH_SHORT,
