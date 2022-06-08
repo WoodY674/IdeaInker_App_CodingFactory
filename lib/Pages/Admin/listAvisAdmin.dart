@@ -4,18 +4,18 @@ import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:smooth_star_rating/smooth_star_rating.dart';
 import 'package:thebestatoo/Pages/Avis.dart';
-import '../Classes/Notice.dart';
+import '../../Classes/Notice.dart';
 
-class ListAvis extends StatefulWidget {
+class ListAvisAdmin extends StatefulWidget {
   final dynamic id;
-  const ListAvis(this.id, {Key? key}) : super(key: key);
+  const ListAvisAdmin(this.id, {Key? key}) : super(key: key);
   static String route = 'listAvis';
 
   @override
-  _ListAvis createState() => _ListAvis();
+  _ListAvisAdmin createState() => _ListAvisAdmin();
 }
 
-class _ListAvis extends State<ListAvis> {
+class _ListAvisAdmin extends State<ListAvisAdmin> {
   late Future<List<Notice>> futureNotice;
 
   @override
@@ -30,20 +30,6 @@ class _ListAvis extends State<ListAvis> {
       appBar: AppBar(
         title: const Text('Liste des avis'),
         backgroundColor: Colors.deepPurple,
-        actions: <Widget>[
-          IconButton(
-            icon: Icon(Icons.add),
-            onPressed: () async {
-              await Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => CreateAvis(widget.id)),
-              );
-              setState(() {
-                futureNotice = fetchNotice();
-              });
-            },
-          )
-        ],
       ),
       body: FutureBuilder<List<Notice>>(
           future: futureNotice,

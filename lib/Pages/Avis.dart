@@ -12,7 +12,8 @@ import '../main.dart';
 
 class CreateAvis extends StatefulWidget {
   static String route = 'register';
-  const CreateAvis({Key? key}) : super(key: key);
+  final dynamic id;
+  const CreateAvis(this.id,{Key? key}) : super(key: key);
 
   @override
   _CreateAvis createState() => _CreateAvis();
@@ -122,6 +123,7 @@ class _CreateAvis extends State<CreateAvis> {
 
   }
   Future<void> CreateAvis(double star, String comment, int idUser) async {
+    print("heeeeeeere");
     final response = await http.post(
       Uri.parse(urlSite + 'notices'),// route pour laisser un avis
       headers: <String, String>{
@@ -130,7 +132,7 @@ class _CreateAvis extends State<CreateAvis> {
       body: jsonEncode(<String, String>{
         "stars": star.toString(),
         "comment": comment,
-        "userNoted": "api/users/29",
+        "userNoted": "api/users/" + widget.id.toString(),
         "userNoting": "api/users/" + idUser.toString(),
       }),
     );
@@ -148,6 +150,7 @@ class _CreateAvis extends State<CreateAvis> {
       );
       Navigator.pop(context);
     }else{
+      print(response.body);
       Fluttertoast.showToast(
           msg: "Echec de la création d'un avis",
           toastLength: Toast.LENGTH_SHORT,

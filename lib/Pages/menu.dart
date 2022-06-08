@@ -82,25 +82,6 @@ class _Menu extends State<Menu> {
                             height: 50,
                             padding: const EdgeInsets.fromLTRB(30, 15, 30, 0),
                             child: ElevatedButton(
-                              child: const Text('Profil Artiste'),
-                              onPressed: () {
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(builder: (
-                                      context) => const ProfilArtiste()),
-                                );
-                              },
-                              style: ButtonStyle(
-                                  backgroundColor: MaterialStateProperty.all(
-                                      Colors.deepPurple)
-                              ),
-                            )
-                        ):Container(),
-                        user.roles![0] == "ROLE_ADMIN" ?
-                        Container(
-                            height: 50,
-                            padding: const EdgeInsets.fromLTRB(30, 15, 30, 0),
-                            child: ElevatedButton(
                               child: const Text('Créer un post'),
                               onPressed: () {
                                 Navigator.push(
@@ -115,25 +96,6 @@ class _Menu extends State<Menu> {
                               ),
                             )
                         ): Container(),
-                        user.roles![0] == "ROLE_ADMIN" ?
-                        Container(
-                            height: 50,
-                            padding: const EdgeInsets.fromLTRB(30, 15, 30, 0),
-                            child: ElevatedButton(
-                              child: const Text('Liste des avis'),
-                              onPressed: () {
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) => const ListAvis()),
-                                );
-                              },
-                              style: ButtonStyle(
-                                  backgroundColor: MaterialStateProperty.all(
-                                      Colors.deepPurple)
-                              ),
-                            )
-                        ):Container(),
                       ],
                     ),
                   ),
