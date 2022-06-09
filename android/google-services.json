@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "107902095537",
+    "project_id": "ideainker",
+    "storage_bucket": "ideainker.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:107902095537:android:91e28e28c4716dc3785290",
+        "android_client_info": {
+          "package_name": "com.example.thebestatoo"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "107902095537-ibfn5smu28poojrcfd4cvainsu8vqf1r.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB33FlqESSqhObD2i1Cfcw9HapuZHGK_9A"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "107902095537-ibfn5smu28poojrcfd4cvainsu8vqf1r.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
