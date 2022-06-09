@@ -22,7 +22,15 @@ class ListShopUsers extends StatefulWidget {
 }
 
 class _ListShopUsers extends State<ListShopUsers> {
+  TextEditingController searchController = TextEditingController();
   late Future<List<Shop>> futureShop;
+  Icon customIcon = const Icon(Icons.search);
+  Widget customSearchBar = Row(
+    mainAxisAlignment: MainAxisAlignment.center,
+    children: const [
+      Text("Liste des salons"),
+    ],
+  );
   late Shop salonToDelete;
 
   @override
@@ -36,7 +44,60 @@ class _ListShopUsers extends State<ListShopUsers> {
     return Scaffold(
       drawer: SideBar(),
       appBar: AppBar(
-        title: const Text('Liste des salons'),
+        title: customSearchBar,
+        actions: [
+          IconButton(
+            onPressed: () {
+              setState(() {
+                if (customIcon.icon == Icons.search) {
+                  customIcon = const Icon(Icons.cancel);
+                  customSearchBar = ListTile(
+                    leading: const Icon(
+                      Icons.search,
+                      color: Colors.white,
+                      size: 28,
+                    ),
+                    title: TextField(
+                        controller: searchController,
+                        decoration: const InputDecoration(
+                          hintText: 'Recherche',
+                          hintStyle: TextStyle(
+                            color: Colors.white,
+                            fontSize: 18,
+                            fontStyle: FontStyle.italic,
+                          ),
+                          border: InputBorder.none,
+                        ),
+                        style: const TextStyle(
+                          color: Colors.white,
+                        ),
+                        onSubmitted: (String value){
+                          _filter(value);
+                        }
+                    ),
+                  );                } else {
+                  searchController.text = "";
+                  setState(() {
+                    _filter("");
+                  });
+                  customIcon = const Icon(Icons.search);
+                  customSearchBar = Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Image.asset(
+                        'assets/IdeaInkerBanderole.png',
+                        fit: BoxFit.contain,
+                        height: 40,
+                      ),
+                    ],
+                  );
+                }
+              });
+            },
+            icon: customIcon,
+          )
+        ],
+        centerTitle: true,
         backgroundColor: Colors.deepPurple,
       ),
       body: FutureBuilder<List<Shop>>(
@@ -116,5 +177,17 @@ class _ListShopUsers extends State<ListShopUsers> {
           fontSize: 16.0
       );
     }
+  }
+  Future<void> _filter(String searchQuery) async {
+    setState(() {
+      futureShop = getFutureFiltered(searchQuery);
+    });
+  }
+
+  Future<List<Shop>> getFutureFiltered(String searchQuery) async {
+    var postsToGet = fetchShop();
+    List<Shop> shopFiltered =  await postsToGet;
+    shopFiltered = shopFiltered.where((element) => element.name.contains(searchQuery)).toList();
+    return shopFiltered;
   }
 }

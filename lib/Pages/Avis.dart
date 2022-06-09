@@ -123,7 +123,6 @@ class _CreateAvis extends State<CreateAvis> {
 
   }
   Future<void> CreateAvis(double star, String comment, int idUser) async {
-    print("heeeeeeere");
     final response = await http.post(
       Uri.parse(urlSite + 'notices'),// route pour laisser un avis
       headers: <String, String>{
