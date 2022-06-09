@@ -22,10 +22,12 @@ late final String urlImage;
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   preferences = await StreamingSharedPreferences.instance;
-  bool isTokenExpired = JwtDecoder.isExpired(preferences.getString('token', defaultValue: '').getValue());
-  print(isTokenExpired);
-  if(isTokenExpired == true){
-    Disconnect();
+  late String token = preferences.getString('token', defaultValue: '').getValue();
+  if(token != ""){
+    bool isTokenExpired = JwtDecoder.isExpired(token);
+    if(isTokenExpired == true){
+      Disconnect();
+    }
   }
   urlSite = "http://ideainker.fr/api/";
   urlImage = "http://ideainker.fr/";
