@@ -24,9 +24,9 @@ jobs:
       - name: Create key.properties
         run: |
           touch android/key.properties
-        keyPassword=<keyPassword>
-        keyAlias=<keyAlias>
-        storeFile=../key.jks"  > ./android/key.properties
+          keyPassword=<keyPassword>
+          keyAlias=<keyAlias>
+          storeFile=../key.jks"  > ./android/key.properties
       - name: Get dependencies
         run: flutter pub get
       - name: Build APK
