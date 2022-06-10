@@ -24,7 +24,6 @@ jobs:
       - name: Create key.properties
         run: |
           touch android/key.properties
-        echo "storePassword=<storePassword>
         keyPassword=<keyPassword>
         keyAlias=<keyAlias>
         storeFile=../key.jks"  > ./android/key.properties
