@@ -70,12 +70,12 @@ class _ListShopAdmin extends State<ListShopAdmin> {
                       child: Card(
                         child: Column(
                           children: [
-                            currentSalon.salon_image_id != "" ?
+                            currentSalon.salonImage?.imagePath != "" ?
                             Image.asset('assets/photo-salon.png'):
-                            Image.network(currentSalon.salon_image_id!),
+                            Image.network(urlImage + currentSalon.salonImage!.imagePath.toString()),
                             ListTile(
-                              title: Text(currentSalon.name),
-                              subtitle: Text(currentSalon.address + ' ' + currentSalon.zip_code + ' ' + currentSalon.city),
+                              title: Text(currentSalon.name!),
+                              subtitle: Text(currentSalon.address! + ' ' + currentSalon.zipCode! + ' ' + currentSalon.city!),
                               trailing: IconButton(onPressed: () {
                                 deleteShop(currentSalon.id);
                               }, icon: const Icon(Icons.delete)),
@@ -98,7 +98,7 @@ class _ListShopAdmin extends State<ListShopAdmin> {
   Future<void> deleteShop(int? id) async {
     log(id.toString());
     final responseSalon = await http.delete(
-      Uri.parse(urlSite + 'salons/'+id.toString()),
+      Uri.parse(urlSite + 'salon/'+id.toString()),
     );
 
     if (responseSalon.statusCode == 204) {

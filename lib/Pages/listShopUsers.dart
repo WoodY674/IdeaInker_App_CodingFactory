@@ -120,12 +120,12 @@ class _ListShopUsers extends State<ListShopUsers> {
                       child: Card(
                         child: Column(
                           children: [
-                            currentSalon.salon_image_id != "" ?
+                            currentSalon.salonImage?.imagePath != "" ?
                             Image.asset('assets/photo-salon.png'):
-                            Image.network(currentSalon.salon_image_id!),
+                            Image.network(urlImage + currentSalon.salonImage!.imagePath.toString()),
                             ListTile(
-                              title: Text(currentSalon.name),
-                              subtitle: Text(currentSalon.address + ' ' + currentSalon.zip_code + ' ' + currentSalon.city),
+                              title: Text(currentSalon.name!),
+                              subtitle: Text(currentSalon.address! + ' ' + currentSalon.zipCode! + ' ' + currentSalon.city!),
                               isThreeLine: true,
                             )
                           ],
@@ -187,7 +187,7 @@ class _ListShopUsers extends State<ListShopUsers> {
   Future<List<Shop>> getFutureFiltered(String searchQuery) async {
     var postsToGet = fetchShop();
     List<Shop> shopFiltered =  await postsToGet;
-    shopFiltered = shopFiltered.where((element) => element.name.contains(searchQuery)).toList();
+    shopFiltered = shopFiltered.where((element) => element.name!.contains(searchQuery)).toList();
     return shopFiltered;
   }
 }

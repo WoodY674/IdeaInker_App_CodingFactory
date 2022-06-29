@@ -59,8 +59,8 @@ class _EditUser extends State<EditUser> {
               firstNameController.text = snapshot.data!.firstName.toString();
               lastNameController.text = snapshot.data!.lastName.toString();
               emailController.text = snapshot.data!.email.toString();
-              snapshot.data!.adress != null ?
-              addressController.text = snapshot.data!.adress.toString() : addressController.text = "";
+              snapshot.data!.address != null ?
+              addressController.text = snapshot.data!.address.toString() : addressController.text = "";
               snapshot.data!.zipCode != null ?
               zipCodeController.text = snapshot.data!.zipCode.toString() : zipCodeController.text = "";
               snapshot.data!.city != null ?

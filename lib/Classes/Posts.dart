@@ -5,7 +5,7 @@ import 'package:http/http.dart' as http;
 
 import '../main.dart';
 
-final String url = "http://ideainker.fr/api/" + "posts";
+final String url = urlSite + "post";
 
 List<Posts> parsePosts(String responseBody){
   var list = json.decode(responseBody) as List<dynamic>;
@@ -34,7 +34,7 @@ class Posts {
   String? content;
   String? createdAt;
   Images? image;
-  String? createdBy;
+  CreatedBy? createdBy;
 
   Posts(
       {this.id, this.content, this.createdAt, this.image, this.createdBy});
@@ -44,7 +44,9 @@ class Posts {
     content = json['content'];
     createdAt = json['createdAt'];
     image = json['image'] != null ? new Images.fromJson(json['image']) : null;
-    createdBy = json['createdBy'];
+    createdBy = json['created_by'] != null
+        ? new CreatedBy.fromJson(json['created_by'])
+        : null;
   }
 
   Map<String, dynamic> toJson() {
@@ -55,23 +57,91 @@ class Posts {
     if (this.image != null) {
       data['image'] = this.image!.toJson();
     }
-    data['createdBy'] = this.createdBy;
+    if (this.createdBy != null) {
+      data['created_by'] = this.createdBy!.toJson();
+    }
     return data;
   }
 }
 
 class Images {
+  int? id;
+  String? imageName;
+  String? updatedAt;
   String? imagePath;
 
-  Images({this.imagePath});
+  Images({this.id, this.imageName, this.updatedAt, this.imagePath});
 
   Images.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
+    imageName = json['imageName'];
+    updatedAt = json['updatedAt'];
     imagePath = json['imagePath'];
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['id'] = this.id;
+    data['imageName'] = this.imageName;
+    data['updatedAt'] = this.updatedAt;
     data['imagePath'] = this.imagePath;
+    return data;
+  }
+}
+
+class CreatedBy {
+  int? id;
+  String? email;
+  String? lastName;
+  String? firstName;
+  String? address;
+  Null? zipCode;
+  String? city;
+  Null? birthday;
+  String? createdAt;
+  String? pseudo;
+  Null? profileImage;
+
+  CreatedBy(
+      {this.id,
+        this.email,
+        this.lastName,
+        this.firstName,
+        this.address,
+        this.zipCode,
+        this.city,
+        this.birthday,
+        this.createdAt,
+        this.pseudo,
+        this.profileImage});
+
+  CreatedBy.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
+    email = json['email'];
+    lastName = json['lastName'];
+    firstName = json['firstName'];
+    address = json['address'];
+    zipCode = json['zipCode'];
+    city = json['city'];
+    birthday = json['birthday'];
+    createdAt = json['createdAt'];
+    pseudo = json['pseudo'];
+    profileImage = json['profile_image'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['id'] = this.id;
+    data['email'] = this.email;
+    data['lastName'] = this.lastName;
+    data['firstName'] = this.firstName;
+    data['address'] = this.address;
+    data['zipCode'] = this.zipCode;
+    data['city'] = this.city;
+    data['birthday'] = this.birthday;
+    data['createdAt'] = this.createdAt;
+    data['pseudo'] = this.pseudo;
+    data['profile_image'] = this.profileImage;
     return data;
   }
 }

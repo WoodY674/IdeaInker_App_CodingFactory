@@ -52,10 +52,10 @@ class _MyGoogleMapState extends State<MyGoogleMap> {
       for (final office in shopsMarkers) {
         final marker = Marker(
           markerId: MarkerId("${office.id}"),
-          position: LatLng(double.parse(office.latitude), double.parse(office.longitude)),
+          position: LatLng(double.parse(office.latitude!), double.parse(office.longitude!)),
           infoWindow: InfoWindow(
             title: office.name,
-            snippet: office.address + " " + office.zip_code + " " + office.city,
+            snippet: office.address! + " " + office.zipCode! + " " + office.city!,
             onTap: (){
               Navigator.push(
                   context,
