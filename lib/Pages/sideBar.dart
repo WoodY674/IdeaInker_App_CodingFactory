@@ -7,7 +7,8 @@ import 'package:thebestatoo/Pages/ProfilUser.dart';
 import 'package:thebestatoo/Pages/Admin/listShopAdmin.dart';
 import 'package:thebestatoo/Pages/listShopUsers.dart';
 import 'package:thebestatoo/Pages/profil.dart';
-import '../Channel.dart';
+import 'package:thebestatoo/Pages/ChannelPage.dart';
+import 'ChannelPage.dart';
 import '../Classes/User.dart';
 import 'Admin/ProfilArtisteAdmin.dart';
 import 'home.dart';
@@ -65,6 +66,14 @@ class SideBar extends StatelessWidget {
                                 MaterialPageRoute(builder: (context) => const MyMap()));
                             },
                           ),
+                          ListTile(
+                            leading: Icon(Icons.chat_bubble),
+                            title: Text('Messages'),
+                            onTap: (){Navigator.pushReplacement(
+                                context,
+                                MaterialPageRoute(builder: (context) => ChannelPage()));
+                            },
+                          ),
                           user.roles![0] == "ROLE_ADMIN" ?
                           ListTile(
                             leading: Icon(Icons.shop),
@@ -87,7 +96,7 @@ class SideBar extends StatelessWidget {
                             title: Text('Messages'),
                             onTap: (){Navigator.pushReplacement(
                                 context,
-                                MaterialPageRoute(builder: (context) => Channel()));
+                                MaterialPageRoute(builder: (context) => ChannelPage()));
                             },
                           ):Container(),
                           user.roles![0] == "ROLE_SHOP" ?

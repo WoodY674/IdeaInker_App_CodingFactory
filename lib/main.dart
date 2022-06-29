@@ -2,7 +2,7 @@
 import 'package:convex_bottom_bar/convex_bottom_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:jwt_decoder/jwt_decoder.dart';
-import 'package:thebestatoo/Channel.dart';
+import 'package:thebestatoo/Pages/ChannelPage.dart';
 import 'package:thebestatoo/Pages/ProfilSalon.dart';
 import 'package:thebestatoo/Pages/ProfilUser.dart';
 import 'package:thebestatoo/Pages/Avis.dart';
@@ -73,7 +73,7 @@ class _MainPageState extends State<MainPage> {
         ProfilUser.route: (context) => const ProfilUser(),
         ProfilArtiste.route: (context) => const ProfilArtiste(),
         Profil.route: (context) => const Profil(),
-        Channel.route: (context) => Channel(),
+        ChannelPage.route: (context) => ChannelPage(),
         PostsPage.route:(context) => const PostsPage(),
       },
       home: Scaffold(
