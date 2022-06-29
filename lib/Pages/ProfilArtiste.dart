@@ -134,7 +134,7 @@ class _ProfilArtiste extends State<ProfilArtiste> {
                                       starCount: 5,
                                       allowHalfRating: false,
                                       spacing: 2.0,
-                                    )  ,
+                                    ),
                                   ),
                                 )
                             ),
