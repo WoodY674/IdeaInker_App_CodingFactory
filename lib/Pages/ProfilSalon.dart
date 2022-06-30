@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:http/http.dart' as http;
+import 'package:smooth_star_rating/smooth_star_rating.dart';
 import 'package:thebestatoo/Pages/ArtistesLies.dart';
 import 'package:thebestatoo/Pages/informationsSalon.dart';
 import 'package:thebestatoo/Pages/postsPage.dart';
@@ -14,6 +15,7 @@ import 'editUser.dart';
 import 'favoritesPage.dart';
 import 'informationsUser.dart';
 import '../main.dart';
+import 'listAvis.dart';
 
 class ProfilSalon extends StatefulWidget {
   static String route = 'ProfilArtiste';
@@ -28,6 +30,7 @@ class _ProfilSalon extends State<ProfilSalon> {
   List<String> labels = ["Créations","Informations","Artistes liés"];
   int currentIndex = 0;
   late Shop shop;
+  late double meanStars = 0.0;
 
   @override
   void initState() {
@@ -97,16 +100,29 @@ class _ProfilSalon extends State<ProfilSalon> {
                               ),
                             ),
                             Container(
-                                child: Align(
-                                  alignment: Alignment.center,
-                                  child: RatingBar.builder(itemBuilder: (context,_)=>
-                                      Icon(Icons.star,color:Colors.yellow),
-                                      itemSize: 50,
-                                      onRatingUpdate: (rating){
-                                        setState(() {
-                                          stars = rating;
-                                        });
-                                      }) ,
+                                child: GestureDetector(
+                                  onTap: (){
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(builder: (context) => ListAvis(shop.name)),
+                                    );
+                                  },
+                                  child: Align(
+                                    alignment: Alignment.center,
+                                    child: SmoothStarRating(
+                                      rating: meanStars,
+                                      isReadOnly: true,
+                                      size: 50,
+                                      filledIconData: Icons.star,
+                                      halfFilledIconData: Icons.star_half,
+                                      defaultIconData: Icons.star_border,
+                                      color: Colors.yellow,
+                                      borderColor: Colors.yellow,
+                                      starCount: 5,
+                                      allowHalfRating: false,
+                                      spacing: 2.0,
+                                    ),
+                                  ),
                                 )
                             ),
                             Container(
