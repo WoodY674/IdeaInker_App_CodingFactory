@@ -7,8 +7,8 @@ import 'package:thebestatoo/Pages/ProfilUser.dart';
 import 'package:thebestatoo/Pages/Admin/listShopAdmin.dart';
 import 'package:thebestatoo/Pages/listShopUsers.dart';
 import 'package:thebestatoo/Pages/profil.dart';
-import 'package:thebestatoo/Pages/ChannelPage.dart';
-import 'ChannelPage.dart';
+import '../Channel.dart';
+import '../Classes/Shop.dart';
 import '../Classes/User.dart';
 import 'Admin/ProfilArtisteAdmin.dart';
 import 'home.dart';
@@ -19,6 +19,7 @@ import 'package:http/http.dart' as http;
 
 class SideBar extends StatelessWidget {
   late Future<User> futureUser = fetchUser();
+  late Future<Shop> futureShop;
   @override
   Widget build(BuildContext context) {
     return PreferenceBuilder<String>(
@@ -66,14 +67,6 @@ class SideBar extends StatelessWidget {
                                 MaterialPageRoute(builder: (context) => const MyMap()));
                             },
                           ),
-                          ListTile(
-                            leading: Icon(Icons.chat_bubble),
-                            title: Text('Messages'),
-                            onTap: (){Navigator.pushReplacement(
-                                context,
-                                MaterialPageRoute(builder: (context) => ChannelPage()));
-                            },
-                          ),
                           user.roles![0] == "ROLE_ADMIN" ?
                           ListTile(
                             leading: Icon(Icons.shop),
@@ -96,19 +89,18 @@ class SideBar extends StatelessWidget {
                             title: Text('Messages'),
                             onTap: (){Navigator.pushReplacement(
                                 context,
-                                MaterialPageRoute(builder: (context) => ChannelPage()));
+                                MaterialPageRoute(builder: (context) => Channel()));
                             },
                           ):Container(),
                           user.roles![0] == "ROLE_SHOP" ?
                           ListTile(
                             leading: Icon(Icons.verified_user),
                             title: Text('Mon Profil'),
-                            onTap: (){Navigator.pushReplacement(
+                            onTap: (){/*Navigator.pushReplacement(
                                 context,
-                                MaterialPageRoute(builder: (context) => ProfilSalon(user)));
-                            },
-                          )
-                              :Container(),
+                                MaterialPageRoute(builder: (context) => ProfilSalon()));
+                            */},
+                          ):Container(),
                           user.roles![0] == "ROLE_ARTIST" ?
                           ListTile(
                             leading: Icon(Icons.verified_user),
@@ -128,7 +120,7 @@ class SideBar extends StatelessWidget {
                                 MaterialPageRoute(builder: (context) => const ProfilUser()));
                             },
                           )
-                          : Container(),
+                              : Container(),
                           const Divider(),
                           tokenPref != '' ? ListTile(
                             title: const Text('Se déconnecter'),
@@ -178,6 +170,14 @@ class SideBar extends StatelessWidget {
                             onTap: (){Navigator.pushReplacement(
                                 context,
                                 MaterialPageRoute(builder: (context) => const MyMap()));
+                            },
+                          ),
+                          ListTile(
+                            leading: Icon(Icons.shop),
+                            title: Text('Liste des shops'),
+                            onTap: (){Navigator.pushReplacement(
+                                context,
+                                MaterialPageRoute(builder: (context) => const ListShopUsers()));
                             },
                           ),
                           tokenPref != '' ? ListTile(

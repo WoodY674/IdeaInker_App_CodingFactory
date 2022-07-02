@@ -53,7 +53,7 @@ class _ProfilSalon extends State<ProfilSalon> {
                         child: Column(
                           children: [
                             const SizedBox(height: 10),
-                            shop.salon_image_id != null ?
+                            shop.salonImage != null ?
                             Container(
                               width: 200,
                               height: 200,
@@ -63,7 +63,7 @@ class _ProfilSalon extends State<ProfilSalon> {
                                     width: 200,
                                     height: 200,
                                     child: CircleAvatar(
-                                      backgroundImage: NetworkImage(shop.salon_image_id!),
+                                      backgroundImage: NetworkImage(urlImage + shop.salonImage!.imagePath.toString()),
                                     ),
                                   ),
                                 ],
@@ -87,7 +87,7 @@ class _ProfilSalon extends State<ProfilSalon> {
                               ),
                             ),
                             Container(
-                              child: Text(shop.name,
+                              child: Text(shop.name!,
                                 textAlign: TextAlign.center,
                                 style: const TextStyle(
                                     height: 2,

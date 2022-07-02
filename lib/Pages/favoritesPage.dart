@@ -71,7 +71,7 @@ class FavoritesPage extends StatelessWidget {
   }
 
   List<Posts> filteredPosts(List<Posts> posts) {
-    List<Posts> postFiltered = posts.where((element) => element.createdBy!.contains(users.id.toString())).toList();
+    List<Posts> postFiltered = posts.where((element) => element.createdBy?.id! == users.id).toList();
     return postFiltered;
   }
 }

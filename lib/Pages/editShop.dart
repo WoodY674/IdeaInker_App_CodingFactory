@@ -32,20 +32,11 @@ class _EditShop extends State<EditShop> {
   void initState() {
     super.initState();
     futureShop = widget.shop;
-    nameController.text = futureShop.name;
-    addressController.text = futureShop.address;
-    zipCodeController.text = futureShop.zip_code;
-    cityController.text = futureShop.city;
+    nameController.text = futureShop.name!;
+    addressController.text = futureShop.address!;
+    zipCodeController.text = futureShop.zipCode!;
+    cityController.text = futureShop.city!;
   }
-
-
-
-  /*
-  final String name;
-  final String address;
-  final String zip_code;
-  final String city;
-  */
 
   late User user;
   String imagePath = "";
@@ -193,7 +184,7 @@ class _EditShop extends State<EditShop> {
                             zipCodeController.text,
                             cityController.text,
                             fileInBase64,
-                            futureShop.id
+                            futureShop.id!
                         );
                       }
                     },
