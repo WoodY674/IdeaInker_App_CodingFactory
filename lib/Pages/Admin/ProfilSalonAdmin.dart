@@ -149,7 +149,7 @@ class _ProfilSalonAdmin extends State<ProfilSalonAdmin> {
                                   onTap: (){
                                     Navigator.push(
                                       context,
-                                      MaterialPageRoute(builder: (context) => ListAvis(shop.name)),
+                                      MaterialPageRoute(builder: (context) => ListAvis(shop.notices,shop.id)),
                                     );
                                   },
                                   child: Align(

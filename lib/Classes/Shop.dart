@@ -43,7 +43,6 @@ Future<List<Shop>> fetchShop() async {
       HttpHeaders.authorizationHeader: "Bearer $token",
     },
   );
-print(response.statusCode);
   if (response.statusCode == 200) {
     // If the server did return a 200 OK response,
     // then parse the JSON.
@@ -222,7 +221,7 @@ class Manager {
 
 class Notices {
   List<AllNotices>? allNotices;
-  double? average;
+  int? average;
 
   Notices({this.allNotices, this.average});
 
