@@ -4,15 +4,16 @@ import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
 import 'package:streaming_shared_preferences/streaming_shared_preferences.dart';
 import '../main.dart';
+import 'User.dart';
 
-
-final String url = urlSite +"channels";
+final String url = urlSite +"channel";
 List<Channel> parseChannel(String responseBody){
   var list = json.decode(responseBody) as List<dynamic>;
   var channels = list.map((e) => Channel.fromJson(e)).toList();
   print(channels);
   return channels;
 }
+
 
 
 Future<List<Channel>> fetchChannel() async {
@@ -34,6 +35,10 @@ Future<List<Channel>> fetchChannel() async {
   } else {
     // If the server did not return a 200 OK response,
     // then throw an exception.
+
+    print('Connection Failed');
+    print(response.statusCode);
+    print(url);
     throw Exception(response.statusCode);
   }
 }
@@ -49,7 +54,6 @@ class Channel {
         this.id,
         this.usersInside,
         this.messages
-
       });
 
   factory Channel.fromJson(Map<String, dynamic> json) {

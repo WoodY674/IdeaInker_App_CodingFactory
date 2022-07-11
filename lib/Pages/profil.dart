@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:thebestatoo/Classes/User.dart';
 import 'package:thebestatoo/main.dart';
 import 'package:thebestatoo/Pages/sideBar.dart';
 import '../Classes/Token.dart';
@@ -131,6 +132,7 @@ class _Profil extends State<Profil> {
           ),
         ),
       ),
+
     );
   }
 

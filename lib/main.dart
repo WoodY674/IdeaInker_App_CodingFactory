@@ -16,6 +16,7 @@ import 'package:thebestatoo/Pages/map.dart';
 import 'package:thebestatoo/Pages/home.dart';
 import 'package:streaming_shared_preferences/streaming_shared_preferences.dart';
 import 'package:thebestatoo/Pages/ProfilArtiste.dart';
+import 'package:thebestatoo/chat/chatAppBar.dart';
 late final StreamingSharedPreferences preferences;
 late final String urlSite;
 late final String urlImage;
@@ -76,6 +77,7 @@ class _MainPageState extends State<MainPage> {
         Profil.route: (context) => const Profil(),
         ChannelPage.route: (context) => ChannelPage(),
         PostsPage.route:(context) => const PostsPage(),
+        Chat.route:(context) => const Chat(),
       },
       home: Scaffold(
         body: currentPage,

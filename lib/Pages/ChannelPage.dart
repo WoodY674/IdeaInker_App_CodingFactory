@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:thebestatoo/Classes/Channel.dart';
 import 'package:thebestatoo/Classes/User.dart';
+import 'package:thebestatoo/chat/chatAppBar.dart';
 import 'package:thebestatoo/chat/components/body.dart';
 import 'package:thebestatoo/main.dart';
 import 'package:thebestatoo/Pages/sideBar.dart';
@@ -89,11 +90,11 @@ class _ChannelPage extends State<ChannelPage> {
                                 });
                                 return GestureDetector(
                                   onTap: () {
-                                    // Navigator.push(
-                                    //   context,
-                                    //   MaterialPageRoute(
-                                    //       builder: (context) => ProfilSalon(currentSalon)),
-                                    // );
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) => Chat()),
+                                    );
                                   },
                                   child: Card(
                                     child: Column(
@@ -120,6 +121,7 @@ class _ChannelPage extends State<ChannelPage> {
 
               );
             } else {
+              print('loading');
               return const CircularProgressIndicator();
             }
           }
