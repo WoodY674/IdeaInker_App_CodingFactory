@@ -10,7 +10,6 @@ import 'package:thebestatoo/Pages/profil.dart';
 import '../Channel.dart';
 import '../Classes/Shop.dart';
 import '../Classes/User.dart';
-import 'Admin/ProfilArtisteAdmin.dart';
 import 'home.dart';
 import '../main.dart';
 import 'map.dart';
@@ -108,7 +107,7 @@ class SideBar extends StatelessWidget {
                             title: Text('Mon Profil'),
                             onTap: (){Navigator.pushReplacement(
                                 context,
-                                MaterialPageRoute(builder: (context) => ProfilArtisteAdmin()));
+                                MaterialPageRoute(builder: (context) => ProfilArtiste()));
                             },
                           )
                               :Container(),

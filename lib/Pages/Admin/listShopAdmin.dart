@@ -11,7 +11,7 @@ import 'package:thebestatoo/Pages/sideBar.dart';
 import 'package:thebestatoo/main.dart';
 import 'dart:io';
 import '../../Classes/Shop.dart';
-import 'ProfilSalonAdmin.dart';
+import '../ProfilSalon.dart';
 
 class ListShopAdmin extends StatefulWidget {
   const ListShopAdmin({Key? key}) : super(key: key);
@@ -64,7 +64,7 @@ class _ListShopAdmin extends State<ListShopAdmin> {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => ProfilSalonAdmin(currentSalon.id)),
+                              builder: (context) => ProfilSalon(currentSalon.id)),
                         );
                       },
                       child: Card(

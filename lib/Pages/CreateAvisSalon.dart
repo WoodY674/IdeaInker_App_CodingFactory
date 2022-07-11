@@ -10,16 +10,16 @@ import 'package:smooth_star_rating/smooth_star_rating.dart';
 import '../Classes/User.dart';
 import '../main.dart';
 
-class CreateAvis extends StatefulWidget {
+class CreateAvisSalon extends StatefulWidget {
   static String route = 'register';
   final dynamic id;
-  const CreateAvis(this.id,{Key? key}) : super(key: key);
+  const CreateAvisSalon(this.id,{Key? key}) : super(key: key);
 
   @override
-  _CreateAvis createState() => _CreateAvis();
+  _CreateAvisSalon createState() => _CreateAvisSalon();
 }
 
-class _CreateAvis extends State<CreateAvis> {
+class _CreateAvisSalon extends State<CreateAvisSalon> {
   var rating = 0.0;
   TextEditingController commentController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
@@ -135,7 +135,7 @@ class _CreateAvis extends State<CreateAvis> {
         "user_noting": idUser.toString(),
       }),
     );
-    if (response.statusCode == 200) {
+    if (response.statusCode == 201) {
       // If the server did return a 201 CREATED response,
       // then parse the JSON.
       Fluttertoast.showToast(

@@ -114,7 +114,7 @@ class _ProfilSalon extends State<ProfilSalon> {
                                       onTap: (){
                                         Navigator.push(
                                           context,
-                                          MaterialPageRoute(builder: (context) => ListAvis(shop.notices,shop.id)),
+                                          MaterialPageRoute(builder: (context) => ListAvis(shop.notices,shop.id,"Shop")),
                                         );
                                       },
                                       child: Align(

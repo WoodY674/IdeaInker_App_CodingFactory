@@ -3,13 +3,16 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:smooth_star_rating/smooth_star_rating.dart';
 import 'package:thebestatoo/Classes/Shop.dart';
-import 'package:thebestatoo/Pages/Avis.dart';
+import 'package:thebestatoo/Pages/CreateAvisArtist.dart';
+
+import '../Classes/Notice.dart';
+import 'CreateAvisSalon.dart';
 
 class ListAvis extends StatefulWidget {
   final dynamic notices;
   final dynamic id;
-
-  const ListAvis(this.notices,this.id, {Key? key}) : super(key: key);
+  final dynamic role;
+  const ListAvis(this.notices,this.id,this.role, {Key? key}) : super(key: key);
   static String route = 'listAvis';
 
   @override
@@ -35,12 +38,17 @@ class _ListAvis extends State<ListAvis> {
           IconButton(
             icon: const Icon(Icons.add),
             onPressed: () async {
-              await Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => CreateAvis(widget.id)),
-              );
-              setState(() {
-              });
+              if(widget.role == "Artist"){
+                await Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => CreateAvisArtist(widget.id)),
+                );
+              }else if(widget.role == "Shop"){
+                await Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => CreateAvisSalon(widget.id)),
+                );
+              }
             },
           )
         ],
