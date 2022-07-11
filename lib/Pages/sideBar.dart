@@ -96,10 +96,11 @@ class SideBar extends StatelessWidget {
                           ListTile(
                             leading: Icon(Icons.verified_user),
                             title: Text('Mon Profil'),
-                            onTap: (){/*Navigator.pushReplacement(
+                            onTap: (){
+                              Navigator.pushReplacement(
                                 context,
-                                MaterialPageRoute(builder: (context) => ProfilSalon()));
-                            */},
+                                MaterialPageRoute(builder: (context) => ProfilSalon(user.salons![0].id)));
+                            },
                           ):Container(),
                           user.roles![0] == "ROLE_ARTIST" ?
                           ListTile(

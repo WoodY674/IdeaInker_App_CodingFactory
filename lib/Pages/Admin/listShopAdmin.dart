@@ -64,7 +64,7 @@ class _ListShopAdmin extends State<ListShopAdmin> {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => ProfilSalonAdmin(currentSalon)),
+                              builder: (context) => ProfilSalonAdmin(currentSalon.id)),
                         );
                       },
                       child: Card(

@@ -5,7 +5,7 @@ class CoordinatesStore{
   late String latitude;
   late String longitude;
   late String salon;
-  
+
   CoordinatesStore(Map map){
     id = map["id"];
     company = map["company"];

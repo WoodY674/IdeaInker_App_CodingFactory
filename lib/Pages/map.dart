@@ -59,7 +59,7 @@ class _MyGoogleMapState extends State<MyGoogleMap> {
             onTap: (){
               Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) =>  ProfilSalon(office)));
+                  MaterialPageRoute(builder: (context) =>  ProfilSalon(office.id)));
             }
           ),
         );

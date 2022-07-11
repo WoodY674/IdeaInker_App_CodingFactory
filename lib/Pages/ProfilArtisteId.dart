@@ -21,16 +21,16 @@ import 'informationsArtiste.dart';
 import 'informationsUser.dart';
 import '../main.dart';
 
-class ProfilArtiste extends StatefulWidget {
-  static String route = 'ProfilArtiste';
-
-  const ProfilArtiste({Key? key}) : super(key: key);
+class ProfilArtisteId extends StatefulWidget {
+  static String route = 'ProfilArtisteId';
+  final dynamic id;
+  const ProfilArtisteId(this.id,{Key? key}) : super(key: key);
 
   @override
-  _ProfilArtiste createState() => _ProfilArtiste();
+  _ProfilArtisteId createState() => _ProfilArtisteId();
 }
 
-class _ProfilArtiste extends State<ProfilArtiste> {
+class _ProfilArtisteId extends State<ProfilArtisteId> {
   late User user;
   late Future<User> futureUser;
   late double stars = 0;
@@ -41,7 +41,7 @@ class _ProfilArtiste extends State<ProfilArtiste> {
   @override
   void initState() {
     super.initState();
-    futureUser = fetchUser();
+    futureUser = fetchUserIndividual(widget.id);
   }
 
   @override
