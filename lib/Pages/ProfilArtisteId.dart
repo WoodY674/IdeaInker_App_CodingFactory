@@ -119,7 +119,7 @@ class _ProfilArtisteId extends State<ProfilArtisteId> {
                                   onTap: (){
                                     Navigator.push(
                                       context,
-                                      MaterialPageRoute(builder: (context) => ListAvis(snapshot.data!.id)),
+                                      MaterialPageRoute(builder: (context) => ListAvis(snapshot.data!.notices,snapshot.data!.id)),
                                     );
                                   },
                                   child: Align(

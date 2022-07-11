@@ -124,18 +124,18 @@ class _CreateAvis extends State<CreateAvis> {
   }
   Future<void> CreateAvis(double star, String comment, int idUser) async {
     final response = await http.post(
-      Uri.parse(urlSite + 'notices'),// route pour laisser un avis
+      Uri.parse(urlSite + 'notice/'),// route pour laisser un avis
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
       },
       body: jsonEncode(<String, String>{
         "stars": star.toString(),
         "comment": comment,
-        "userNoted": "api/users/" + widget.id.toString(),
-        "userNoting": "api/users/" + idUser.toString(),
+        "salon_noted": widget.id.toString(),
+        "user_noting": idUser.toString(),
       }),
     );
-    if (response.statusCode == 201) {
+    if (response.statusCode == 200) {
       // If the server did return a 201 CREATED response,
       // then parse the JSON.
       Fluttertoast.showToast(

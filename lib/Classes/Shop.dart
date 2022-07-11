@@ -1,4 +1,5 @@
 import 'dart:developer';
+import 'dart:ffi';
 import 'dart:io';
 import 'dart:convert';
 import 'dart:math';
@@ -42,7 +43,7 @@ Future<List<Shop>> fetchShop() async {
       HttpHeaders.authorizationHeader: "Bearer $token",
     },
   );
-
+print(response.statusCode);
   if (response.statusCode == 200) {
     // If the server did return a 200 OK response,
     // then parse the JSON.
@@ -221,7 +222,7 @@ class Manager {
 
 class Notices {
   List<AllNotices>? allNotices;
-  int? average;
+  double? average;
 
   Notices({this.allNotices, this.average});
 
