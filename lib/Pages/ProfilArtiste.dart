@@ -42,7 +42,6 @@ class _ProfilArtiste extends State<ProfilArtiste> {
   void initState() {
     super.initState();
     futureUser = fetchUser();
-    getMeanStarsArtiste(6);
   }
 
   @override
@@ -59,6 +58,9 @@ class _ProfilArtiste extends State<ProfilArtiste> {
         builder: (context, snapshot) {
           if (snapshot.hasData) {
             user = snapshot.data!;
+            if(user.notices != null){
+              meanStars = double.parse(user.notices!.average.toString());
+            }
             return NestedScrollView(headerSliverBuilder: (context, _) {
               return [
                 SliverList(
@@ -117,7 +119,7 @@ class _ProfilArtiste extends State<ProfilArtiste> {
                                   onTap: (){
                                     Navigator.push(
                                       context,
-                                      MaterialPageRoute(builder: (context) => ListAvis(snapshot.data!.id)),
+                                      MaterialPageRoute(builder: (context) => ListAvis(snapshot.data!.notices,snapshot.data!.id,"Artist")),
                                     );
                                   },
                                   child: Align(
@@ -134,7 +136,7 @@ class _ProfilArtiste extends State<ProfilArtiste> {
                                       starCount: 5,
                                       allowHalfRating: false,
                                       spacing: 2.0,
-                                    )  ,
+                                    ),
                                   ),
                                 )
                             ),
@@ -174,25 +176,5 @@ class _ProfilArtiste extends State<ProfilArtiste> {
         },
       ),
     );
-  }
-
-  Future<void> getMeanStarsArtiste(int id) async {
-    final response = await http.get(
-      Uri.parse(urlSite + 'notices'),
-      headers: <String, String>{
-        'Content-Type': 'application/json; charset=UTF-8',
-      },
-    );
-    print(response.toString());
-    List<Notice> notices = parseNotice(response.body);
-    List<Notice> noticesFiltered = notices.where((element) => element.userNoting.contains(id.toString())).toList();
-    late double allStars = 0.0;
-    for (Notice notice in noticesFiltered) {
-      allStars = allStars + double.parse(notice.stars.toString());
-    }
-    late double finalNotice = allStars / notices.length;
-    setState(() {
-      meanStars = finalNotice;
-    });
   }
 }

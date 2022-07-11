@@ -114,7 +114,7 @@ class _ListShopUsers extends State<ListShopUsers> {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => ProfilSalon(currentSalon)),
+                              builder: (context) => ProfilSalon(currentSalon.id)),
                         );
                     },
                       child: Card(

@@ -10,16 +10,16 @@ import 'package:smooth_star_rating/smooth_star_rating.dart';
 import '../Classes/User.dart';
 import '../main.dart';
 
-class CreateAvis extends StatefulWidget {
+class CreateAvisSalon extends StatefulWidget {
   static String route = 'register';
   final dynamic id;
-  const CreateAvis(this.id,{Key? key}) : super(key: key);
+  const CreateAvisSalon(this.id,{Key? key}) : super(key: key);
 
   @override
-  _CreateAvis createState() => _CreateAvis();
+  _CreateAvisSalon createState() => _CreateAvisSalon();
 }
 
-class _CreateAvis extends State<CreateAvis> {
+class _CreateAvisSalon extends State<CreateAvisSalon> {
   var rating = 0.0;
   TextEditingController commentController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
@@ -124,15 +124,15 @@ class _CreateAvis extends State<CreateAvis> {
   }
   Future<void> CreateAvis(double star, String comment, int idUser) async {
     final response = await http.post(
-      Uri.parse(urlSite + 'notices'),// route pour laisser un avis
+      Uri.parse(urlSite + 'notice/'),// route pour laisser un avis
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
       },
       body: jsonEncode(<String, String>{
         "stars": star.toString(),
         "comment": comment,
-        "userNoted": "api/users/" + widget.id.toString(),
-        "userNoting": "api/users/" + idUser.toString(),
+        "salon_noted": widget.id.toString(),
+        "user_noting": idUser.toString(),
       }),
     );
     if (response.statusCode == 201) {

@@ -5,7 +5,7 @@ import 'package:jwt_decoder/jwt_decoder.dart';
 import 'package:thebestatoo/Pages/ChannelPage.dart';
 import 'package:thebestatoo/Pages/ProfilSalon.dart';
 import 'package:thebestatoo/Pages/ProfilUser.dart';
-import 'package:thebestatoo/Pages/Avis.dart';
+import 'package:thebestatoo/Pages/CreateAvisArtist.dart';
 import 'package:thebestatoo/Pages/addShop.dart';
 import 'package:thebestatoo/Pages/createaccount.dart';
 import 'package:thebestatoo/Pages/editUser.dart';

@@ -1,4 +1,5 @@
 import 'dart:developer';
+import 'dart:ffi';
 import 'dart:io';
 import 'dart:convert';
 import 'dart:math';
@@ -6,6 +7,7 @@ import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
 import 'package:streaming_shared_preferences/streaming_shared_preferences.dart';
 import '../main.dart';
+import 'Notice.dart';
 
 final String url = urlSite +"salon/";
 List<Shop> parseShop(String responseBody){
@@ -17,12 +19,11 @@ List<Shop> parseShop(String responseBody){
 Future<Shop> fetchShopIndividual(idShop) async {
   final token = preferences.getString('token', defaultValue: '').getValue();
   final response = await http
-      .get(Uri.parse('http://ideainker.fr' + idShop),
+      .get(Uri.parse(urlSite + 'salon/' + idShop.toString()),
     headers: {
       HttpHeaders.authorizationHeader: "Bearer $token",
     },
   );
-
   if (response.statusCode == 200) {
     // If the server did return a 200 OK response,
     // then parse the JSON.
@@ -43,8 +44,8 @@ Future<List<Shop>> fetchShop() async {
       HttpHeaders.authorizationHeader: "Bearer $token",
     },
   );
-
   if (response.statusCode == 200) {
+    print(response.body);
     // If the server did return a 200 OK response,
     // then parse the JSON.
     //return Salon.fromJson(jsonDecode(response.body));
@@ -68,6 +69,8 @@ class Shop {
   String? longitude;
   SalonImage? salonImage;
   Manager? manager;
+  List<Artists>? artists;
+  Notices? notices;
 
   Shop(
       {this.id,
@@ -80,7 +83,9 @@ class Shop {
         this.latitude,
         this.longitude,
         this.salonImage,
-        this.manager});
+        this.manager,
+        this.artists,
+        this.notices});
 
   Shop.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -97,6 +102,14 @@ class Shop {
         : null;
     manager =
     json['manager'] != null ? new Manager.fromJson(json['manager']) : null;
+    if (json['artists'] != null) {
+      artists = <Artists>[];
+      json['artists'].forEach((v) {
+        artists!.add(new Artists.fromJson(v));
+      });
+    }
+    notices =
+    json['notices'] != null ? new Notices.fromJson(json['notices']) : null;
   }
 
   Map<String, dynamic> toJson() {
@@ -115,6 +128,12 @@ class Shop {
     }
     if (this.manager != null) {
       data['manager'] = this.manager!.toJson();
+    }
+    if (this.artists != null) {
+      data['artists'] = this.artists!.map((v) => v.toJson()).toList();
+    }
+    if (this.notices != null) {
+      data['notices'] = this.notices!.toJson();
     }
     return data;
   }
@@ -172,6 +191,63 @@ class Manager {
         this.profileImage});
 
   Manager.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
+    email = json['email'];
+    lastName = json['lastName'];
+    firstName = json['firstName'];
+    address = json['address'];
+    zipCode = json['zipCode'];
+    city = json['city'];
+    birthday = json['birthday'];
+    createdAt = json['createdAt'];
+    pseudo = json['pseudo'];
+    profileImage = json['profile_image'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['id'] = this.id;
+    data['email'] = this.email;
+    data['lastName'] = this.lastName;
+    data['firstName'] = this.firstName;
+    data['address'] = this.address;
+    data['zipCode'] = this.zipCode;
+    data['city'] = this.city;
+    data['birthday'] = this.birthday;
+    data['createdAt'] = this.createdAt;
+    data['pseudo'] = this.pseudo;
+    data['profile_image'] = this.profileImage;
+    return data;
+  }
+}
+
+class Artists {
+  int? id;
+  String? email;
+  String? lastName;
+  String? firstName;
+  String? address;
+  Null? zipCode;
+  String? city;
+  Null? birthday;
+  String? createdAt;
+  String? pseudo;
+  Null? profileImage;
+
+  Artists(
+      {this.id,
+        this.email,
+        this.lastName,
+        this.firstName,
+        this.address,
+        this.zipCode,
+        this.city,
+        this.birthday,
+        this.createdAt,
+        this.pseudo,
+        this.profileImage});
+
+  Artists.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     email = json['email'];
     lastName = json['lastName'];

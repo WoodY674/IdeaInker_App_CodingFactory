@@ -4,34 +4,33 @@ import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:http/http.dart' as http;
 import 'package:smooth_star_rating/smooth_star_rating.dart';
-import 'package:thebestatoo/Pages/Admin/listAvisAdmin.dart';
 import 'package:thebestatoo/Pages/ArtistesLies.dart';
 import 'package:thebestatoo/Pages/informationsSalon.dart';
 import 'package:thebestatoo/Pages/listAvis.dart';
+import 'package:thebestatoo/Pages/postsPage.dart';
 import 'package:thebestatoo/Pages/sideBar.dart';
 import 'package:thebestatoo/Pages/toggleBar.dart';
-import '../../Classes/Notice.dart';
-import '../../Classes/Shop.dart';
-import '../../Classes/User.dart';
-import '../Creations.dart';
-import '../editUser.dart';
-import '../../main.dart';
-import '../favoritesPage.dart';
-import '../informationsArtiste.dart';
-import '../informationsUser.dart';
-import '../../main.dart';
-import '../postsPage.dart';
+import '../Classes/Notice.dart';
+import '../Classes/Shop.dart';
+import '../Classes/User.dart';
+import 'Creations.dart';
+import 'editUser.dart';
+import '../main.dart';
+import 'favoritesPage.dart';
+import 'informationsArtiste.dart';
+import 'informationsUser.dart';
+import '../main.dart';
 
-class ProfilArtisteAdmin extends StatefulWidget {
-  static String route = 'ProfilArtiste';
-
-  const ProfilArtisteAdmin({Key? key}) : super(key: key);
+class ProfilArtisteId extends StatefulWidget {
+  static String route = 'ProfilArtisteId';
+  final dynamic id;
+  const ProfilArtisteId(this.id,{Key? key}) : super(key: key);
 
   @override
-  _ProfilArtisteAdmin createState() => _ProfilArtisteAdmin();
+  _ProfilArtisteId createState() => _ProfilArtisteId();
 }
 
-class _ProfilArtisteAdmin extends State<ProfilArtisteAdmin> {
+class _ProfilArtisteId extends State<ProfilArtisteId> {
   late User user;
   late Future<User> futureUser;
   late double stars = 0;
@@ -42,8 +41,7 @@ class _ProfilArtisteAdmin extends State<ProfilArtisteAdmin> {
   @override
   void initState() {
     super.initState();
-    futureUser = fetchUser();
-    getMeanStarsArtiste(6);
+    futureUser = fetchUserIndividual(widget.id);
   }
 
   @override
@@ -54,22 +52,15 @@ class _ProfilArtisteAdmin extends State<ProfilArtisteAdmin> {
         title: Text('Profil Artiste'),
         backgroundColor: Colors.deepPurple,
         centerTitle: true,
-        actions: [
-          IconButton(onPressed: (){
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                  builder: (context) => const PostsPage()),
-            );
-          },
-              icon: const Icon(Icons.add))
-        ],
       ),
       body: FutureBuilder<User>(
         future: futureUser,
         builder: (context, snapshot) {
           if (snapshot.hasData) {
             user = snapshot.data!;
+            if(user.notices != null){
+              meanStars = double.parse(user.notices!.average.toString());
+            }
             return NestedScrollView(headerSliverBuilder: (context, _) {
               return [
                 SliverList(
@@ -86,18 +77,6 @@ class _ProfilArtisteAdmin extends State<ProfilArtisteAdmin> {
                               height: 200,
                               child: Stack(
                                 children: <Widget>[
-                                  Align(
-                                    alignment: Alignment.bottomRight,
-                                    child: IconButton(
-                                      icon: const Icon(Icons.edit),
-                                      onPressed: (){
-                                        Navigator.push(
-                                          context,
-                                          MaterialPageRoute(builder: (context) => const EditUser()),
-                                        );
-                                      },
-                                    ),
-                                  ),
                                   Container(
                                     width: 200,
                                     height: 200,
@@ -114,18 +93,6 @@ class _ProfilArtisteAdmin extends State<ProfilArtisteAdmin> {
                                 height: 200,
                                 child: Stack(
                                   children: <Widget>[
-                                    Align(
-                                      alignment: Alignment.bottomRight,
-                                      child: IconButton(
-                                        icon: Icon(Icons.edit),
-                                        onPressed: (){
-                                          Navigator.push(
-                                            context,
-                                            MaterialPageRoute(builder: (context) => const EditUser()),
-                                          );
-                                        },
-                                      ),
-                                    ),
                                     Container(
                                       width: 200,
                                       height: 200,
@@ -152,7 +119,7 @@ class _ProfilArtisteAdmin extends State<ProfilArtisteAdmin> {
                                   onTap: (){
                                     Navigator.push(
                                       context,
-                                      MaterialPageRoute(builder: (context) => ListAvisAdmin(snapshot.data!.id)),
+                                      MaterialPageRoute(builder: (context) => ListAvis(snapshot.data!.notices,snapshot.data!.id,"Artist")),
                                     );
                                   },
                                   child: Align(
@@ -169,7 +136,7 @@ class _ProfilArtisteAdmin extends State<ProfilArtisteAdmin> {
                                       starCount: 5,
                                       allowHalfRating: false,
                                       spacing: 2.0,
-                                    )  ,
+                                    ),
                                   ),
                                 )
                             ),
@@ -209,25 +176,5 @@ class _ProfilArtisteAdmin extends State<ProfilArtisteAdmin> {
         },
       ),
     );
-  }
-
-  Future<void> getMeanStarsArtiste(int id) async {
-    final response = await http.get(
-      Uri.parse(urlSite + 'notices'),
-      headers: <String, String>{
-        'Content-Type': 'application/json; charset=UTF-8',
-      },
-    );
-    print(response.toString());
-    List<Notice> notices = parseNotice(response.body);
-    List<Notice> noticesFiltered = notices.where((element) => element.userNoting.contains(id.toString())).toList();
-    late double allStars = 0.0;
-    for (Notice notice in noticesFiltered) {
-      allStars = allStars + double.parse(notice.stars.toString());
-    }
-    late double finalNotice = allStars / notices.length;
-    setState(() {
-      meanStars = finalNotice;
-    });
   }
 }

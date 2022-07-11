@@ -1,14 +1,18 @@
 import 'dart:async';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:smooth_star_rating/smooth_star_rating.dart';
-import 'package:thebestatoo/Pages/Avis.dart';
+import 'package:thebestatoo/Classes/Shop.dart';
+import 'package:thebestatoo/Pages/CreateAvisArtist.dart';
+
 import '../Classes/Notice.dart';
+import 'CreateAvisSalon.dart';
 
 class ListAvis extends StatefulWidget {
+  final dynamic notices;
   final dynamic id;
-  const ListAvis(this.id, {Key? key}) : super(key: key);
+  final dynamic role;
+  const ListAvis(this.notices,this.id,this.role, {Key? key}) : super(key: key);
   static String route = 'listAvis';
 
   @override
@@ -16,12 +20,12 @@ class ListAvis extends StatefulWidget {
 }
 
 class _ListAvis extends State<ListAvis> {
-  late Future<List<Notice>> futureNotice;
+  late Notices notices;
 
   @override
   void initState() {
     super.initState();
-    futureNotice = fetchNotice();
+    notices = widget.notices;
   }
 
   @override
@@ -32,64 +36,59 @@ class _ListAvis extends State<ListAvis> {
         backgroundColor: Colors.deepPurple,
         actions: <Widget>[
           IconButton(
-            icon: Icon(Icons.add),
+            icon: const Icon(Icons.add),
             onPressed: () async {
-              await Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => CreateAvis(widget.id)),
-              );
-              setState(() {
-                futureNotice = fetchNotice();
-              });
+              if(widget.role == "Artist"){
+                await Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => CreateAvisArtist(widget.id)),
+                );
+              }else if(widget.role == "Shop"){
+                await Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => CreateAvisSalon(widget.id)),
+                );
+              }
             },
           )
         ],
       ),
-      body: FutureBuilder<List<Notice>>(
-          future: futureNotice,
-          builder: (BuildContext context, AsyncSnapshot<List<Notice>> snapshot) {
-            if (snapshot.hasData) {
-              return Container(
-                child: ListView.builder(
-                  itemCount: snapshot.data!.where((element) => element.userNoting.contains(widget.id.toString())).length,
-                  itemBuilder: (context, index) {
-                    Notice currentNotice = snapshot.data![index];
-                    return Card(
-                      child: Column(
-                        children: [
-                          ListTile(
-                            title: Align(
-                              alignment: Alignment.center,
-                              child: SmoothStarRating(
-                                rating: double.parse(currentNotice.stars.toString()),
-                                isReadOnly: true,
-                                size: 30,
-                                filledIconData: Icons.star,
-                                halfFilledIconData: Icons.star_half,
-                                defaultIconData: Icons.star_border,
-                                color: Colors.yellow,
-                                borderColor: Colors.deepPurple,
-                                starCount: 5,
-                                allowHalfRating: false,
-                                spacing: 2.0,
-                              ) ,
-                            ),
-                            subtitle: Align(
-                              alignment: Alignment.center,
-                              child: Text(currentNotice.comment),
-                            ),
-                            isThreeLine: true,
-                          )
-                        ],
+      body: Container(
+        child: notices != null ? ListView.builder(
+            itemCount: notices.allNotices?.length,
+            itemBuilder: (context, index) {
+              AllNotices currentNotice = notices.allNotices![index];
+              return Card(
+                child: Column(
+                  children: [
+                    ListTile(
+                      title: Align(
+                        alignment: Alignment.center,
+                        child: SmoothStarRating(
+                          rating: double.parse(currentNotice.stars.toString()),
+                          isReadOnly: true,
+                          size: 30,
+                          filledIconData: Icons.star,
+                          halfFilledIconData: Icons.star_half,
+                          defaultIconData: Icons.star_border,
+                          color: Colors.yellow,
+                          borderColor: Colors.deepPurple,
+                          starCount: 5,
+                          allowHalfRating: false,
+                          spacing: 2.0,
+                        ) ,
                       ),
-                    );
-                  },
+                      subtitle: Align(
+                        alignment: Alignment.center,
+                        child: Text(currentNotice.comment.toString()),
+                      ),
+                      isThreeLine: true,
+                    )
+                  ],
                 ),
               );
-            } else {
-              return const CircularProgressIndicator();
             }
-          }
+        ): Container(),
       ),
     );
   }

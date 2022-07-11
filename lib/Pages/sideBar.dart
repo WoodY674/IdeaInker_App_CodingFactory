@@ -10,7 +10,6 @@ import 'package:thebestatoo/Pages/profil.dart';
 import 'package:thebestatoo/Pages/ChannelPage.dart';
 import '../Classes/Shop.dart';
 import '../Classes/User.dart';
-import 'Admin/ProfilArtisteAdmin.dart';
 import 'home.dart';
 import '../main.dart';
 import 'map.dart';
@@ -104,10 +103,11 @@ class SideBar extends StatelessWidget {
                           ListTile(
                             leading: Icon(Icons.verified_user),
                             title: Text('Mon Profil'),
-                            onTap: (){/*Navigator.pushReplacement(
+                            onTap: (){
+                              Navigator.pushReplacement(
                                 context,
-                                MaterialPageRoute(builder: (context) => ProfilSalon()));
-                            */},
+                                MaterialPageRoute(builder: (context) => ProfilSalon(user.salons![0].id)));
+                            },
                           ):Container(),
                           user.roles![0] == "ROLE_ARTIST" ?
                           ListTile(
@@ -115,7 +115,7 @@ class SideBar extends StatelessWidget {
                             title: Text('Mon Profil'),
                             onTap: (){Navigator.pushReplacement(
                                 context,
-                                MaterialPageRoute(builder: (context) => ProfilArtisteAdmin()));
+                                MaterialPageRoute(builder: (context) => ProfilArtiste()));
                             },
                           )
                               :Container(),

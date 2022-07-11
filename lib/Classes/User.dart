@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 import 'package:http/http.dart' as http;
 import '../main.dart';
+import 'Notice.dart';
 
 Future<User> fetchUser() async {
   final token = preferences.getString('token', defaultValue: '').getValue();
@@ -23,6 +24,25 @@ Future<User> fetchUser() async {
   }
 }
 
+Future<User> fetchUserIndividual(idUser) async {
+  final token = preferences.getString('token', defaultValue: '').getValue();
+  final response = await http
+      .get(Uri.parse(urlSite + 'users/' + idUser.toString()),
+    headers: {
+      HttpHeaders.authorizationHeader: "Bearer $token",
+    },
+  );
+
+  if (response.statusCode == 200) {
+    // If the server did return a 200 OK response,
+    // then parse the JSON.
+    return User.fromJson(jsonDecode(response.body));
+  } else {
+    // If the server did not return a 200 OK response,
+    // then throw an exception.
+    throw Exception('Failed to load album');
+  }
+}
 class User {
   int? id;
   String? email;
@@ -38,6 +58,8 @@ class User {
   String? pseudo;
   Null? profileImage;
   List<Salons>? salons;
+  List<WorkingSalon>? workingSalon;
+  Notices? notices;
 
   User(
       {this.id,
@@ -53,7 +75,9 @@ class User {
         this.createdAt,
         this.pseudo,
         this.profileImage,
-        this.salons});
+        this.salons,
+        this.workingSalon,
+        this.notices});
 
   User.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -75,6 +99,14 @@ class User {
         salons!.add(new Salons.fromJson(v));
       });
     }
+    if (json['working_salon'] != null) {
+      workingSalon = <WorkingSalon>[];
+      json['working_salon'].forEach((v) {
+        workingSalon!.add(new WorkingSalon.fromJson(v));
+      });
+    }
+    notices =
+    json['notices'] != null ? new Notices.fromJson(json['notices']) : null;
   }
 
   Map<String, dynamic> toJson() {
@@ -94,6 +126,13 @@ class User {
     data['profile_image'] = this.profileImage;
     if (this.salons != null) {
       data['salons'] = this.salons!.map((v) => v.toJson()).toList();
+    }
+    if (this.workingSalon != null) {
+      data['working_salon'] =
+          this.workingSalon!.map((v) => v.toJson()).toList();
+    }
+    if (this.notices != null) {
+      data['notices'] = this.notices!.toJson();
     }
     return data;
   }
@@ -124,6 +163,59 @@ class Salons {
         this.salonImage});
 
   Salons.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
+    name = json['name'];
+    address = json['address'];
+    zipCode = json['zipCode'];
+    city = json['city'];
+    createdAt = json['createdAt'];
+    updatedAt = json['updatedAt'];
+    latitude = json['latitude'];
+    longitude = json['longitude'];
+    salonImage = json['salon_image'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['id'] = this.id;
+    data['name'] = this.name;
+    data['address'] = this.address;
+    data['zipCode'] = this.zipCode;
+    data['city'] = this.city;
+    data['createdAt'] = this.createdAt;
+    data['updatedAt'] = this.updatedAt;
+    data['latitude'] = this.latitude;
+    data['longitude'] = this.longitude;
+    data['salon_image'] = this.salonImage;
+    return data;
+  }
+}
+
+class WorkingSalon {
+  int? id;
+  String? name;
+  String? address;
+  String? zipCode;
+  String? city;
+  String? createdAt;
+  String? updatedAt;
+  String? latitude;
+  String? longitude;
+  Null? salonImage;
+
+  WorkingSalon(
+      {this.id,
+        this.name,
+        this.address,
+        this.zipCode,
+        this.city,
+        this.createdAt,
+        this.updatedAt,
+        this.latitude,
+        this.longitude,
+        this.salonImage});
+
+  WorkingSalon.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     name = json['name'];
     address = json['address'];
