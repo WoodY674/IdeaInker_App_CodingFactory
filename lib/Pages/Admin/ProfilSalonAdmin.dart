@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:http/http.dart' as http;
+import 'package:smooth_star_rating/smooth_star_rating.dart';
 import 'package:thebestatoo/Pages/ArtistesLies.dart';
 import 'package:thebestatoo/Pages/informationsSalon.dart';
 import 'package:thebestatoo/Pages/toggleBar.dart';
@@ -14,26 +15,29 @@ import '../editUser.dart';
 import '../favoritesPage.dart';
 import '../informationsUser.dart';
 import '../../main.dart';
+import '../listAvis.dart';
 import '../postsPage.dart';
 
 class ProfilSalonAdmin extends StatefulWidget {
   static String route = 'ProfilArtiste';
-  final dynamic shop;
-  const ProfilSalonAdmin(this.shop,{Key? key}) : super(key: key);
+  final dynamic id;
+  const ProfilSalonAdmin(this.id,{Key? key}) : super(key: key);
   @override
   _ProfilSalonAdmin createState() => _ProfilSalonAdmin();
 }
 
 class _ProfilSalonAdmin extends State<ProfilSalonAdmin> {
   late double stars = 0;
+  late double meanStars = 0.0;
   List<String> labels = ["Créations","Informations","Artistes liés"];
   int currentIndex = 0;
   late Shop shop;
+  late Future<Shop> shopFetch;
 
   @override
   void initState() {
     super.initState();
-    shop = widget.shop;
+    shopFetch = fetchShopIndividual(widget.id);
   }
 
   @override
@@ -54,7 +58,16 @@ class _ProfilSalonAdmin extends State<ProfilSalonAdmin> {
               icon: const Icon(Icons.add))
         ],
       ),
-      body:NestedScrollView(headerSliverBuilder: (context, _) {
+      body:FutureBuilder<Shop>(
+          future: shopFetch,
+          builder: (context, snapshot) {
+          if (snapshot.hasData) {
+          shop = snapshot.data!;
+          if(shop.notices != null){
+          meanStars = double.parse(shop.notices!.average.toString());
+        }
+
+        return NestedScrollView(headerSliverBuilder: (context, _) {
               return [
                 SliverList(
                   delegate: SliverChildListDelegate(
@@ -132,16 +145,29 @@ class _ProfilSalonAdmin extends State<ProfilSalonAdmin> {
                               ),
                             ),
                             Container(
-                                child: Align(
-                                  alignment: Alignment.center,
-                                  child: RatingBar.builder(itemBuilder: (context,_)=>
-                                      Icon(Icons.star,color:Colors.yellow),
-                                      itemSize: 50,
-                                      onRatingUpdate: (rating){
-                                        setState(() {
-                                          stars = rating;
-                                        });
-                                      }) ,
+                                child: GestureDetector(
+                                  onTap: (){
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(builder: (context) => ListAvis(shop.name)),
+                                    );
+                                  },
+                                  child: Align(
+                                    alignment: Alignment.center,
+                                    child: SmoothStarRating(
+                                      rating: meanStars,
+                                      isReadOnly: true,
+                                      size: 50,
+                                      filledIconData: Icons.star,
+                                      halfFilledIconData: Icons.star_half,
+                                      defaultIconData: Icons.star_border,
+                                      color: Colors.yellow,
+                                      borderColor: Colors.yellow,
+                                      starCount: 5,
+                                      allowHalfRating: false,
+                                      spacing: 2.0,
+                                    ),
+                                  ),
                                 )
                             ),
                             Container(
@@ -182,7 +208,18 @@ class _ProfilSalonAdmin extends State<ProfilSalonAdmin> {
                 }
                 ),
               ),
-            ),
-      );
+            );
+          }
+          return const CircularProgressIndicator();
+          }
+      )
+    );
+  }
+
+  Future<void> getShop(id) async {
+    late Future<Shop> test = fetchShopIndividual(id);
+    setState(() {
+      shopFetch = test;
+    });
   }
 }
