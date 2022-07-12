@@ -81,7 +81,7 @@ class _ProfilArtiste extends State<ProfilArtiste> {
                                     width: 200,
                                     height: 200,
                                     child: CircleAvatar(
-                                      backgroundImage: NetworkImage(snapshot.data!.profileImage!),
+                                      backgroundImage: NetworkImage(urlImage+snapshot.data!.profileImage!.imagePath.toString()),
                                     ),
                                   ),
                                 ],
@@ -125,7 +125,7 @@ class _ProfilArtiste extends State<ProfilArtiste> {
                                   child: Align(
                                     alignment: Alignment.center,
                                     child: SmoothStarRating(
-                                      rating: meanStars,
+                                      rating: double.parse(snapshot.data!.notices!.average.toString()),
                                       isReadOnly: true,
                                       size: 50,
                                       filledIconData: Icons.star,

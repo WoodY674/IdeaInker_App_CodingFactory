@@ -36,6 +36,7 @@ class _EditUser extends State<EditUser> {
   TextEditingController zipCodeController = TextEditingController();
   TextEditingController cityController = TextEditingController();
   TextEditingController birthdayController = TextEditingController();
+  TextEditingController imageController = TextEditingController();
   late User user;
   String imagePath = "";
   final picker = ImagePicker();
@@ -67,6 +68,8 @@ class _EditUser extends State<EditUser> {
               cityController.text = snapshot.data!.city.toString(): cityController.text = "";
               snapshot.data!.birthday != null ?
               birthdayController.text = snapshot.data!.birthday.toString(): birthdayController.text = "";
+              snapshot.data!.profileImage != null ?
+                  imageController.text = snapshot.data!.profileImage.toString() : imageController.text ="";
               return Form(
                   key: _formKey,
                   child: ListView(
@@ -251,7 +254,8 @@ class _EditUser extends State<EditUser> {
                                 birthdayController.text,
                                 pseudoController.text,
                                 fileInBase64,
-                                snapshot.data!.id!
+                                snapshot.data!.id!,
+                                imageController.text
                             );
                           }
                         },
@@ -274,11 +278,12 @@ class _EditUser extends State<EditUser> {
     );
   }
 
-  Future<void> editAccount(String firstName, String lastName, String email, String address, String zipCode, String city, String birthday, String pseudo, String image64, int idUser) async {
+  Future<void> editAccount(String firstName, String lastName, String email, String address, String zipCode, String city, String birthday, String pseudo, String image64, int idUser, String image) async {
     late Response response = http.Response("", 400);
     if(image64 != ""){
       print("photo detected");
-      response = await http.put(
+      print(idUser.toString());
+      response = await http.patch(
         Uri.parse(urlSite + 'users/' + idUser.toString()),
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
@@ -286,17 +291,20 @@ class _EditUser extends State<EditUser> {
         body: jsonEncode(<String, String>{
           'pseudo': pseudo,
           'email': email,
-          'lastName': lastName,
-          'firstName': firstName,
-          'zip code': zipCode,
+          'last_name': lastName,
+          'first_name': firstName,
+          'zip_code': zipCode,
           'city': city,
           'address': address,
-          'profileImage' : image64
+          'profile_image' : image64
         }),
       );
     }else{
       print("no photo");
-      response = await http.put(
+      print(idUser.toString());
+      print(image);
+
+      response = await http.patch(
         Uri.parse(urlSite + 'users/' + idUser.toString()),
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
@@ -304,15 +312,15 @@ class _EditUser extends State<EditUser> {
         body: jsonEncode(<String, String>{
           'pseudo': pseudo,
           'email': email,
-          'lastName': lastName,
-          'firstName': firstName,
-          'zip code': zipCode,
+          'last_name': lastName,
+          'first_name': firstName,
+          'zip_code': zipCode,
           'city': city,
           'address': address,
+          'profile_image' : image
         }),
       );
     }
-
     if (response.statusCode == 200) {
       // If the server did return a 201 CREATED response,
       // then parse the JSON.
@@ -338,6 +346,7 @@ class _EditUser extends State<EditUser> {
           textColor: Colors.white,
           fontSize: 16.0
       );
+      print(response.body);
     }
   }
 }

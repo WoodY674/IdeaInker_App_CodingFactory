@@ -88,7 +88,7 @@ class _ProfilUser extends State<ProfilUser> {
                                     width: 200,
                                     height: 200,
                                     child: CircleAvatar(
-                                      backgroundImage: NetworkImage(snapshot.data!.profileImage!),
+                                      backgroundImage: NetworkImage(urlImage+snapshot.data!.profileImage!.imagePath.toString()),
                                     ),
                                   ),
                                 ],
