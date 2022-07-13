@@ -70,10 +70,23 @@ class _ListShopAdmin extends State<ListShopAdmin> {
                       child: Card(
                         child: Column(
                           children: [
-                            currentSalon.salonImage?.imagePath != "" ?
-                            Image.asset('assets/photo-salon.png'):
-                            Image.network(urlImage + currentSalon.salonImage!.imagePath.toString()),
                             ListTile(
+                              leading: currentSalon.salonImage?.imagePath != null ?
+                              Container(
+                                width: 100,
+                                height: 150,
+                                child: CircleAvatar(
+                                  backgroundImage: NetworkImage(urlImage + currentSalon.salonImage!.imagePath.toString()),
+                                ),
+                              ):
+                              Container(
+                                width: 100,
+                                height: 150,
+                                child: const CircleAvatar(
+                                  backgroundImage: AssetImage('assets/noProfile.png'),
+                                ),
+                              )
+                              ,
                               title: Text(currentSalon.name!),
                               subtitle: Text(currentSalon.address! + ' ' + currentSalon.zipCode! + ' ' + currentSalon.city!),
                               trailing: IconButton(onPressed: () {
