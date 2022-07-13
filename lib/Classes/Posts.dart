@@ -35,9 +35,15 @@ class Posts {
   String? createdAt;
   Images? image;
   CreatedBy? createdBy;
+  CreatedBySalon? createdBySalon;
 
   Posts(
-      {this.id, this.content, this.createdAt, this.image, this.createdBy});
+      {this.id,
+        this.content,
+        this.createdAt,
+        this.image,
+        this.createdBy,
+        this.createdBySalon});
 
   Posts.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -46,6 +52,9 @@ class Posts {
     image = json['image'] != null ? new Images.fromJson(json['image']) : null;
     createdBy = json['created_by'] != null
         ? new CreatedBy.fromJson(json['created_by'])
+        : null;
+    createdBySalon = json['created_by_salon'] != null
+        ? new CreatedBySalon.fromJson(json['created_by_salon'])
         : null;
   }
 
@@ -59,6 +68,9 @@ class Posts {
     }
     if (this.createdBy != null) {
       data['created_by'] = this.createdBy!.toJson();
+    }
+    if (this.createdBySalon != null) {
+      data['created_by_salon'] = this.createdBySalon!.toJson();
     }
     return data;
   }
@@ -100,7 +112,7 @@ class CreatedBy {
   String? birthday;
   String? createdAt;
   String? pseudo;
-  ProfileImage? profileImage;
+  Images? profileImage;
 
   CreatedBy(
       {this.id,
@@ -127,7 +139,7 @@ class CreatedBy {
     createdAt = json['createdAt'];
     pseudo = json['pseudo'];
     profileImage = json['profile_image'] != null
-        ? new ProfileImage.fromJson(json['profile_image'])
+        ? new Images.fromJson(json['profile_image'])
         : null;
   }
 
@@ -150,27 +162,59 @@ class CreatedBy {
   }
 }
 
-class ProfileImage {
+class CreatedBySalon {
   int? id;
-  String? imageName;
+  String? name;
+  String? address;
+  String? zipCode;
+  String? city;
+  String? createdAt;
   String? updatedAt;
-  String? imagePath;
+  String? latitude;
+  String? longitude;
+  Images? salonImage;
 
-  ProfileImage({this.id, this.imageName, this.updatedAt, this.imagePath});
+  CreatedBySalon(
+      {this.id,
+        this.name,
+        this.address,
+        this.zipCode,
+        this.city,
+        this.createdAt,
+        this.updatedAt,
+        this.latitude,
+        this.longitude,
+        this.salonImage});
 
-  ProfileImage.fromJson(Map<String, dynamic> json) {
+  CreatedBySalon.fromJson(Map<String, dynamic> json) {
     id = json['id'];
-    imageName = json['imageName'];
+    name = json['name'];
+    address = json['address'];
+    zipCode = json['zipCode'];
+    city = json['city'];
+    createdAt = json['createdAt'];
     updatedAt = json['updatedAt'];
-    imagePath = json['imagePath'];
+    latitude = json['latitude'];
+    longitude = json['longitude'];
+    salonImage = json['salon_image'] != null
+        ? new Images.fromJson(json['salon_image'])
+        : null;
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['id'] = this.id;
-    data['imageName'] = this.imageName;
+    data['name'] = this.name;
+    data['address'] = this.address;
+    data['zipCode'] = this.zipCode;
+    data['city'] = this.city;
+    data['createdAt'] = this.createdAt;
     data['updatedAt'] = this.updatedAt;
-    data['imagePath'] = this.imagePath;
+    data['latitude'] = this.latitude;
+    data['longitude'] = this.longitude;
+    if (this.salonImage != null) {
+      data['salon_image'] = this.salonImage!.toJson();
+    }
     return data;
   }
 }

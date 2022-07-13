@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:http/http.dart' as http;
 import 'package:smooth_star_rating/smooth_star_rating.dart';
+import 'package:thebestatoo/Pages/Admin/favoritesPageSalon.dart';
 import 'package:thebestatoo/Pages/ArtistesLies.dart';
 import 'package:thebestatoo/Pages/informationsSalon.dart';
 import 'package:thebestatoo/Pages/postsPage.dart';
@@ -160,7 +161,7 @@ class _ProfilSalon extends State<ProfilSalon> {
                   body: Container(
                     child: LayoutBuilder(builder: (context, constraints) {
                       if (currentIndex == 0) {
-                        return FavoritesPage(shop);
+                        return FavoritesPageSalon(shop);
                       }
                       else if (currentIndex == 1) {
                         return InformationsSalon(shop);

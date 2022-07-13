@@ -4,8 +4,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:http/http.dart' as http;
 import 'package:smooth_star_rating/smooth_star_rating.dart';
+import 'package:thebestatoo/Pages/Admin/favoritesPageSalon.dart';
 import 'package:thebestatoo/Pages/ArtistesLies.dart';
 import 'package:thebestatoo/Pages/informationsSalon.dart';
+import 'package:thebestatoo/Pages/postsPageShop.dart';
 import 'package:thebestatoo/Pages/sideBar.dart';
 import 'package:thebestatoo/Pages/toggleBar.dart';
 import '../../Classes/Shop.dart';
@@ -49,6 +51,16 @@ class _ProfilSalonAdmin extends State<ProfilSalonAdmin> {
           title: const Text('Profil Salon'),
           backgroundColor: Colors.deepPurple,
           centerTitle: true,
+          actions: [
+            IconButton(onPressed: (){
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => PostsPageShop(widget.id)),
+              );
+            },
+                icon: const Icon(Icons.add))
+          ],
         ),
         body:FutureBuilder<Shop>(
             future: shopFetch,
@@ -187,7 +199,7 @@ class _ProfilSalonAdmin extends State<ProfilSalonAdmin> {
                   body: Container(
                     child: LayoutBuilder(builder: (context, constraints) {
                       if (currentIndex == 0) {
-                        return FavoritesPage(shop);
+                        return FavoritesPageSalon(shop);
                       }
                       else if (currentIndex == 1) {
                         return InformationsSalon(shop);
