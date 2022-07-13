@@ -27,6 +27,7 @@ class _EditShop extends State<EditShop> {
   TextEditingController addressController = TextEditingController();
   TextEditingController zipCodeController = TextEditingController();
   TextEditingController cityController = TextEditingController();
+  TextEditingController imageController = TextEditingController();
 
   @override
   void initState() {
@@ -36,6 +37,11 @@ class _EditShop extends State<EditShop> {
     addressController.text = futureShop.address!;
     zipCodeController.text = futureShop.zipCode!;
     cityController.text = futureShop.city!;
+    if(futureShop.salonImage != null){
+      imageController.text = futureShop.salonImage!.imagePath!;
+    }else{
+      imageController.text = "";
+    }
   }
 
   late User user;
@@ -201,35 +207,36 @@ class _EditShop extends State<EditShop> {
   }
 
   Future<void> editAccount(String name, String address, String zipCode, String city, String image64, int idUser) async {
+    print("here");
     late Response response = http.Response("", 400);
     if(image64 != ""){
       print("photo detected");
-      response = await http.put(
-        Uri.parse(urlSite + 'users/' + idUser.toString()),
+      response = await http.patch(
+        Uri.parse(urlSite + 'salon/' + idUser.toString()),
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
         },
         body: jsonEncode(<String, String>{
           'name': name,
-          'zip code': zipCode,
+          'zip_code': zipCode,
           'city': city,
           'address': address,
-          'profileImage' : image64
+          'salon_image' : image64
         }),
       );
     }else{
       print("no photo");
-      response = await http.put(
-        Uri.parse(urlSite + 'users/' + idUser.toString()),
+      response = await http.patch(
+        Uri.parse(urlSite + 'salon/' + idUser.toString()),
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
         },
         body: jsonEncode(<String, String>{
           'name': name,
-          'zip code': zipCode,
+          'zip_code': zipCode,
           'city': city,
           'address': address,
-          'profileImage' : image64
+          'salon_image' : imageController.text
         }),
       );
     }

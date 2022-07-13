@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:streaming_shared_preferences/streaming_shared_preferences.dart';
+import 'package:thebestatoo/Pages/Admin/ProfilShopAdmin.dart';
 import 'package:thebestatoo/Pages/ProfilArtiste.dart';
 import 'package:thebestatoo/Pages/ProfilSalon.dart';
 import 'package:thebestatoo/Pages/ProfilUser.dart';
@@ -98,7 +99,7 @@ class SideBar extends StatelessWidget {
                             onTap: (){
                               Navigator.pushReplacement(
                                 context,
-                                MaterialPageRoute(builder: (context) => ProfilSalon(user.salons![0].id)));
+                                MaterialPageRoute(builder: (context) => ProfilSalonAdmin(user.salons![0].id)));
                             },
                           ):Container(),
                           user.roles![0] == "ROLE_ARTIST" ?
