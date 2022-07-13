@@ -205,33 +205,31 @@ class _AddShop extends State<AddShop> {
       if(image64 != ""){
         print("photo detected");
         responseSalon = await http.post(
-          Uri.parse(urlSite + 'salons'),
+          Uri.parse(urlSite + 'salon'),
           headers: <String, String>{
             'Content-Type': 'application/json; charset=UTF-8',
           },
           body: jsonEncode(<String, String>{
             'address': address,
-            'zipCode': zipCode,
+            'zip_code': zipCode,
             'city': city,
-            'createdAt': now.toString(),
             'name': name,
             'latitude': coordinates.latitude.toString(),
             'longitude': coordinates.longitude.toString(),
-            'salonImage': image64,
+            'salon_image': image64,
           }),
         );
       }else{
         print("no photo");
         responseSalon = await http.post(
-          Uri.parse(urlSite + 'salons'),
+          Uri.parse(urlSite + 'salon'),
           headers: <String, String>{
             'Content-Type': 'application/json; charset=UTF-8',
           },
           body: jsonEncode(<String, String>{
             'address': address,
-            'zipCode': zipCode,
+            'zip_code': zipCode,
             'city': city,
-            'createdAt': now.toString(),
             'name': name,
             'latitude': coordinates.latitude.toString(),
             'longitude': coordinates.longitude.toString(),
