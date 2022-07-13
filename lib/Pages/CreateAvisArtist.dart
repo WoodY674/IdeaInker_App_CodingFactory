@@ -6,6 +6,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:smooth_star_rating/smooth_star_rating.dart';
+import 'package:thebestatoo/Pages/ProfilArtisteId.dart';
 
 import '../Classes/User.dart';
 import '../main.dart';
@@ -147,7 +148,9 @@ class _CreateAvisArtist extends State<CreateAvisArtist> {
           textColor: Colors.white,
           fontSize: 16.0
       );
-      Navigator.pop(context);
+      Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (context) => ProfilArtisteId(widget.id)));
     }else{
       print(response.body);
       Fluttertoast.showToast(
