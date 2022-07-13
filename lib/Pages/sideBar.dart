@@ -11,6 +11,7 @@ import 'package:thebestatoo/Pages/profil.dart';
 import '../Channel.dart';
 import '../Classes/Shop.dart';
 import '../Classes/User.dart';
+import 'Admin/ProfileArtisteAdmin.dart';
 import 'home.dart';
 import '../main.dart';
 import 'map.dart';
@@ -39,8 +40,8 @@ class SideBar extends StatelessWidget {
                           UserAccountsDrawerHeader(
                             accountName: Text(user.lastName! + " " + user.firstName!),
                             accountEmail: Text(user.email!),
-                            currentAccountPicture: user.email != '' ? const CircleAvatar(
-                              backgroundImage: AssetImage("assets/noProfile.png"),
+                            currentAccountPicture: user.profileImage != null ?  CircleAvatar(
+                              backgroundImage: NetworkImage(urlImage + user.profileImage!.imagePath!.toString()),
                             ):const CircleAvatar(
                               backgroundImage: AssetImage("assets/noProfile.png"),
                             ),
@@ -108,7 +109,7 @@ class SideBar extends StatelessWidget {
                             title: Text('Mon Profil'),
                             onTap: (){Navigator.pushReplacement(
                                 context,
-                                MaterialPageRoute(builder: (context) => ProfilArtiste()));
+                                MaterialPageRoute(builder: (context) => ProfilArtisteAdmin()));
                             },
                           )
                               :Container(),

@@ -11,11 +11,13 @@ import 'package:thebestatoo/Classes/Shop.dart';
 import 'package:thebestatoo/Classes/User.dart';
 import 'package:thebestatoo/main.dart';
 import '../Classes/ImageTo64.dart';
+import 'Admin/ProfilShopAdmin.dart';
 
 class EditShop extends StatefulWidget {
   static String route = 'editShop';
   final dynamic shop;
-  const EditShop(this.shop,{Key? key}) : super(key: key);
+  final dynamic id;
+  const EditShop(this.shop,this.id,{Key? key}) : super(key: key);
 
   @override
   _EditShop createState() => _EditShop();
@@ -190,7 +192,8 @@ class _EditShop extends State<EditShop> {
                             zipCodeController.text,
                             cityController.text,
                             fileInBase64,
-                            futureShop.id!
+                            futureShop.id!,
+                            widget.id
                         );
                       }
                     },
@@ -206,13 +209,12 @@ class _EditShop extends State<EditShop> {
     );
   }
 
-  Future<void> editAccount(String name, String address, String zipCode, String city, String image64, int idUser) async {
-    print("here");
+  Future<void> editAccount(String name, String address, String zipCode, String city, String image64, int idShop,int idUser) async {
     late Response response = http.Response("", 400);
     if(image64 != ""){
       print("photo detected");
       response = await http.patch(
-        Uri.parse(urlSite + 'salon/' + idUser.toString()),
+        Uri.parse(urlSite + 'salon/' + idShop.toString()),
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
         },
@@ -227,7 +229,7 @@ class _EditShop extends State<EditShop> {
     }else{
       print("no photo");
       response = await http.patch(
-        Uri.parse(urlSite + 'salon/' + idUser.toString()),
+        Uri.parse(urlSite + 'salon/' + idShop.toString()),
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
         },
@@ -253,7 +255,9 @@ class _EditShop extends State<EditShop> {
           textColor: Colors.white,
           fontSize: 16.0
       );
-      Navigator.pop(context);
+      Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (context) => ProfilSalonAdmin(idUser)));
     } else {
       // If the server did not return a 201 CREATED response,
       // then throw an exception.

@@ -35,10 +35,24 @@ class ArtistesLies extends StatelessWidget {
               child: Card(
                 child: Column(
                   children: [
+                    user.profileImage != null ?
+                    ListTile(
+                      leading: Container(
+                        width: 100,
+                        height: 50,
+                        child: CircleAvatar(
+                          backgroundImage: NetworkImage(urlImage + user.profileImage!.imagePath.toString()),
+                        ),
+                      ),
+                      title: Text(user.pseudo!),
+                      subtitle: const Text(""),
+                      isThreeLine: true,
+                    )
+                        :
                     ListTile(
                       leading: Image.asset('assets/noProfile.png',
-                      height: 100,
-                      width: 50,
+                        height: 100,
+                        width: 50,
                       ),
                       title: Text(user.pseudo!),
                       subtitle: const Text(""),

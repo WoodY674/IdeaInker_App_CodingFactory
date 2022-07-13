@@ -6,6 +6,7 @@ import 'package:http/http.dart' as http;
 import 'package:smooth_star_rating/smooth_star_rating.dart';
 import 'package:thebestatoo/Pages/ArtistesLies.dart';
 import 'package:thebestatoo/Pages/informationsSalon.dart';
+import 'package:thebestatoo/Pages/sideBar.dart';
 import 'package:thebestatoo/Pages/toggleBar.dart';
 import '../../Classes/Shop.dart';
 import '../../Classes/User.dart';
@@ -43,20 +44,11 @@ class _ProfilSalonAdmin extends State<ProfilSalonAdmin> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      drawer: SideBar(),
         appBar: AppBar(
           title: const Text('Profil Salon'),
           backgroundColor: Colors.deepPurple,
           centerTitle: true,
-          actions: [
-            IconButton(onPressed: (){
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (context) => const PostsPage()),
-              );
-            },
-                icon: const Icon(Icons.add))
-          ],
         ),
         body:FutureBuilder<Shop>(
             future: shopFetch,
@@ -90,7 +82,7 @@ class _ProfilSalonAdmin extends State<ProfilSalonAdmin> {
                                           onPressed: (){
                                             Navigator.push(
                                               context,
-                                              MaterialPageRoute(builder: (context) =>  EditShop(shop)),
+                                              MaterialPageRoute(builder: (context) =>  EditShop(shop,widget.id)),
                                             );
                                           },
                                         ),
@@ -118,7 +110,7 @@ class _ProfilSalonAdmin extends State<ProfilSalonAdmin> {
                                             onPressed: (){
                                               Navigator.push(
                                                 context,
-                                                MaterialPageRoute(builder: (context) =>  EditShop(shop)),
+                                                MaterialPageRoute(builder: (context) =>  EditShop(shop,widget.id)),
                                               );
                                             },
                                           ),
@@ -201,7 +193,7 @@ class _ProfilSalonAdmin extends State<ProfilSalonAdmin> {
                         return InformationsSalon(shop);
                       }
                       else if (currentIndex == 2) {
-                        return ArtistesLies(shop);
+                        return ArtistesLies(shop.artists);
                       }else{
                         return const CircularProgressIndicator();
                       }

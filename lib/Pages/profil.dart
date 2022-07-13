@@ -164,7 +164,7 @@ class _Profil extends State<Profil> {
         token = Token(map);
       });
       preferences.setString('token', token.token);
-      Navigator.push(
+      Navigator.pushReplacement(
           context,
           MaterialPageRoute(builder: (context) => const Home()));
     } else {

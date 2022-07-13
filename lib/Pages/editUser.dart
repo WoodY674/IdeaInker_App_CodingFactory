@@ -8,6 +8,7 @@ import 'package:http/http.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:thebestatoo/Classes/User.dart';
+import 'package:thebestatoo/Pages/ProfilUser.dart';
 import 'package:thebestatoo/main.dart';
 import '../Classes/ImageTo64.dart';
 
@@ -333,7 +334,9 @@ class _EditUser extends State<EditUser> {
           textColor: Colors.white,
           fontSize: 16.0
       );
-      Navigator.pop(context);
+      Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (context) => ProfilUser()));
     } else {
       // If the server did not return a 201 CREATED response,
       // then throw an exception.
@@ -346,7 +349,6 @@ class _EditUser extends State<EditUser> {
           textColor: Colors.white,
           fontSize: 16.0
       );
-      print(response.body);
     }
   }
 }

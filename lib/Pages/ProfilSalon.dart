@@ -180,11 +180,4 @@ class _ProfilSalon extends State<ProfilSalon> {
         )
     );
   }
-
-  Future<void> getShop(id) async {
-    late Future<Shop> test = fetchShopIndividual(id);
-    setState(() {
-      shopFetch = test;
-    });
-  }
 }
