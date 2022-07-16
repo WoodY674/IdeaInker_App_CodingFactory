@@ -177,6 +177,12 @@ class _Posts extends State<PostsPage> {
       ),
     );
   }
+  /*
+  La fonction addPost récupère le contenu du post, l'image et l'identifiant de l'utilisateur.
+  Elle récupère notre token en plus d'attendre une réponse de la requête Http post.
+  Si nous recevons un code 201, un message confirmant notre publication nous est envoyé "Post added with Success!"
+  sinon nous recevons "Failed create Post".
+  */
   Future<void> addPost(String content, String image64, int userId) async {
     final token = preferences.getString('token', defaultValue: '').getValue();
     final responsePost = await http.post(

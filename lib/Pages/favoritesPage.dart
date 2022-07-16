@@ -64,12 +64,17 @@ class FavoritesPage extends StatelessWidget {
       },
     );
   }
+  /*
+  La fonction parsePostsImages permet de récupérer les images postées
+  */
   void parsePostsImages() async {
     var postsToGet = fetchPosts();
     posts =  await postsToGet;
     _streamController.sink.add(filteredPosts(posts));
   }
-
+  /*
+  La fonction filteredPosts sert à filtrer les posts sous forme de liste pour les regrouper selon une personne  recherchée.
+  */
   List<Posts> filteredPosts(List<Posts> posts) {
     List<Posts> postFiltered = posts.where((element) => element.createdBy?.id! == users.id).toList();
     return postFiltered;

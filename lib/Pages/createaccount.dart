@@ -150,6 +150,13 @@ class _CreateAccount extends State<CreateAccount> {
       ),
     );
   }
+  /*
+  La fonction createAccount récupère le prénom, le nom, l'adresse email, le mot de passe et le pseudo
+  qu'un utilisateur rentre dans l'application lors de la création de son compte.
+  Si nous recevons un code 201 un message confirmant notre création nous est envoyé "Account created with Success!".
+  Dans le cas d'échec de notre création nous recevons le message "Failed Create Account".
+  Lorsque la création est faite avec succès, l'inscription est envoyée en base de données et l'utilisateur peut se connecter.
+  */
   Future<void> createAccount(String firstName, String lastName, String email, String password, String pseudo) async {
     final now = DateTime.now();
     final response = await http.post(

@@ -208,7 +208,15 @@ class _EditShop extends State<EditShop> {
       ),
     );
   }
-
+  /*
+  La fonction editAccount récupère le nom, l'adresse, le code postal, la ville, l'image, l'identifiant du salon et de l'utilisateur
+  que ce dernier a entré dans l'application.
+  Elle attend ensuite une réponse http avec le code 400.
+  Puis l'image entrée est inspectée, si elle est en base 64 un message "photo détected" est envoyée sinon "no photo".
+  Si nous recevons un code 200 un message confirmant notre modification nous est envoyé "Edit successful !".
+  Dans le cas d'échec de notre modification nous recevons le message "Edit Failed !".
+  Lorsque la modification est faite avec succès, elle est envoyée en base de données et publiée sur l'application.
+  */
   Future<void> editAccount(String name, String address, String zipCode, String city, String image64, int idShop,int idUser) async {
     late Response response = http.Response("", 400);
     if(image64 != ""){

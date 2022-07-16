@@ -278,7 +278,15 @@ class _EditUser extends State<EditUser> {
       ),
     );
   }
-
+  /*
+  La fonction editAccount récupère le prénom, le nom, l'adresse email, l'adresse, le code postal, la ville, la date de naissance,
+  le pseudo, l'image et l'identifiant de l'utilisateur.
+  Elle attend ensuite une réponse http avec le code 400.
+  Puis l'image entrée est inspectée, si elle est en base 64 un message "photo detected" est envoyée sinon "no photo".
+  Si nous recevons un code 200 un message confirmant notre modification nous est envoyé "Edit successful !".
+  Dans le cas d'échec de notre modification nous recevons le message "Edit Failed !".
+  Lorsque la modification est faite avec succès, elle est envoyée en base de données et publiée sur l'application.
+  */
   Future<void> editAccount(String firstName, String lastName, String email, String address, String zipCode, String city, String birthday, String pseudo, String image64, int idUser, String image) async {
     late Response response = http.Response("", 400);
     if(image64 != ""){

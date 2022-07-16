@@ -121,8 +121,13 @@ class _CreateAvisArtist extends State<CreateAvisArtist> {
         },
       ),
     );
-
   }
+  /*
+  La fonction CreateAvis récupère le nombre d'étoiles, le commentaire et l'identifiant de l'utilisateur lors de la création de son avis.
+  Si nous recevons un code 201 un message confirmant notre création nous est envoyé "L'avis a bien été créé !".
+  Dans le cas d'échec de notre création nous recevons le message "Échec de la création d'un avis".
+  Lorsque la création est faite avec succès, l'avis est envoyé en base de données et publié sur l'application.
+  */
   Future<void> CreateAvis(double star, String comment, int idUser) async {
     final response = await http.post(
       Uri.parse(urlSite + 'notice/'),// route pour laisser un avis

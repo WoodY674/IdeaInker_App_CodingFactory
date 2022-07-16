@@ -155,13 +155,17 @@ class _ListShopUsers extends State<ListShopUsers> {
       ),
     );
   }
-
+  /*
+  La fonction _filter permet de mettre à jour la liste des salons qu'un utilisateur pourra voir
+  */
   Future<void> _filter(String searchQuery) async {
     setState(() {
       futureShop = getFutureFiltered(searchQuery);
     });
   }
-
+  /*
+  La fonction getFutureFiltered permet de récupérer les salons dans la base de données avant de les afficher
+  */
   Future<List<Shop>> getFutureFiltered(String searchQuery) async {
     var postsToGet = fetchShop();
     List<Shop> shopFiltered =  await postsToGet;
