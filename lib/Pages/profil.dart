@@ -141,6 +141,9 @@ class _Profil extends State<Profil> {
   avant d'être renvoyé à la page d'accueil.
   Dans le cas d'une connexion échouée nous recevons le message "Failed Login".
   */
+  /// Connecte un utilisateur
+  /// Récupère l'URL de l'image et le token d'authentification
+  /// Toast affiché en fonction du résultat de la requête (Succès/Échec)
   Future<void> Login(String email, String password) async {
     final response = await http.post(
       Uri.parse(urlImage + 'authentication_token'),

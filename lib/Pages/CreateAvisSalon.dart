@@ -128,6 +128,8 @@ class _CreateAvisSalon extends State<CreateAvisSalon> {
   Dans le cas d'échec de notre création nous recevons le message "Échec de la création d'un avis".
   Lorsque la création est faite avec succès, l'avis est envoyé en base de données et publié sur l'application.
   */
+  /// Ajoute un avis créé dans l'API
+  /// Toast affiché en fonction du résultat de la requête (Succès/Échec)
   Future<void> CreateAvis(double star, String comment, int idUser) async {
     final response = await http.post(
       Uri.parse(urlSite + 'notice/'),// route pour laisser un avis

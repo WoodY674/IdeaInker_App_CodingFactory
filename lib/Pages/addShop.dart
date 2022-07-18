@@ -204,6 +204,10 @@ class _AddShop extends State<AddShop> {
   Dans le cas d'échec de notre ajout nous recevons le message "Failed create salon".
   Lorsque la création est fait avec succès, les informations sont envoyées en base de données et le salon est publié sur l'application.
   */
+
+  /// Ajoute un salon sur l'API
+  /// Fait une requête de Geocoding vers un serveur tier pour récupérer la latitude/longitude avant la création du shop
+  /// Toast affiché en fonction du résultat de la requête (Succès/Échec)
   Future<void> addShop(String name, String address, String city, String zipCode, String image64) async {
     final now = DateTime.now();
     GeoCode geoCode = GeoCode();

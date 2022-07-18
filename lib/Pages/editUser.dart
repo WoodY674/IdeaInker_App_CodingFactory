@@ -287,6 +287,8 @@ class _EditUser extends State<EditUser> {
   Dans le cas d'échec de notre modification nous recevons le message "Edit Failed !".
   Lorsque la modification est faite avec succès, elle est envoyée en base de données et publiée sur l'application.
   */
+  /// Modifie les informations d'un compte sur l'API
+  /// Toast affiché en fonction du résultat de la requête (Succès/Échec)
   Future<void> editAccount(String firstName, String lastName, String email, String address, String zipCode, String city, String birthday, String pseudo, String image64, int idUser, String image) async {
     late Response response = http.Response("", 400);
     if(image64 != ""){

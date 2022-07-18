@@ -157,6 +157,8 @@ class _CreateAccount extends State<CreateAccount> {
   Dans le cas d'échec de notre création nous recevons le message "Failed Create Account".
   Lorsque la création est faite avec succès, l'inscription est envoyée en base de données et l'utilisateur peut se connecter.
   */
+  /// Ajoute un nouveau compte sur l'API
+  /// Toast affiché en fonction du résultat de la requête (Succès/Échec)
   Future<void> createAccount(String firstName, String lastName, String email, String password, String pseudo) async {
     final now = DateTime.now();
     final response = await http.post(
