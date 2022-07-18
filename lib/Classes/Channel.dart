@@ -6,20 +6,19 @@ import 'package:streaming_shared_preferences/streaming_shared_preferences.dart';
 import '../main.dart';
 import 'User.dart';
 
-final String url = urlSite +"channel";
+final String url = urlSite +"channel/";
 List<Channel> parseChannel(String responseBody){
   var list = json.decode(responseBody) as List<dynamic>;
   var channels = list.map((e) => Channel.fromJson(e)).toList();
-  print(channels);
   return channels;
 }
 
 
 
-Future<List<Channel>> fetchChannel() async {
+Future<List<Channel>> fetchChannel(userId) async {
   final preferences = await StreamingSharedPreferences.instance;
   final token = preferences.getString('token', defaultValue: '').getValue();
-  final http.Response response = await http.get(Uri.parse(url),
+  final http.Response response = await http.get(Uri.parse(url + userId.toString()),
     headers: {
       HttpHeaders.authorizationHeader: "Bearer $token",
     },
@@ -30,6 +29,7 @@ Future<List<Channel>> fetchChannel() async {
     // then parse the JSON.
     //return Salon.fromJson(jsonDecode(response.body));
     print(token);
+
     print(response.body);
     return compute(parseChannel,response.body);
   } else {
@@ -37,8 +37,6 @@ Future<List<Channel>> fetchChannel() async {
     // then throw an exception.
 
     print('Connection Failed');
-    print(response.statusCode);
-    print(url);
     throw Exception(response.statusCode);
   }
 }
@@ -46,30 +44,30 @@ Future<List<Channel>> fetchChannel() async {
 class Channel {
   int? id;
   List? usersInside;
-  List? messages;
+  String? message;
 
 
   Channel(
       {
         this.id,
         this.usersInside,
-        this.messages
+        this.message
       });
 
   factory Channel.fromJson(Map<String, dynamic> json) {
     print(json);
     return Channel(
       id: json["id"],
-      usersInside: json["usersInside"],
-      messages: json["messages"],
+      usersInside: json["user_inside"],
+      message: json["last_message"],
     );
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['id'] = this.id;
-    data['usersInside'] = this.usersInside;
-    data['messages'] = this.messages;
+    data['user_inside'] = this.usersInside;
+    data['last_message'] = this.message;
 
     return data;
   }

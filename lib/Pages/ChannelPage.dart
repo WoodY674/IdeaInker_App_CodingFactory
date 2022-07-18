@@ -7,33 +7,41 @@ import 'package:thebestatoo/Classes/Channel.dart';
 import 'package:thebestatoo/Classes/User.dart';
 import 'package:thebestatoo/chat/chatAppBar.dart';
 import 'package:thebestatoo/chat/components/body.dart';
+import 'package:thebestatoo/chat/models/chatMessage.dart';
 import 'package:thebestatoo/main.dart';
 import 'package:thebestatoo/Pages/sideBar.dart';
 import '../../Classes/Token.dart';
 import 'package:streaming_shared_preferences/streaming_shared_preferences.dart';
 
+import 'MessagesPage.dart';
+import 'MessagesPage2.dart';
+
 
 class ChannelPage extends StatefulWidget {
-  const ChannelPage({Key? key}) : super(key: key);
-  static String route = 'channel';
+
+
+  final dynamic  userId;
+  const ChannelPage(this.userId,{Key? key}) : super(key: key);
 
   @override
   _ChannelPage createState() => _ChannelPage();
 }
 
 class _ChannelPage extends State<ChannelPage> {
+
   TextEditingController messageInputController = TextEditingController();
   late Future<List<Channel>> futureChannel;
   late Token token;
-  final _formKey = GlobalKey<FormState>();
+  late Future<User> myUser;
   late Channel channel;
-  late String recipient;
+  late int myUserId;
+
 
 
   @override
   void initState() {
     super.initState();
-    futureChannel = fetchChannel();
+    futureChannel = fetchChannel(widget.userId);
   }
 
   @override
@@ -59,59 +67,34 @@ class _ChannelPage extends State<ChannelPage> {
           builder: (BuildContext context, AsyncSnapshot<List<Channel>> snapshot) {
 
             if (snapshot.hasData) {
+              print(snapshot.data);
               return Container(
                 child: ListView.builder(
                   itemCount: snapshot.data?.length,
                   itemBuilder: (BuildContext context, int index) {
-                    Channel currentChannel = snapshot.data![index];
-                    print(currentChannel.usersInside.runtimeType);
-
-                    Future<User> myUser = fetchUser();
-                    print(myUser);
                     return Card(
                       margin: const EdgeInsets.all(8),
-
                       color: Colors.amber,
                       child: Center(
-
-                          child: FutureBuilder<User>(
-                            future: myUser,
-                              builder: (context, snapshotUser){
-                              if(snapshotUser.hasData){
-                                currentChannel.usersInside?.forEach((element) {
-                                  channel = snapshot.data![index];
-                                  String myChannel = element.toString();
-                                  List<String> myUser = [];
-                                  myUser.add(myChannel.split(" ")[1]);
-                                  myUser.add(myUser[0].split("}")[0]);
-                                  if(myUser[1] != snapshotUser.data?.email){
-                                   recipient = myUser[1];
-                                  }
-                                });
-                                return GestureDetector(
-                                  onTap: () {
-                                    Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (context) => Chat()),
-                                    );
-                                  },
-                                  child: Card(
-                                    child: Column(
-                                      children: [
-
-                                        ListTile(
-                                          title: Text(recipient),
-                                          subtitle: Text('Dernier message'),
-                                          isThreeLine: true,
-                                        )
-                                      ],
-                                    ),
-                                  ),
-                                );
-                              }else{
-                                return const CircularProgressIndicator();                              }
-                              }
+                          child: GestureDetector(
+                            onTap: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => MessagePage2(snapshot.data?[index]?.id),
+                              ));
+                            },
+                            child: Card(
+                              child: Column(
+                                children: [
+                                  ListTile(
+                                    title: Text(snapshot.data?[index]?.usersInside?[1]),
+                                    subtitle: Text(snapshot.data![index].message.toString()),
+                                    isThreeLine: true,
+                                  )
+                                ],
+                              ),
+                            ),
                           ),
                       ),
                     );
@@ -121,12 +104,14 @@ class _ChannelPage extends State<ChannelPage> {
 
               );
             } else {
-              print('loading');
+              print('no data, loading');
               return const CircularProgressIndicator();
             }
           }
       ),
     );
   }
+
 }
+
 

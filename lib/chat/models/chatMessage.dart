@@ -1,27 +1,38 @@
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:streaming_shared_preferences/streaming_shared_preferences.dart';
 import 'dart:convert';
 
+import '../../main.dart';
 
-String token = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJpYXQiOjE2NTIwODkyMDQsImV4cCI6MTY1MjExOTgwNCwicm9sZXMiOlsiUk9MRV9VU0VSIl0sInVzZXJuYW1lIjoiYW50b2luZS1oYWxsZXJAb3V0bG9vay5mciJ9.kNlI_PZ7k0fhUXvKTHclM64_cBFxw-QoahMEqgY_KwsVUdtMnOIBpG6eKYSMmMbLj2fXxObnSpyFTK6ol38lGUdkVabBZx9T3zYLOcxluVL9gKIGqIv1hoQ3V1-T6R-Ke65tW_LRuGEJkKQDcjs8lBkG0PIy1edWMjPfi-SSklvHZ2Ad-Zus2mgANQDq6rwhtHpgyrjkTylmuyoVG6ftcs49kIH_qU_SOtDt_Y5PIwAfL2Mi7kxVFYdcPSavsornlGicXcnCe13pS-XR86ezjvBEcgz9PpoQcNm_F6HdvhNIYMHas8X8TEajvPtQyJlr4pjeTVLW_clTImFEEH7PQw';
 
+final String url = urlSite +"messages/";
 
-Future<ChatMessage> fetchChannel() async {
-  final response = await http
-
-      .get(Uri.parse('http://localhost:8000/api/messages/1'),
-    headers: <String, String>{
-      'Content-Type': 'application/json; charset=UTF-8',
-      'Authorization': 'Bearer $token',
+List<ChatMessage> parseChatMessage(String responseBody){
+  var list = json.decode(responseBody) as List<dynamic>;
+  var messages = list.map((e) => ChatMessage.fromJson(e)).toList();
+  return messages;
+}
+Future<List<ChatMessage>> fetchChatMessage(channelId) async {
+  final preferences = await StreamingSharedPreferences.instance;
+  final token = preferences.getString('token', defaultValue: '').getValue();
+  final http.Response response = await http.get(Uri.parse(url + channelId.toString()),
+    headers: {
+      HttpHeaders.authorizationHeader: "Bearer $token",
     },
   );
   if (response.statusCode == 200) {
     // If the server did return a 200 OK response,
     // then parse the JSON.
-    return ChatMessage.fromJson(jsonDecode(response.body));
+    print('response body :');
+    print(response.body);
+    print(channelId);
+    return compute(parseChatMessage,response.body);
   } else {
     // If the server did not return a 200 OK response,
     // then throw an exception.
@@ -29,68 +40,54 @@ Future<ChatMessage> fetchChannel() async {
   }
 }
 
-class ChatMessage extends StatefulWidget{
+final token = preferences.getString('token', defaultValue: '').getValue();
+Future<http.Response> createMessage(String message, channelId) {
+  print('message in chatMessage');
+  print(message);
+  print(channelId);
+  return http.post(Uri.parse(url + channelId.toString()),
+    headers: {
+      'Content-Type': 'application/json; charset=UTF-8',
+      HttpHeaders.authorizationHeader: "Bearer $token",
+    },
+    body: jsonEncode(<String, String>{
+      'message': message,
+      'recipient': '48',
+      'channel' : channelId.toString(),
+    }),
+  );
+}
 
+class ChatMessage{
 
-
-  @override
-  _ChatMessageState createState() => _ChatMessageState();
-
-
-  final String message;
-  final String sender;
+  String? message;
+  String? idRecipient;
+  int? id;
 
   ChatMessage({
-    required this.message,
-    required this.sender,
-    Key? key,
-  }) : super(key: key);
-
-
-
-
-
+    this.message,
+    this.idRecipient,
+    this.id,
+  });
 
   factory ChatMessage.fromJson(Map<String, dynamic> json) {
-    print(json['message']);
+    print(json);
     return ChatMessage(
-      message: json['message'],
-      sender: json['sendBy'],
+      id: json["id"],
+      idRecipient: json["recipient"],
+      message: json["message"],
     );
   }
 
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['id'] = this.id;
+    data['recipient'] = this.idRecipient;
+    data['message'] = this.message;
 
+    return data;
+  }
 
 }
 
-class _ChatMessageState extends State<ChatMessage> {
 
-  late Future<ChatMessage> futureChatMessage;
-
-  @override
-  void initState() {
-    super.initState();
-    futureChatMessage = fetchChannel();
-  }
-
-  Widget build(BuildContext context) {
-    return FutureBuilder<ChatMessage>(
-      future: futureChatMessage,
-      builder: (context, snapshot) {
-        if (snapshot.hasData) {
-          print(snapshot.data!.message);
-          return Text(snapshot.data!.message);
-        } else if (snapshot.hasError) {
-          return Text('${snapshot.error}');
-        }
-
-        // By default, show a loading spinner.
-        return const CircularProgressIndicator();
-      },
-    );
-  }
-}
-
-// Stream <List<ChatMessage>> get streamMessages => Stream.value(
-//   chatMessages.map((e) => ChatMessage(text: 'text', isSender: true)).toList()
-// );

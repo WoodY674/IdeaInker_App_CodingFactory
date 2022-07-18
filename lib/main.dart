@@ -75,9 +75,7 @@ class _MainPageState extends State<MainPage> {
         ProfilUser.route: (context) => const ProfilUser(),
         ProfilArtiste.route: (context) => const ProfilArtiste(),
         Profil.route: (context) => const Profil(),
-        ChannelPage.route: (context) => ChannelPage(),
         PostsPage.route:(context) => const PostsPage(),
-        Chat.route:(context) => const Chat(),
       },
       home: Scaffold(
         body: currentPage,
