@@ -3,7 +3,7 @@ import 'package:thebestatoo/chat/models/chatMessage.dart';
 import 'package:thebestatoo/Pages/sideBar.dart';
 
 class MessagePage2 extends StatefulWidget {
-  
+
   final dynamic channelId;
   final dynamic userId;
   const MessagePage2(this.channelId, this.userId, {Key? key}) : super(key: key);
@@ -52,19 +52,15 @@ class _MessagePage extends State<MessagePage2> {
           future: futureChatMessage,
           builder: (BuildContext context, AsyncSnapshot<List<ChatMessage>> snapshot) {
             if (snapshot.hasData) {
-              return NestedScrollView(headerSliverBuilder: (context, _) {
-                return [
-                  SliverList(
-                    delegate: SliverChildListDelegate(
-                      [
-                        Container(
+              return Column(
+              children: [
+                        SizedBox(
                           width: 500,
                           height: 500,
                           child: ListView.builder(
                             itemCount: snapshot.data?.length,
                             itemBuilder: (BuildContext context, int index) {
                             return Row(
-
                               mainAxisAlignment:
                                 snapshot.data![index].sendBy?.pseudo == widget.userId ? MainAxisAlignment.start : MainAxisAlignment.end,
                                 children: [
@@ -77,7 +73,7 @@ class _MessagePage extends State<MessagePage2> {
                                           color:
                                             snapshot.data![index].sendBy?.pseudo == widget.userId ? Colors.deepPurpleAccent : Colors.purple,
                                           borderRadius: BorderRadius.circular(40)
-                                      ) ,
+                                      ),
                                     child: Text(
                                       snapshot.data![index].message.toString(),
                                       style:
@@ -91,15 +87,20 @@ class _MessagePage extends State<MessagePage2> {
                           },
                         ),
                   ),
+
                   Container(
-                  padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5 ),
-                  decoration: BoxDecoration(
-                    color: Colors.white),
+                  padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5 ),
+                  decoration: const BoxDecoration(
+                    color: Colors.white,
+                  ),
                   child: SafeArea(
                     child: Row(
                       children: [
-                        SizedBox(width: 100),
+                        const SizedBox(
+                            width: 100
+                        ),
                         Expanded(
+
                           child: TextField(
                             controller: myController,
                             decoration: InputDecoration(
@@ -112,7 +113,6 @@ class _MessagePage extends State<MessagePage2> {
                         ),
                         IconButton(
                           onPressed: () {
-                            //chatMessages.add(ChatMessage(text: myController.text, isSender: true));
                             createMessage(myController.text, 1);
                             Navigator.push(
                                 context,
@@ -122,20 +122,12 @@ class _MessagePage extends State<MessagePage2> {
                           },
                           tooltip: 'Send',
                           icon: Icon(Icons.send),
-                          //child: const Icon(Icons.text_fields),
                         ),
                       ],
                     ),
                   ),
                 ),
                       ],
-                    ),
-                  ),
-                ];
-              },
-                body: Container(
-
-                ),
               );
             } else {
               print('no data, loading');
