@@ -195,6 +195,19 @@ class _AddShop extends State<AddShop> {
       ),
     );
   }
+  /*
+  La fonction addShop récupère le nom, l'adresse, la ville, le code postal et l'image que l'utilisateur ai entré dans l'application.
+  La class coordinate vérifie les coordonnées géographiques.
+  Elle attend ensuite une réponse http avec le code 400.
+  Puis l'image entrée est inspectée, si elle est en base 64 un message "photo detected" est envoyée sinon "no photo".
+  Si nous recevons un code 201 un message confirmant notre ajout nous est envoyé "Salon added with Success!"
+  Dans le cas d'échec de notre ajout nous recevons le message "Failed create salon".
+  Lorsque la création est fait avec succès, les informations sont envoyées en base de données et le salon est publié sur l'application.
+  */
+
+  /// Ajoute un salon sur l'API
+  /// Fait une requête de Geocoding vers un serveur tier pour récupérer la latitude/longitude avant la création du shop
+  /// Toast affiché en fonction du résultat de la requête (Succès/Échec)
   Future<void> addShop(String name, String address, String city, String zipCode, String image64) async {
     final now = DateTime.now();
     GeoCode geoCode = GeoCode();
@@ -205,33 +218,31 @@ class _AddShop extends State<AddShop> {
       if(image64 != ""){
         print("photo detected");
         responseSalon = await http.post(
-          Uri.parse(urlSite + 'salons'),
+          Uri.parse(urlSite + 'salon'),
           headers: <String, String>{
             'Content-Type': 'application/json; charset=UTF-8',
           },
           body: jsonEncode(<String, String>{
             'address': address,
-            'zipCode': zipCode,
+            'zip_code': zipCode,
             'city': city,
-            'createdAt': now.toString(),
             'name': name,
             'latitude': coordinates.latitude.toString(),
             'longitude': coordinates.longitude.toString(),
-            'salonImage': image64,
+            'salon_image': image64,
           }),
         );
       }else{
         print("no photo");
         responseSalon = await http.post(
-          Uri.parse(urlSite + 'salons'),
+          Uri.parse(urlSite + 'salon'),
           headers: <String, String>{
             'Content-Type': 'application/json; charset=UTF-8',
           },
           body: jsonEncode(<String, String>{
             'address': address,
-            'zipCode': zipCode,
+            'zip_code': zipCode,
             'city': city,
-            'createdAt': now.toString(),
             'name': name,
             'latitude': coordinates.latitude.toString(),
             'longitude': coordinates.longitude.toString(),

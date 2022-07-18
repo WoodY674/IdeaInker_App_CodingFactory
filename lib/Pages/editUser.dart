@@ -8,6 +8,7 @@ import 'package:http/http.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:thebestatoo/Classes/User.dart';
+import 'package:thebestatoo/Pages/ProfilUser.dart';
 import 'package:thebestatoo/main.dart';
 import '../Classes/ImageTo64.dart';
 
@@ -36,6 +37,7 @@ class _EditUser extends State<EditUser> {
   TextEditingController zipCodeController = TextEditingController();
   TextEditingController cityController = TextEditingController();
   TextEditingController birthdayController = TextEditingController();
+  TextEditingController imageController = TextEditingController();
   late User user;
   String imagePath = "";
   final picker = ImagePicker();
@@ -67,6 +69,8 @@ class _EditUser extends State<EditUser> {
               cityController.text = snapshot.data!.city.toString(): cityController.text = "";
               snapshot.data!.birthday != null ?
               birthdayController.text = snapshot.data!.birthday.toString(): birthdayController.text = "";
+              snapshot.data!.profileImage != null ?
+                  imageController.text = snapshot.data!.profileImage.toString() : imageController.text ="";
               return Form(
                   key: _formKey,
                   child: ListView(
@@ -251,7 +255,8 @@ class _EditUser extends State<EditUser> {
                                 birthdayController.text,
                                 pseudoController.text,
                                 fileInBase64,
-                                snapshot.data!.id!
+                                snapshot.data!.id!,
+                                imageController.text
                             );
                           }
                         },
@@ -273,12 +278,23 @@ class _EditUser extends State<EditUser> {
       ),
     );
   }
-
-  Future<void> editAccount(String firstName, String lastName, String email, String address, String zipCode, String city, String birthday, String pseudo, String image64, int idUser) async {
+  /*
+  La fonction editAccount récupère le prénom, le nom, l'adresse email, l'adresse, le code postal, la ville, la date de naissance,
+  le pseudo, l'image et l'identifiant de l'utilisateur.
+  Elle attend ensuite une réponse http avec le code 400.
+  Puis l'image entrée est inspectée, si elle est en base 64 un message "photo detected" est envoyée sinon "no photo".
+  Si nous recevons un code 200 un message confirmant notre modification nous est envoyé "Edit successful !".
+  Dans le cas d'échec de notre modification nous recevons le message "Edit Failed !".
+  Lorsque la modification est faite avec succès, elle est envoyée en base de données et publiée sur l'application.
+  */
+  /// Modifie les informations d'un compte sur l'API
+  /// Toast affiché en fonction du résultat de la requête (Succès/Échec)
+  Future<void> editAccount(String firstName, String lastName, String email, String address, String zipCode, String city, String birthday, String pseudo, String image64, int idUser, String image) async {
     late Response response = http.Response("", 400);
     if(image64 != ""){
       print("photo detected");
-      response = await http.put(
+      print(idUser.toString());
+      response = await http.patch(
         Uri.parse(urlSite + 'users/' + idUser.toString()),
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
@@ -286,17 +302,20 @@ class _EditUser extends State<EditUser> {
         body: jsonEncode(<String, String>{
           'pseudo': pseudo,
           'email': email,
-          'lastName': lastName,
-          'firstName': firstName,
-          'zip code': zipCode,
+          'last_name': lastName,
+          'first_name': firstName,
+          'zip_code': zipCode,
           'city': city,
           'address': address,
-          'profileImage' : image64
+          'profile_image' : image64
         }),
       );
     }else{
       print("no photo");
-      response = await http.put(
+      print(idUser.toString());
+      print(image);
+
+      response = await http.patch(
         Uri.parse(urlSite + 'users/' + idUser.toString()),
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
@@ -304,15 +323,15 @@ class _EditUser extends State<EditUser> {
         body: jsonEncode(<String, String>{
           'pseudo': pseudo,
           'email': email,
-          'lastName': lastName,
-          'firstName': firstName,
-          'zip code': zipCode,
+          'last_name': lastName,
+          'first_name': firstName,
+          'zip_code': zipCode,
           'city': city,
           'address': address,
+          'profile_image' : image
         }),
       );
     }
-
     if (response.statusCode == 200) {
       // If the server did return a 201 CREATED response,
       // then parse the JSON.
@@ -325,7 +344,9 @@ class _EditUser extends State<EditUser> {
           textColor: Colors.white,
           fontSize: 16.0
       );
-      Navigator.pop(context);
+      Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (context) => ProfilUser()));
     } else {
       // If the server did not return a 201 CREATED response,
       // then throw an exception.

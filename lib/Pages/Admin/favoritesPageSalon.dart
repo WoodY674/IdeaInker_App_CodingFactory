@@ -5,14 +5,14 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
-import '../Classes/Posts.dart';
-import '../main.dart';
+import '../../Classes/Posts.dart';
+import '../../main.dart';
 
 late List<Posts> posts = [];
 
-class FavoritesPage extends StatelessWidget {
+class FavoritesPageSalon extends StatelessWidget {
   final dynamic users;
-  const FavoritesPage( this.users,{Key? key}) : super(key: key);
+  const FavoritesPageSalon( this.users,{Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -64,17 +64,14 @@ class FavoritesPage extends StatelessWidget {
       },
     );
   }
-
-  /// Récupère les images postées
   void parsePostsImages() async {
     var postsToGet = fetchPosts();
     posts =  await postsToGet;
     _streamController.sink.add(filteredPosts(posts));
   }
 
-  /// Filtre les posts sous forme de liste
   List<Posts> filteredPosts(List<Posts> posts) {
-    List<Posts> postFiltered = posts.where((element) => element.createdBy?.id! == users.id).toList();
+    List<Posts> postFiltered = posts.where((element) => element.createdBySalon?.id == users.id).toList();
     return postFiltered;
   }
 }

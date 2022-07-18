@@ -277,6 +277,8 @@ class _Home extends State<Home> {
 
     );
   }
+
+  /// Récupère les images postées
   void parsePostsImages() async {
     var postsToGet = fetchPosts();
     posts =  await postsToGet;

@@ -7,30 +7,30 @@ import 'package:smooth_star_rating/smooth_star_rating.dart';
 import 'package:thebestatoo/Pages/ArtistesLies.dart';
 import 'package:thebestatoo/Pages/informationsSalon.dart';
 import 'package:thebestatoo/Pages/listAvis.dart';
-import 'package:thebestatoo/Pages/postsPage.dart';
 import 'package:thebestatoo/Pages/sideBar.dart';
 import 'package:thebestatoo/Pages/toggleBar.dart';
-import '../Classes/Notice.dart';
-import '../Classes/Shop.dart';
-import '../Classes/User.dart';
-import 'Creations.dart';
-import 'editUser.dart';
-import '../main.dart';
-import 'favoritesPage.dart';
-import 'informationsArtiste.dart';
-import 'informationsUser.dart';
-import '../main.dart';
+import '../../Classes/Notice.dart';
+import '../../Classes/Shop.dart';
+import '../../Classes/User.dart';
+import '../Creations.dart';
+import '../editUser.dart';
+import '../../main.dart';
+import '../favoritesPage.dart';
+import '../informationsArtiste.dart';
+import '../informationsUser.dart';
+import '../../main.dart';
+import '../postsPage.dart';
 
-class ProfilArtisteId extends StatefulWidget {
-  static String route = 'ProfilArtisteId';
-  final dynamic id;
-  const ProfilArtisteId(this.id,{Key? key}) : super(key: key);
+class ProfilArtisteAdmin extends StatefulWidget {
+  static String route = 'ProfilArtiste';
+
+  const ProfilArtisteAdmin({Key? key}) : super(key: key);
 
   @override
-  _ProfilArtisteId createState() => _ProfilArtisteId();
+  _ProfilArtisteAdmin createState() => _ProfilArtisteAdmin();
 }
 
-class _ProfilArtisteId extends State<ProfilArtisteId> {
+class _ProfilArtisteAdmin extends State<ProfilArtisteAdmin> {
   late User user;
   late Future<User> futureUser;
   late double stars = 0;
@@ -41,7 +41,7 @@ class _ProfilArtisteId extends State<ProfilArtisteId> {
   @override
   void initState() {
     super.initState();
-    futureUser = fetchUserIndividual(widget.id);
+    futureUser = fetchUser();
   }
 
   @override
@@ -52,6 +52,16 @@ class _ProfilArtisteId extends State<ProfilArtisteId> {
         title: Text('Profil Artiste'),
         backgroundColor: Colors.deepPurple,
         centerTitle: true,
+        actions: [
+          IconButton(onPressed: (){
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => const PostsPage()),
+            );
+          },
+              icon: const Icon(Icons.add))
+        ],
       ),
       body: FutureBuilder<User>(
         future: futureUser,
@@ -77,11 +87,23 @@ class _ProfilArtisteId extends State<ProfilArtisteId> {
                               height: 200,
                               child: Stack(
                                 children: <Widget>[
+                                  Align(
+                                    alignment: Alignment.bottomRight,
+                                    child: IconButton(
+                                      icon: const Icon(Icons.edit),
+                                      onPressed: (){
+                                        Navigator.push(
+                                          context,
+                                          MaterialPageRoute(builder: (context) => const EditUser()),
+                                        );
+                                      },
+                                    ),
+                                  ),
                                   Container(
                                     width: 200,
                                     height: 200,
                                     child: CircleAvatar(
-                                      backgroundImage: NetworkImage(urlImage+snapshot.data!.profileImage!.imagePath.toString()),
+                                      backgroundImage: NetworkImage(urlImage + snapshot.data!.profileImage!.imagePath.toString()),
                                     ),
                                   ),
                                 ],
@@ -93,6 +115,18 @@ class _ProfilArtisteId extends State<ProfilArtisteId> {
                                 height: 200,
                                 child: Stack(
                                   children: <Widget>[
+                                    Align(
+                                      alignment: Alignment.bottomRight,
+                                      child: IconButton(
+                                        icon: Icon(Icons.edit),
+                                        onPressed: (){
+                                          Navigator.push(
+                                            context,
+                                            MaterialPageRoute(builder: (context) => const EditUser()),
+                                          );
+                                        },
+                                      ),
+                                    ),
                                     Container(
                                       width: 200,
                                       height: 200,
@@ -119,13 +153,13 @@ class _ProfilArtisteId extends State<ProfilArtisteId> {
                                   onTap: (){
                                     Navigator.push(
                                       context,
-                                      MaterialPageRoute(builder: (context) => ListAvis(snapshot.data!.notices,snapshot.data!.id,"Artist")),
+                                      MaterialPageRoute(builder: (context) => ListAvis(user.notices,user.id,"Artist")),
                                     );
                                   },
                                   child: Align(
                                     alignment: Alignment.center,
                                     child: SmoothStarRating(
-                                      rating: double.parse(snapshot.data!.notices!.average.toString()),
+                                      rating: meanStars,
                                       isReadOnly: true,
                                       size: 50,
                                       filledIconData: Icons.star,
@@ -136,7 +170,7 @@ class _ProfilArtisteId extends State<ProfilArtisteId> {
                                       starCount: 5,
                                       allowHalfRating: false,
                                       spacing: 2.0,
-                                    ),
+                                    )  ,
                                   ),
                                 )
                             ),
@@ -171,7 +205,7 @@ class _ProfilArtisteId extends State<ProfilArtisteId> {
           } else if (snapshot.hasError) {
             return Text('${snapshot.error}');
           }
-          // By default, show a loading spinner.
+// By default, show a loading spinner.
           return const CircularProgressIndicator();
         },
       ),

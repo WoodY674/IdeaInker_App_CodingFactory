@@ -51,12 +51,12 @@ class User {
   String? lastName;
   String? firstName;
   String? address;
-  Null? zipCode;
+  String? zipCode;
   String? city;
-  Null? birthday;
+  String? birthday;
   String? createdAt;
   String? pseudo;
-  Null? profileImage;
+  ProfileImage? profileImage;
   List<Salons>? salons;
   List<WorkingSalon>? workingSalon;
   Notices? notices;
@@ -92,7 +92,9 @@ class User {
     birthday = json['birthday'];
     createdAt = json['createdAt'];
     pseudo = json['pseudo'];
-    profileImage = json['profile_image'];
+    profileImage = json['profile_image'] != null
+        ? new ProfileImage.fromJson(json['profile_image'])
+        : null;
     if (json['salons'] != null) {
       salons = <Salons>[];
       json['salons'].forEach((v) {
@@ -123,7 +125,9 @@ class User {
     data['birthday'] = this.birthday;
     data['createdAt'] = this.createdAt;
     data['pseudo'] = this.pseudo;
-    data['profile_image'] = this.profileImage;
+    if (this.profileImage != null) {
+      data['profile_image'] = this.profileImage!.toJson();
+    }
     if (this.salons != null) {
       data['salons'] = this.salons!.map((v) => v.toJson()).toList();
     }
@@ -240,6 +244,31 @@ class WorkingSalon {
     data['latitude'] = this.latitude;
     data['longitude'] = this.longitude;
     data['salon_image'] = this.salonImage;
+    return data;
+  }
+}
+
+class ProfileImage {
+  int? id;
+  String? imageName;
+  String? updatedAt;
+  String? imagePath;
+
+  ProfileImage({this.id, this.imageName, this.updatedAt, this.imagePath});
+
+  ProfileImage.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
+    imageName = json['imageName'];
+    updatedAt = json['updatedAt'];
+    imagePath = json['imagePath'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['id'] = this.id;
+    data['imageName'] = this.imageName;
+    data['updatedAt'] = this.updatedAt;
+    data['imagePath'] = this.imagePath;
     return data;
   }
 }

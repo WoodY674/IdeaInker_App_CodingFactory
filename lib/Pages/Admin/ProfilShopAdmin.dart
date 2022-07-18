@@ -7,33 +7,36 @@ import 'package:smooth_star_rating/smooth_star_rating.dart';
 import 'package:thebestatoo/Pages/Admin/favoritesPageSalon.dart';
 import 'package:thebestatoo/Pages/ArtistesLies.dart';
 import 'package:thebestatoo/Pages/informationsSalon.dart';
-import 'package:thebestatoo/Pages/postsPage.dart';
+import 'package:thebestatoo/Pages/postsPageShop.dart';
 import 'package:thebestatoo/Pages/sideBar.dart';
 import 'package:thebestatoo/Pages/toggleBar.dart';
-import '../Classes/Shop.dart';
-import '../Classes/User.dart';
-import 'Creations.dart';
-import 'editUser.dart';
-import 'favoritesPage.dart';
-import 'informationsUser.dart';
-import '../main.dart';
-import 'listAvis.dart';
+import '../../Classes/Shop.dart';
+import '../../Classes/User.dart';
+import '../Creations.dart';
+import '../editShop.dart';
+import '../editUser.dart';
+import '../favoritesPage.dart';
+import '../informationsUser.dart';
+import '../../main.dart';
+import '../listAvis.dart';
+import '../postsPage.dart';
 
-class ProfilSalon extends StatefulWidget {
+class ProfilSalonAdmin extends StatefulWidget {
   static String route = 'ProfilArtiste';
   final dynamic id;
-  const ProfilSalon(this.id,{Key? key}) : super(key: key);
+  const ProfilSalonAdmin(this.id,{Key? key}) : super(key: key);
   @override
-  _ProfilSalon createState() => _ProfilSalon();
+  _ProfilSalonAdmin createState() => _ProfilSalonAdmin();
 }
 
-class _ProfilSalon extends State<ProfilSalon> {
+class _ProfilSalonAdmin extends State<ProfilSalonAdmin> {
   late double stars = 0;
+  late double meanStars = 0.0;
   List<String> labels = ["Créations","Informations","Artistes liés"];
   int currentIndex = 0;
-  late double meanStars = 0.0;
-  late Future<Shop> shopFetch;
   late Shop shop;
+  late Future<Shop> shopFetch;
+
   @override
   void initState() {
     super.initState();
@@ -43,11 +46,21 @@ class _ProfilSalon extends State<ProfilSalon> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        drawer: SideBar(),
+      drawer: SideBar(),
         appBar: AppBar(
           title: const Text('Profil Salon'),
           backgroundColor: Colors.deepPurple,
           centerTitle: true,
+          actions: [
+            IconButton(onPressed: (){
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => PostsPageShop(widget.id)),
+              );
+            },
+                icon: const Icon(Icons.add))
+          ],
         ),
         body:FutureBuilder<Shop>(
             future: shopFetch,
@@ -57,6 +70,7 @@ class _ProfilSalon extends State<ProfilSalon> {
                 if(shop.notices != null){
                   meanStars = double.parse(shop.notices!.average.toString());
                 }
+
                 return NestedScrollView(headerSliverBuilder: (context, _) {
                   return [
                     SliverList(
@@ -73,6 +87,18 @@ class _ProfilSalon extends State<ProfilSalon> {
                                   height: 200,
                                   child: Stack(
                                     children: <Widget>[
+                                      Align(
+                                        alignment: Alignment.bottomRight,
+                                        child: IconButton(
+                                          icon: const Icon(Icons.edit),
+                                          onPressed: (){
+                                            Navigator.push(
+                                              context,
+                                              MaterialPageRoute(builder: (context) =>  EditShop(shop,widget.id)),
+                                            );
+                                          },
+                                        ),
+                                      ),
                                       Container(
                                         width: 200,
                                         height: 200,
@@ -89,6 +115,18 @@ class _ProfilSalon extends State<ProfilSalon> {
                                     height: 200,
                                     child: Stack(
                                       children: <Widget>[
+                                        Align(
+                                          alignment: Alignment.bottomRight,
+                                          child: IconButton(
+                                            icon: Icon(Icons.edit),
+                                            onPressed: (){
+                                              Navigator.push(
+                                                context,
+                                                MaterialPageRoute(builder: (context) =>  EditShop(shop,widget.id)),
+                                              );
+                                            },
+                                          ),
+                                        ),
                                         Container(
                                           width: 200,
                                           height: 200,

@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:streaming_shared_preferences/streaming_shared_preferences.dart';
+import 'package:thebestatoo/Pages/Admin/ProfilShopAdmin.dart';
 import 'package:thebestatoo/Pages/ProfilArtiste.dart';
 import 'package:thebestatoo/Pages/ProfilSalon.dart';
 import 'package:thebestatoo/Pages/ProfilUser.dart';
@@ -10,6 +11,7 @@ import 'package:thebestatoo/Pages/profil.dart';
 import 'package:thebestatoo/Pages/ChannelPage.dart';
 import '../Classes/Shop.dart';
 import '../Classes/User.dart';
+import 'Admin/ProfileArtisteAdmin.dart';
 import 'home.dart';
 import '../main.dart';
 import 'map.dart';
@@ -38,8 +40,8 @@ class SideBar extends StatelessWidget {
                           UserAccountsDrawerHeader(
                             accountName: Text(user.lastName! + " " + user.firstName!),
                             accountEmail: Text(user.email!),
-                            currentAccountPicture: user.email != '' ? const CircleAvatar(
-                              backgroundImage: AssetImage("assets/noProfile.png"),
+                            currentAccountPicture: user.profileImage != null ?  CircleAvatar(
+                              backgroundImage: NetworkImage(urlImage + user.profileImage!.imagePath!.toString()),
                             ):const CircleAvatar(
                               backgroundImage: AssetImage("assets/noProfile.png"),
                             ),
@@ -106,7 +108,7 @@ class SideBar extends StatelessWidget {
                             onTap: (){
                               Navigator.pushReplacement(
                                 context,
-                                MaterialPageRoute(builder: (context) => ProfilSalon(user.salons![0].id)));
+                                MaterialPageRoute(builder: (context) => ProfilSalonAdmin(user.salons![0].id)));
                             },
                           ):Container(),
                           user.roles![0] == "ROLE_ARTIST" ?
@@ -115,7 +117,7 @@ class SideBar extends StatelessWidget {
                             title: Text('Mon Profil'),
                             onTap: (){Navigator.pushReplacement(
                                 context,
-                                MaterialPageRoute(builder: (context) => ProfilArtiste()));
+                                MaterialPageRoute(builder: (context) => ProfilArtisteAdmin()));
                             },
                           )
                               :Container(),

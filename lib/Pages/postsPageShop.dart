@@ -1,28 +1,25 @@
 import 'dart:convert';
 import 'dart:developer';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:geocode/geocode.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
-import 'package:http/http.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:permission_handler/permission_handler.dart';
-import 'package:streaming_shared_preferences/streaming_shared_preferences.dart';
 import 'package:thebestatoo/Classes/ImageTo64.dart';
 import 'dart:io';
-import '../Classes/CoordinatesStore.dart';
 import '../Classes/User.dart';
 import '../main.dart';
 
-class PostsPage extends StatefulWidget {
+class PostsPageShop extends StatefulWidget {
   static String route = 'addPost';
-  const PostsPage({Key? key}) : super(key: key);
+  final dynamic id;
+  const PostsPageShop(this.id ,{Key? key}) : super(key: key);
 
   @override
-  _Posts createState() => _Posts();
+  _PostsPageShop createState() => _PostsPageShop();
 }
 
-class _Posts extends State<PostsPage> {
+class _PostsPageShop extends State<PostsPageShop> {
   TextEditingController contentController = TextEditingController();
   TextEditingController addressController = TextEditingController();
   TextEditingController cityController = TextEditingController();
@@ -46,11 +43,7 @@ class _Posts extends State<PostsPage> {
         title: const Text('Nouveau Post'),
         backgroundColor: Colors.deepPurple,
       ),
-      body: FutureBuilder<User>(
-        future: futureUser,
-        builder: (context, snapshot) {
-          if (snapshot.hasData) {
-            return Padding(
+      body: Padding(
               padding: const EdgeInsets.all(10),
               child: Form(
                 key: _formKey,
@@ -144,7 +137,7 @@ class _Posts extends State<PostsPage> {
                                 fileInBase64 = imageTo64(imageFile);
                               }
                               if(fileInBase64 != ""){
-                                addPost(contentController.text, fileInBase64,snapshot.data!.id!);
+                                addPost(contentController.text, fileInBase64,widget.id);
                               }else{
                                 Fluttertoast.showToast(
                                     msg: "Veuillez insérer une image",
@@ -166,30 +159,21 @@ class _Posts extends State<PostsPage> {
                   ],
                 ),
               ),
-            );
-          } else if (snapshot.hasError) {
-            return Text('${snapshot.error}');
-          }
-
-          // By default, show a loading spinner.
-          return const CircularProgressIndicator();
-        },
-      ),
+            ),
     );
   }
   /*
-  La fonction addPost récupère le contenu du post, l'image et l'identifiant de l'utilisateur.
+  La fonction addPost récupère le contenu du post, l'image et l'identifiant du salon.
   Elle récupère notre token en plus d'attendre une réponse de la requête Http post.
   Si nous recevons un code 201, un message confirmant notre publication nous est envoyé "Post added with Success!"
   sinon nous recevons "Failed create Post".
   */
-
   /// Ajoute un post dans l'API
   /// Toast affiché en fonction du résultat de la requête (Succès/Échec)
-  Future<void> addPost(String content, String image64, int userId) async {
+  Future<void> addPost(String content, String image64, int shopId) async {
     final token = preferences.getString('token', defaultValue: '').getValue();
     final responsePost = await http.post(
-      Uri.parse('http://ideainker.fr/api2/post/'),
+      Uri.parse('http://ideainker.fr/api/post/'),
       headers: <String, String>{
         'Content-Type': 'application/json',
         HttpHeaders.authorizationHeader: "Bearer $token",
@@ -197,7 +181,7 @@ class _Posts extends State<PostsPage> {
       body: jsonEncode(<String, String>{
         'content': content,
         'image': image64,
-        'createdBy': userId.toString()
+        'created_by_salon': shopId.toString()
       }),
     );
     if (responsePost.statusCode == 201) {
@@ -214,6 +198,7 @@ class _Posts extends State<PostsPage> {
       );
       Navigator.pop(context);
     }else{
+      print(responsePost.body);
       Fluttertoast.showToast(
           msg: "Failed create Post",
           toastLength: Toast.LENGTH_SHORT,

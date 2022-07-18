@@ -135,7 +135,17 @@ class _Profil extends State<Profil> {
 
     );
   }
-
+  /*
+  La fonction Login récupère l'email et le mot de passe de l'utilisateur.
+  Elle attend ensuite la réponse da la requête Http post dans laquelle nous récupérons l'image de profil de l'utilisateur
+  et son token d'authentification.
+  Si nous recevons un code 200, un message confirmant notre connexion nous est envoyé "Login Success!"
+  avant d'être renvoyé à la page d'accueil.
+  Dans le cas d'une connexion échouée nous recevons le message "Failed Login".
+  */
+  /// Connecte un utilisateur
+  /// Récupère l'URL de l'image et le token d'authentification
+  /// Toast affiché en fonction du résultat de la requête (Succès/Échec)
   Future<void> Login(String email, String password) async {
     final response = await http.post(
       Uri.parse(urlImage + 'authentication_token'),
@@ -166,7 +176,7 @@ class _Profil extends State<Profil> {
         token = Token(map);
       });
       preferences.setString('token', token.token);
-      Navigator.push(
+      Navigator.pushReplacement(
           context,
           MaterialPageRoute(builder: (context) => const Home()));
     } else {

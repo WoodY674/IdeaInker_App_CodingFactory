@@ -116,14 +116,27 @@ class _ListShopUsers extends State<ListShopUsers> {
                           MaterialPageRoute(
                               builder: (context) => ProfilSalon(currentSalon.id)),
                         );
-                    },
+                      },
                       child: Card(
                         child: Column(
                           children: [
-                            currentSalon.salonImage?.imagePath != "" ?
-                            Image.asset('assets/photo-salon.png'):
-                            Image.network(urlImage + currentSalon.salonImage!.imagePath.toString()),
                             ListTile(
+                              leading: currentSalon.salonImage?.imagePath != null ?
+                              Container(
+                                width: 100,
+                                height: 150,
+                                child: CircleAvatar(
+                                  backgroundImage: NetworkImage(urlImage + currentSalon.salonImage!.imagePath.toString()),
+                                ),
+                              ):
+                              Container(
+                                width: 100,
+                                height: 150,
+                                child: const CircleAvatar(
+                                  backgroundImage: AssetImage('assets/noProfile.png'),
+                                ),
+                              )
+                              ,
                               title: Text(currentSalon.name!),
                               subtitle: Text(currentSalon.address! + ' ' + currentSalon.zipCode! + ' ' + currentSalon.city!),
                               isThreeLine: true,
@@ -142,48 +155,16 @@ class _ListShopUsers extends State<ListShopUsers> {
       ),
     );
   }
-  Future<void> deleteShop(int? id) async {
-    log(id.toString());
-    final responseSalon = await http.delete(
-      Uri.parse(urlSite + 'salons/'+id.toString()),
-    );
 
-    if (responseSalon.statusCode == 204) {
-      // If the server did return a 201 CREATED response,
-      // then parse the JSON.
-      log("salon deleted with Success=");
-      Fluttertoast.showToast(
-          msg: "Salon deleted with Success!",
-          toastLength: Toast.LENGTH_SHORT,
-          gravity: ToastGravity.BOTTOM,
-          timeInSecForIosWeb: 1,
-          backgroundColor: Colors.green,
-          textColor: Colors.white,
-          fontSize: 16.0
-      );
-      setState(() {
-        futureShop = fetchShop();
-      });
-    } else {
-      // If the server did not return a 201 CREATED response,
-      // then throw an exception.
-      Fluttertoast.showToast(
-          msg: "Failed deleted Salon",
-          toastLength: Toast.LENGTH_SHORT,
-          gravity: ToastGravity.BOTTOM,
-          timeInSecForIosWeb: 1,
-          backgroundColor: Colors.red,
-          textColor: Colors.white,
-          fontSize: 16.0
-      );
-    }
-  }
+  /// Met à jour les salons
   Future<void> _filter(String searchQuery) async {
     setState(() {
       futureShop = getFutureFiltered(searchQuery);
     });
   }
 
+  /// Récupère les salons dans la BDD
+  /// @return shopFiltered List
   Future<List<Shop>> getFutureFiltered(String searchQuery) async {
     var postsToGet = fetchShop();
     List<Shop> shopFiltered =  await postsToGet;
