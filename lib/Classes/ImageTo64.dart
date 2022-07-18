@@ -2,6 +2,11 @@ import 'dart:convert';
 import 'dart:io';
 import 'package:mime/mime.dart';
 
+
+ /// Convert image to base 64
+ /// @param File
+ /// @return base64 String
+ 
 String imageTo64(File imageFile){
   String? type = lookupMimeType(imageFile.path);
   List<int> fileInByte = imageFile.readAsBytesSync();
