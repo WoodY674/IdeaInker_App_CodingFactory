@@ -81,7 +81,7 @@ class _ChannelPage extends State<ChannelPage> {
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                    builder: (context) => MessagePage2(snapshot.data?[index]?.id),
+                                    builder: (context) => MessagePage2(snapshot.data?[index]?.id, snapshot.data?[index]?.usersInside?[1]),
                               ));
                             },
                             child: Card(
