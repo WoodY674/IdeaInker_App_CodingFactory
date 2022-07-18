@@ -71,7 +71,7 @@ class SideBar extends StatelessWidget {
                             title: Text('Messages'),
                             onTap: (){Navigator.pushReplacement(
                                 context,
-                                MaterialPageRoute(builder: (context) => ChannelPage(user.id)));
+                                MaterialPageRoute(builder: (context) => ChannelPage(user.id, user.pseudo)));
                             },
                           ),
                           user.roles![0] == "ROLE_ADMIN" ?
@@ -96,7 +96,7 @@ class SideBar extends StatelessWidget {
                             title: Text('Messages'),
                             onTap: (){Navigator.pushReplacement(
                                 context,
-                                MaterialPageRoute(builder: (context) => ChannelPage(user.id)));
+                                MaterialPageRoute(builder: (context) => ChannelPage(user.id, user.pseudo)));
                             },
                           ):Container(),
                           user.roles![0] == "ROLE_SHOP" ?

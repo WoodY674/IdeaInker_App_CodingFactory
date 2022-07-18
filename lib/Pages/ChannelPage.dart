@@ -20,8 +20,10 @@ import 'MessagesPage2.dart';
 class ChannelPage extends StatefulWidget {
 
 
-  final dynamic  userId;
-  const ChannelPage(this.userId,{Key? key}) : super(key: key);
+  final dynamic userId;
+  final dynamic userPseudo;
+
+  const ChannelPage(this.userId, this.userPseudo, {Key? key}) : super(key: key);
 
   @override
   _ChannelPage createState() => _ChannelPage();
@@ -35,7 +37,7 @@ class _ChannelPage extends State<ChannelPage> {
   late Future<User> myUser;
   late Channel channel;
   late int myUserId;
-
+  late String myUserPseudo;
 
 
   @override
@@ -65,30 +67,40 @@ class _ChannelPage extends State<ChannelPage> {
       body: FutureBuilder<List<Channel>>(
           future: futureChannel,
           builder: (BuildContext context, AsyncSnapshot<List<Channel>> snapshot) {
-
             if (snapshot.hasData) {
-              print(snapshot.data);
+
               return Container(
                 child: ListView.builder(
                   itemCount: snapshot.data?.length,
                   itemBuilder: (BuildContext context, int index) {
+                    if(snapshot.data?[index]?.usersInside?[1] == widget.userPseudo){
+                      myUserPseudo = snapshot.data?[index]?.usersInside?[0];
+                    }else{
+                      myUserPseudo = snapshot.data?[index]?.usersInside?[1];
+                    }
                     return Card(
                       margin: const EdgeInsets.all(8),
-                      color: Colors.amber,
+                      color: Colors.purple,
                       child: Center(
                           child: GestureDetector(
+
                             onTap: () {
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                    builder: (context) => MessagePage2(snapshot.data?[index]?.id, snapshot.data?[index]?.usersInside?[1]),
+
+                                    builder: (context) => MessagePage2(
+                                        snapshot.data?[index]?.id, myUserPseudo
+                                    ),
                               ));
                             },
                             child: Card(
                               child: Column(
                                 children: [
                                   ListTile(
-                                    title: Text(snapshot.data?[index]?.usersInside?[1]),
+                                    title: Text(
+                                        myUserPseudo
+                                    ),
                                     subtitle: Text(snapshot.data![index].message.toString()),
                                     isThreeLine: true,
                                   )
@@ -100,8 +112,6 @@ class _ChannelPage extends State<ChannelPage> {
                     );
                   },
                 ),
-
-
               );
             } else {
               print('no data, loading');

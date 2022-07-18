@@ -1,24 +1,9 @@
-import 'dart:convert';
-import 'dart:developer';
-import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
-import 'package:fluttertoast/fluttertoast.dart';
-import 'package:thebestatoo/Classes/Channel.dart';
-import 'package:thebestatoo/Classes/User.dart';
-import 'package:thebestatoo/chat/chatAppBar.dart';
-import 'package:thebestatoo/chat/components/body.dart';
-import 'package:thebestatoo/chat/components/inputField.dart';
-import 'package:thebestatoo/chat/components/inputFieldController.dart';
 import 'package:thebestatoo/chat/models/chatMessage.dart';
-import 'package:thebestatoo/main.dart';
 import 'package:thebestatoo/Pages/sideBar.dart';
-import '../../Classes/Token.dart';
-import 'package:streaming_shared_preferences/streaming_shared_preferences.dart';
-
 
 class MessagePage2 extends StatefulWidget {
-
-
+  
   final dynamic channelId;
   final dynamic userId;
   const MessagePage2(this.channelId, this.userId, {Key? key}) : super(key: key);
@@ -66,18 +51,9 @@ class _MessagePage extends State<MessagePage2> {
       FutureBuilder<List<ChatMessage>>(
           future: futureChatMessage,
           builder: (BuildContext context, AsyncSnapshot<List<ChatMessage>> snapshot) {
-            print(snapshot.data);
             if (snapshot.hasData) {
-              print('snap data messages');
-              print(snapshot.data.toString());
-              print('my_pseudo : ');
-              print(widget.userId);
-              print('snapshot pseudo : ');
-              print(snapshot.data![0].sendBy?.pseudo);
-
               return NestedScrollView(headerSliverBuilder: (context, _) {
                 return [
-
                   SliverList(
                     delegate: SliverChildListDelegate(
                       [
@@ -88,6 +64,7 @@ class _MessagePage extends State<MessagePage2> {
                             itemCount: snapshot.data?.length,
                             itemBuilder: (BuildContext context, int index) {
                             return Row(
+
                               mainAxisAlignment:
                                 snapshot.data![index].sendBy?.pseudo == widget.userId ? MainAxisAlignment.start : MainAxisAlignment.end,
                                 children: [
@@ -98,7 +75,7 @@ class _MessagePage extends State<MessagePage2> {
                                     decoration:
                                       BoxDecoration(
                                           color:
-                                            snapshot.data![index].sendBy?.pseudo == widget.userId ? Colors.grey : Colors.purple,
+                                            snapshot.data![index].sendBy?.pseudo == widget.userId ? Colors.deepPurpleAccent : Colors.purple,
                                           borderRadius: BorderRadius.circular(40)
                                       ) ,
                                     child: Text(
@@ -137,6 +114,11 @@ class _MessagePage extends State<MessagePage2> {
                           onPressed: () {
                             //chatMessages.add(ChatMessage(text: myController.text, isSender: true));
                             createMessage(myController.text, 1);
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => MessagePage2(widget.channelId, widget.userId),
+                                ));
                           },
                           tooltip: 'Send',
                           icon: Icon(Icons.send),
