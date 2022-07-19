@@ -4,9 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:http/http.dart' as http;
 import 'package:smooth_star_rating/smooth_star_rating.dart';
-import 'package:thebestatoo/Pages/FavoritesPageSalon.dart';
+import 'package:thebestatoo/Pages/FavoritesPageShop.dart';
 import 'package:thebestatoo/Pages/ArtistesFromShopPage.dart';
-import 'package:thebestatoo/Pages/informationsSalonPage.dart';
+import 'package:thebestatoo/Pages/informationsShopPage.dart';
 import 'package:thebestatoo/Pages/PostsPage.dart';
 import 'package:thebestatoo/Pages/SideBarPage.dart';
 import 'package:thebestatoo/Pages/ToggleBarPage.dart';
@@ -161,10 +161,10 @@ class _ProfilShopPage extends State<ProfilShopPage> {
                   body: Container(
                     child: LayoutBuilder(builder: (context, constraints) {
                       if (currentIndex == 0) {
-                        return FavoritesPageSalon(shop);
+                        return FavoritesPageShop(shop);
                       }
                       else if (currentIndex == 1) {
-                        return InformationsSalon(shop);
+                        return InformationsShop(shop);
                       }
                       else if (currentIndex == 2) {
                         return ArtistesFromShopPage(shop.artists);

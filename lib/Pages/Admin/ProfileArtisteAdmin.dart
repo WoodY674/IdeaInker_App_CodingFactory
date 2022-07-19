@@ -6,7 +6,7 @@ import 'package:http/http.dart' as http;
 import 'package:smooth_star_rating/smooth_star_rating.dart';
 import 'package:thebestatoo/Pages/Admin/FavoritesAdminPage.dart';
 import 'package:thebestatoo/Pages/ArtistesFromShopPage.dart';
-import 'package:thebestatoo/Pages/informationsSalonPage.dart';
+import 'package:thebestatoo/Pages/informationsShopPage.dart';
 import 'package:thebestatoo/Pages/NoticesListPage.dart';
 import 'package:thebestatoo/Pages/SideBarPage.dart';
 import 'package:thebestatoo/Pages/ToggleBarPage.dart';
