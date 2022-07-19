@@ -88,7 +88,6 @@ class _PostsPage extends State<PostsPage> {
                               Map<Permission, PermissionStatus> statuses = await [
                                 Permission.photos,
                               ].request();
-                              //print(statuses[Permission.photos]); print status accés photos
                             }
                           },
                           child: imageFile.path != "" ? // C'est le if

@@ -77,7 +77,6 @@ class _AddShopPage extends State<AddShopPage> {
                         Map<Permission, PermissionStatus> statuses = await [
                           Permission.photos,
                         ].request();
-                        //print(statuses[Permission.photos]); print status accés photos
                       }
                     },
                     child: imageFile.path != "" ? // C'est le if
@@ -264,7 +263,6 @@ class _AddShopPage extends State<AddShopPage> {
       }
     }
     catch(e){
-      print(e);
       Fluttertoast.showToast(
           msg: "Failed get Geolocalisation of shop",
           toastLength: Toast.LENGTH_SHORT,

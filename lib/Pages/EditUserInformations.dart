@@ -100,7 +100,6 @@ class _EditUserInformations extends State<EditUserInformations> {
                             // Either the permission was already granted before or the user just granted it.
                             final pickedFile = await picker.pickImage(source: ImageSource.gallery);
                             // getImage à été remplacé par pickImage ?
-                            print(pickedFile);
                             if (pickedFile != null) {
                               setState(() {
                                 imageFile = File(pickedFile.path);
@@ -110,7 +109,6 @@ class _EditUserInformations extends State<EditUserInformations> {
                             Map<Permission, PermissionStatus> statuses = await [
                               Permission.photos,
                             ].request();
-                            //print(statuses[Permission.photos]); print status accés photos
                           }
                         },
                         child: imageFile.path != "" ? // C'est le if
@@ -284,7 +282,6 @@ class _EditUserInformations extends State<EditUserInformations> {
   Future<void> editAccount(String firstName, String lastName, String email, String address, String zipCode, String city, String birthday, String pseudo, String image64, int idUser, String image) async {
     late Response response = http.Response("", 400);
     if(image64 != ""){
-      print(idUser.toString());
       response = await http.patch(
         Uri.parse(urlSite + 'users/' + idUser.toString()),
         headers: <String, String>{

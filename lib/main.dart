@@ -25,7 +25,6 @@ Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   preferences = await StreamingSharedPreferences.instance;
   late String token = preferences.getString('token', defaultValue: '').getValue();
-  print(token);
   if(token != ""){
     bool isTokenExpired = JwtDecoder.isExpired(token);
     if(isTokenExpired == true){

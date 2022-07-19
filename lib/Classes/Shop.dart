@@ -50,7 +50,6 @@ Future<List<Shop>> fetchShop() async {
     },
   );
   if (response.statusCode == 200) {
-    print(response.body);
     // If the server did return a 200 OK response,
     // then parse the JSON.
     //return Salon.fromJson(jsonDecode(response.body));
