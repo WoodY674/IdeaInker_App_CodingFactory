@@ -92,15 +92,6 @@ class SideBarPage extends StatelessWidget {
                                 MaterialPageRoute(builder: (context) => const ListShopUsers()));
                             },
                           ),
-                          user.roles![0] == "ROLE_ADMIN" ?
-                          ListTile(
-                            leading: Icon(Icons.chat_rounded),
-                            title: Text('Messages'),
-                            onTap: (){Navigator.pushReplacement(
-                                context,
-                                MaterialPageRoute(builder: (context) => ChannelPage(user.id, user.pseudo)));
-                            },
-                          ):Container(),
                           user.roles![0] == "ROLE_SHOP" ?
                           ListTile(
                             leading: Icon(Icons.verified_user),
@@ -108,7 +99,7 @@ class SideBarPage extends StatelessWidget {
                             onTap: (){
                               Navigator.pushReplacement(
                                 context,
-                                MaterialPageRoute(builder: (context) => ProfilSalonAdmin(user.salons![0].id)));
+                                MaterialPageRoute(builder: (context) => ProfilShopAdmin(user.salons![0].id)));
                             },
                           ):Container(),
                           user.roles![0] == "ROLE_ARTIST" ?

@@ -12,6 +12,7 @@ import 'package:thebestatoo/main.dart';
 import 'dart:io';
 import '../../Classes/Shop.dart';
 import '../ProfilShopPage.dart';
+import 'ProfilShopAdmin.dart';
 
 class ListShopAdmin extends StatefulWidget {
   const ListShopAdmin({Key? key}) : super(key: key);
@@ -64,7 +65,7 @@ class _ListShopAdmin extends State<ListShopAdmin> {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => ProfilShopPage(currentSalon.id)),
+                              builder: (context) => ProfilShopAdmin(currentSalon.id)),
                         );
                       },
                       child: Card(
@@ -73,8 +74,8 @@ class _ListShopAdmin extends State<ListShopAdmin> {
                             ListTile(
                               leading: currentSalon.salonImage?.imagePath != null ?
                               Container(
-                                width: 100,
-                                height: 150,
+                                width: 50,
+                                height: 50,
                                 child: CircleAvatar(
                                   backgroundImage: NetworkImage(urlImage + currentSalon.salonImage!.imagePath.toString()),
                                 ),
@@ -119,9 +120,8 @@ class _ListShopAdmin extends State<ListShopAdmin> {
     if (responseSalon.statusCode == 204) {
       // If the server did return a 201 CREATED response,
       // then parse the JSON.
-      log("salon deleted with Success=");
       Fluttertoast.showToast(
-          msg: "Salon deleted with Success!",
+          msg: "Salon supprimé",
           toastLength: Toast.LENGTH_SHORT,
           gravity: ToastGravity.BOTTOM,
           timeInSecForIosWeb: 1,
@@ -136,7 +136,7 @@ class _ListShopAdmin extends State<ListShopAdmin> {
       // If the server did not return a 201 CREATED response,
       // then throw an exception.
       Fluttertoast.showToast(
-          msg: "Failed deleted Salon",
+          msg: "Suppression impossible",
           toastLength: Toast.LENGTH_SHORT,
           gravity: ToastGravity.BOTTOM,
           timeInSecForIosWeb: 1,

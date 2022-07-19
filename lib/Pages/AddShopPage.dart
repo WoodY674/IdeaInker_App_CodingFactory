@@ -241,7 +241,7 @@ class _AddShopPage extends State<AddShopPage> {
         // If the server did return a 201 CREATED response,
         // then parse the JSON.
         Fluttertoast.showToast(
-            msg: "Salon added with Success!",
+            msg: "Salon ajouté",
             toastLength: Toast.LENGTH_SHORT,
             gravity: ToastGravity.BOTTOM,
             timeInSecForIosWeb: 1,
@@ -252,7 +252,7 @@ class _AddShopPage extends State<AddShopPage> {
         Navigator.pop(context);
       }else{
         Fluttertoast.showToast(
-            msg: "Failed create salon",
+            msg: "Création impossible",
             toastLength: Toast.LENGTH_SHORT,
             gravity: ToastGravity.BOTTOM,
             timeInSecForIosWeb: 1,

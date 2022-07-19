@@ -155,7 +155,7 @@ class Salons {
   String? updatedAt;
   String? latitude;
   String? longitude;
-  Null? salonImage;
+  String? salonImage;
 
   Salons(
       {this.id,

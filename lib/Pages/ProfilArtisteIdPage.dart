@@ -125,7 +125,7 @@ class _ProfilArtisteIdPage extends State<ProfilArtisteIdPage> {
                                   child: Align(
                                     alignment: Alignment.center,
                                     child: SmoothStarRating(
-                                      rating: double.parse(snapshot.data!.notices!.average.toString()),
+                                      rating: meanStars,
                                       isReadOnly: true,
                                       size: 50,
                                       filledIconData: Icons.star,

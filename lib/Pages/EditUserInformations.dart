@@ -70,7 +70,7 @@ class _EditUserInformations extends State<EditUserInformations> {
               snapshot.data!.birthday != null ?
               birthdayController.text = snapshot.data!.birthday.toString(): birthdayController.text = "";
               snapshot.data!.profileImage != null ?
-                  imageController.text = snapshot.data!.profileImage.toString() : imageController.text ="";
+                  imageController.text = snapshot.data!.profileImage!.id.toString() : imageController.text ="";
               return Form(
                   key: _formKey,
                   child: ListView(
@@ -154,7 +154,7 @@ class _EditUserInformations extends State<EditUserInformations> {
                     padding: const EdgeInsets.all(10),
                     child: Center(
                       child: TextFormField(
-                        controller: firstNameController,
+                        controller: lastNameController,
                         decoration: const InputDecoration(
                           border: OutlineInputBorder(),
                           labelText: 'Nom',
@@ -171,7 +171,7 @@ class _EditUserInformations extends State<EditUserInformations> {
                   Container(
                     padding: const EdgeInsets.all(10),
                     child: TextFormField(
-                      controller: lastNameController,
+                      controller: firstNameController,
                       decoration: const InputDecoration(
                         border: OutlineInputBorder(),
                         labelText: 'Prénom',

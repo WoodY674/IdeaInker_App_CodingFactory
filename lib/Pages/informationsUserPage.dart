@@ -54,7 +54,6 @@ class InformationsUserPage extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               SizedBox(height: 16,),
-
               Text("Nom"),
               SizedBox(height: 4,),
               Text(users.lastName!, style: _style(),),
@@ -103,21 +102,6 @@ class InformationsUserPage extends StatelessWidget {
               Text("Code Postal"),
               SizedBox(height: 4,),
               Text(users.zipCode ?? "", style: _style(),),
-              Divider(color: Colors.deepPurple,),
-              SizedBox(height: 16,)
-            ],
-          ),
-        ),
-        Container(
-          padding: EdgeInsets.symmetric(horizontal: 16),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              SizedBox(height: 16,),
-
-              Text("Date d'anniversaire"),
-              SizedBox(height: 4,),
-              Text(users.birthday ?? "", style: _style(),),
               Divider(color: Colors.deepPurple,),
               SizedBox(height: 16,)
             ],

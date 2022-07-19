@@ -247,7 +247,7 @@ class _EditShopInformations extends State<EditShopInformations> {
       // If the server did return a 201 CREATED response,
       // then parse the JSON.
       Fluttertoast.showToast(
-          msg: "Edit successful !",
+          msg: "Modification réussie",
           toastLength: Toast.LENGTH_SHORT,
           gravity: ToastGravity.BOTTOM,
           timeInSecForIosWeb: 1,
@@ -257,12 +257,12 @@ class _EditShopInformations extends State<EditShopInformations> {
       );
       Navigator.pushReplacement(
           context,
-          MaterialPageRoute(builder: (context) => ProfilSalonAdmin(idUser)));
+          MaterialPageRoute(builder: (context) => ProfilShopAdmin(idUser)));
     } else {
       // If the server did not return a 201 CREATED response,
       // then throw an exception.
       Fluttertoast.showToast(
-          msg: "Edit Failed !",
+          msg: "Modification impossible",
           toastLength: Toast.LENGTH_SHORT,
           gravity: ToastGravity.BOTTOM,
           timeInSecForIosWeb: 1,

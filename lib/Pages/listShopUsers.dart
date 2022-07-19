@@ -123,8 +123,8 @@ class _ListShopUsers extends State<ListShopUsers> {
                             ListTile(
                               leading: currentSalon.salonImage?.imagePath != null ?
                               Container(
-                                width: 100,
-                                height: 150,
+                                width: 50,
+                                height: 50,
                                 child: CircleAvatar(
                                   backgroundImage: NetworkImage(urlImage + currentSalon.salonImage!.imagePath.toString()),
                                 ),

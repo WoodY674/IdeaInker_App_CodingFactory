@@ -190,14 +190,14 @@ class _PostsPage extends State<PostsPage> {
       body: jsonEncode(<String, String>{
         'content': content,
         'image': image64,
-        'createdBy': userId.toString()
+        'created_by': userId.toString()
       }),
     );
     if (responsePost.statusCode == 201) {
       // If the server did return a 201 CREATED response,
       // then parse the JSON.
       Fluttertoast.showToast(
-          msg: "Post added with Success!",
+          msg: "Post crée",
           toastLength: Toast.LENGTH_SHORT,
           gravity: ToastGravity.BOTTOM,
           timeInSecForIosWeb: 1,
@@ -207,8 +207,9 @@ class _PostsPage extends State<PostsPage> {
       );
       Navigator.pop(context);
     }else{
+      print(responsePost.body);
       Fluttertoast.showToast(
-          msg: "Failed create Post",
+          msg: "Création impossible",
           toastLength: Toast.LENGTH_SHORT,
           gravity: ToastGravity.BOTTOM,
           timeInSecForIosWeb: 1,

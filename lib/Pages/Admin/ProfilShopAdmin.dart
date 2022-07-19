@@ -21,15 +21,15 @@ import '../../main.dart';
 import '../NoticesListPage.dart';
 import '../PostsPage.dart';
 
-class ProfilSalonAdmin extends StatefulWidget {
+class ProfilShopAdmin extends StatefulWidget {
   static String route = 'ProfilArtiste';
   final dynamic id;
-  const ProfilSalonAdmin(this.id,{Key? key}) : super(key: key);
+  const ProfilShopAdmin(this.id,{Key? key}) : super(key: key);
   @override
-  _ProfilSalonAdmin createState() => _ProfilSalonAdmin();
+  _ProfilShopAdmin createState() => _ProfilShopAdmin();
 }
 
-class _ProfilSalonAdmin extends State<ProfilSalonAdmin> {
+class _ProfilShopAdmin extends State<ProfilShopAdmin> {
   late double stars = 0;
   late double meanStars = 0.0;
   List<String> labels = ["Créations","Informations","Artistes liés"];

@@ -156,7 +156,7 @@ class _LoginPage extends State<LoginPage> {
       // If the server did return a 201 CREATED response,
       // then parse the JSON.
       Fluttertoast.showToast(
-          msg: "Login Success!",
+          msg: "Connecté",
           toastLength: Toast.LENGTH_SHORT,
           gravity: ToastGravity.BOTTOM,
           timeInSecForIosWeb: 1,
@@ -176,7 +176,7 @@ class _LoginPage extends State<LoginPage> {
       // If the server did not return a 201 CREATED response,
       // then throw an exception.
       Fluttertoast.showToast(
-          msg: "Failed Login",
+          msg: "Connexion impossible",
           toastLength: Toast.LENGTH_SHORT,
           gravity: ToastGravity.BOTTOM,
           timeInSecForIosWeb: 1,

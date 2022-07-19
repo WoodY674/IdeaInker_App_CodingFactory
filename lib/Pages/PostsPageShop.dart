@@ -168,7 +168,7 @@ class _PostsPageShop extends State<PostsPageShop> {
   Future<void> addPost(String content, String image64, int shopId) async {
     final token = preferences.getString('token', defaultValue: '').getValue();
     final responsePost = await http.post(
-      Uri.parse(urlSite + '/post/'),
+      Uri.parse(urlSite + 'post/'),
       headers: <String, String>{
         'Content-Type': 'application/json',
         HttpHeaders.authorizationHeader: "Bearer $token",
@@ -183,7 +183,7 @@ class _PostsPageShop extends State<PostsPageShop> {
       // If the server did return a 201 CREATED response,
       // then parse the JSON.
       Fluttertoast.showToast(
-          msg: "Post added with Success!",
+          msg: "Post crée",
           toastLength: Toast.LENGTH_SHORT,
           gravity: ToastGravity.BOTTOM,
           timeInSecForIosWeb: 1,
@@ -195,7 +195,7 @@ class _PostsPageShop extends State<PostsPageShop> {
     }else{
       print(responsePost.body);
       Fluttertoast.showToast(
-          msg: "Failed create Post",
+          msg: "Création impossible",
           toastLength: Toast.LENGTH_SHORT,
           gravity: ToastGravity.BOTTOM,
           timeInSecForIosWeb: 1,

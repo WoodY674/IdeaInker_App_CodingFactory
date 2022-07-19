@@ -108,21 +108,6 @@ class InformationsArtistePage extends StatelessWidget {
             ],
           ),
         ),
-        Container(
-          padding: EdgeInsets.symmetric(horizontal: 16),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              SizedBox(height: 16,),
-
-              Text("Date d'anniversaire"),
-              SizedBox(height: 4,),
-              Text(users.birthday ?? "", style: _style(),),
-              Divider(color: Colors.deepPurple,),
-              SizedBox(height: 16,)
-            ],
-          ),
-        ),
       ],
     );
   }

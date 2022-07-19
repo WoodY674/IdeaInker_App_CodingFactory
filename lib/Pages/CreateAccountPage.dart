@@ -156,7 +156,7 @@ class _CreateAccountPage extends State<CreateAccountPage> {
   Future<void> createAccount(String firstName, String lastName, String email, String password, String pseudo) async {
     final now = DateTime.now();
     final response = await http.post(
-      Uri.parse(urlSite + 'register'),
+      Uri.parse(urlSite + 'users/register'),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
       },
@@ -165,16 +165,14 @@ class _CreateAccountPage extends State<CreateAccountPage> {
         'password': password,
         'lastName': lastName,
         'firstName': firstName,
-        'createdAt': now.toString(),
         'pseudo': pseudo,
       }),
     );
-    log(response.body);
     if (response.statusCode == 201) {
       // If the server did return a 201 CREATED response,
       // then parse the JSON.
       Fluttertoast.showToast(
-          msg: "Account created with Success!",
+          msg: "Compte crée",
           toastLength: Toast.LENGTH_SHORT,
           gravity: ToastGravity.BOTTOM,
           timeInSecForIosWeb: 1,
@@ -187,7 +185,7 @@ class _CreateAccountPage extends State<CreateAccountPage> {
       // If the server did not return a 201 CREATED response,
       // then throw an exception.
       Fluttertoast.showToast(
-          msg: "Failed Create Account",
+          msg: "Création impossible",
           toastLength: Toast.LENGTH_SHORT,
           gravity: ToastGravity.BOTTOM,
           timeInSecForIosWeb: 1,
