@@ -5,9 +5,9 @@ import 'package:flutter/widgets.dart';
 import 'package:thebestatoo/Classes/Shop.dart';
 import 'package:thebestatoo/Classes/User.dart';
 
-class InformationsSalon extends StatelessWidget {
+class InformationsShop extends StatelessWidget {
   final dynamic shop;
-  const InformationsSalon( this.shop, {Key? key}) : super(key: key);
+  const InformationsShop( this.shop, {Key? key}) : super(key: key);
 
   TextStyle _style(){
     return TextStyle(

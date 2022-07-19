@@ -13,9 +13,9 @@ import 'package:http/http.dart' as http;
 
 late List<Posts> posts = [];
 
-class FavoritesAdminPageSalon extends StatelessWidget {
+class FavoritesAdminPageShop extends StatelessWidget {
   final dynamic users;
-  const FavoritesAdminPageSalon( this.users,{Key? key}) : super(key: key);
+  const FavoritesAdminPageShop( this.users,{Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

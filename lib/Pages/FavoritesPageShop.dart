@@ -10,9 +10,9 @@ import '../main.dart';
 
 late List<Posts> posts = [];
 
-class FavoritesPageSalon extends StatelessWidget {
+class FavoritesPageShop extends StatelessWidget {
   final dynamic users;
-  const FavoritesPageSalon( this.users,{Key? key}) : super(key: key);
+  const FavoritesPageShop( this.users,{Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
