@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:thebestatoo/Pages/Admin/FavoritesAdminPage.dart';
 import 'package:thebestatoo/Pages/informationsUserPage.dart';
 import 'package:thebestatoo/Pages/PostsPage.dart';
 import 'package:thebestatoo/Pages/SideBarPage.dart';
@@ -157,7 +158,7 @@ class _ProfilUserPage extends State<ProfilUserPage> {
             },
                 body: Container(
                   child: currentIndex == 0 ?
-                          FavoritesPage(user) :
+                          FavoritesAdminPage(user) :
                           InformationsUserPage(user)
                 ),
             );

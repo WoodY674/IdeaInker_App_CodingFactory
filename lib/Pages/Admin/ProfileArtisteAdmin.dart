@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:http/http.dart' as http;
 import 'package:smooth_star_rating/smooth_star_rating.dart';
+import 'package:thebestatoo/Pages/Admin/FavoritesAdminPage.dart';
 import 'package:thebestatoo/Pages/ArtistesFromShopPage.dart';
 import 'package:thebestatoo/Pages/informationsSalonPage.dart';
 import 'package:thebestatoo/Pages/NoticesListPage.dart';
@@ -198,7 +199,7 @@ class _ProfilArtisteAdmin extends State<ProfilArtisteAdmin> {
             },
               body: Container(
                   child: currentIndex == 0 ?
-                  FavoritesPage(user) :
+                  FavoritesAdminPage(user) :
                   InformationsArtistePage(user)
               ),
             );
