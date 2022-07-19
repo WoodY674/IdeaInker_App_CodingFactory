@@ -6,13 +6,13 @@ import 'dart:developer';
 import 'dart:io';
 import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
-import 'package:thebestatoo/Pages/ProfilSalon.dart';
-import 'package:thebestatoo/Pages/sideBar.dart';
+import 'package:thebestatoo/Pages/ProfilShopPage.dart';
+import 'package:thebestatoo/Pages/SideBarPage.dart';
 import '../Classes/Shop.dart';
-import 'Admin/listShopAdmin.dart';
+import 'Admin/ListShopAdmin.dart';
 
-class MyMap extends StatelessWidget {
-  const MyMap({Key? key}) : super(key: key);
+class MapPage extends StatelessWidget {
+  const MapPage({Key? key}) : super(key: key);
   static String route = 'map';
 
   @override
@@ -44,6 +44,7 @@ class _MyGoogleMapState extends State<MyGoogleMap> {
   }
 
   final Map<String, Marker> _markers = {};
+  ///Retourne la liste des shops sous forme de points sur la carte
   Future<void> _onMapCreated(GoogleMapController controller) async {
     final googleOffices =  await http.get(Uri.parse(url));
     List<Shop> shopsMarkers = parseShop(googleOffices.body.toString());
@@ -59,7 +60,7 @@ class _MyGoogleMapState extends State<MyGoogleMap> {
             onTap: (){
               Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) =>  ProfilSalon(office.id)));
+                  MaterialPageRoute(builder: (context) =>  ProfilShopPage(office.id)));
             }
           ),
         );
@@ -76,7 +77,7 @@ class _MyGoogleMapState extends State<MyGoogleMap> {
     GoogleMapController googleMapController;
 
     return Scaffold(
-      drawer: SideBar(),
+      drawer: SideBarPage(),
       appBar: AppBar(
         title: Row(
           mainAxisAlignment: MainAxisAlignment.center,

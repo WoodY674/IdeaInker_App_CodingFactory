@@ -94,9 +94,6 @@ class _ToggleBarState extends State<ToggleBar> {
             }));
   }
 
-  /*
-  La fonction _updateSelection permet de mettre à jour le contenu des onglets lorsque l'utilisateur en sélectionne un.
-  */
   /// Met a jour le contenu des onglets présent sur un profil
   _updateSelection(int index) {
     setState(() {

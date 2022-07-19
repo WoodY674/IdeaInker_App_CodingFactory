@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:thebestatoo/chat/models/chatMessage.dart';
-import 'package:thebestatoo/Pages/sideBar.dart';
+import 'package:thebestatoo/Pages/SideBarPage.dart';
 
 class MessagePage2 extends StatefulWidget {
 
@@ -32,7 +32,7 @@ class _MessagePage extends State<MessagePage2> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      drawer: SideBar(),
+      drawer: SideBarPage(),
       appBar: AppBar(
         title: Row(
           mainAxisAlignment: MainAxisAlignment.center,

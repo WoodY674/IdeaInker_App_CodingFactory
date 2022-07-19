@@ -4,9 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:thebestatoo/Classes/User.dart';
 
-class InformationsArtiste extends StatelessWidget {
+class InformationsArtistePage extends StatelessWidget {
   final dynamic users;
-  const InformationsArtiste( this.users, {Key? key}) : super(key: key);
+  const InformationsArtistePage( this.users, {Key? key}) : super(key: key);
 
   TextStyle _style(){
     return TextStyle(

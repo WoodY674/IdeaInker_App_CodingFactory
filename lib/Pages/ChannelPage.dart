@@ -9,22 +9,17 @@ import 'package:thebestatoo/chat/chatAppBar.dart';
 import 'package:thebestatoo/chat/components/body.dart';
 import 'package:thebestatoo/chat/models/chatMessage.dart';
 import 'package:thebestatoo/main.dart';
-import 'package:thebestatoo/Pages/sideBar.dart';
+import 'package:thebestatoo/Pages/SideBarPage.dart';
 import '../../Classes/Token.dart';
 import 'package:streaming_shared_preferences/streaming_shared_preferences.dart';
-
 import 'MessagesPage.dart';
 import 'MessagesPage2.dart';
 
 
 class ChannelPage extends StatefulWidget {
-
-
   final dynamic userId;
   final dynamic userPseudo;
-
   const ChannelPage(this.userId, this.userPseudo, {Key? key}) : super(key: key);
-
   @override
   _ChannelPage createState() => _ChannelPage();
 }
@@ -39,7 +34,6 @@ class _ChannelPage extends State<ChannelPage> {
   late int myUserId;
   late String myUserPseudo;
 
-
   @override
   void initState() {
     super.initState();
@@ -49,7 +43,7 @@ class _ChannelPage extends State<ChannelPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      drawer: SideBar(),
+      drawer: SideBarPage(),
       appBar: AppBar(
         title: Row(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -114,7 +108,6 @@ class _ChannelPage extends State<ChannelPage> {
                 ),
               );
             } else {
-              print('no data, loading');
               return const CircularProgressIndicator();
             }
           }

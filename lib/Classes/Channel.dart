@@ -7,14 +7,14 @@ import '../main.dart';
 import 'User.dart';
 
 final String url = urlSite +"channel/";
+/// Retourne la liste des channels
 List<Channel> parseChannel(String responseBody){
   var list = json.decode(responseBody) as List<dynamic>;
   var channels = list.map((e) => Channel.fromJson(e)).toList();
   return channels;
 }
 
-
-
+///Retourne la liste des channel d'un utilisateur précis
 Future<List<Channel>> fetchChannel(userId) async {
   final preferences = await StreamingSharedPreferences.instance;
   final token = preferences.getString('token', defaultValue: '').getValue();

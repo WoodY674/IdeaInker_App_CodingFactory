@@ -6,21 +6,21 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:smooth_star_rating/smooth_star_rating.dart';
-import 'package:thebestatoo/Pages/ProfilArtisteId.dart';
+import 'package:thebestatoo/Pages/ProfilShopPage.dart';
 
 import '../Classes/User.dart';
 import '../main.dart';
 
-class CreateAvisArtist extends StatefulWidget {
+class CreateNoticesSalon extends StatefulWidget {
   static String route = 'register';
   final dynamic id;
-  const CreateAvisArtist(this.id,{Key? key}) : super(key: key);
+  const CreateNoticesSalon(this.id,{Key? key}) : super(key: key);
 
   @override
-  _CreateAvisArtist createState() => _CreateAvisArtist();
+  _CreateNoticesSalon createState() => _CreateNoticesSalon();
 }
 
-class _CreateAvisArtist extends State<CreateAvisArtist> {
+class _CreateNoticesSalon extends State<CreateNoticesSalon> {
   var rating = 0.0;
   TextEditingController commentController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
@@ -122,12 +122,7 @@ class _CreateAvisArtist extends State<CreateAvisArtist> {
       ),
     );
   }
-  /*
-  La fonction CreateAvis récupère le nombre d'étoiles, le commentaire et l'identifiant de l'utilisateur lors de la création de son avis.
-  Si nous recevons un code 201 un message confirmant notre création nous est envoyé "L'avis a bien été créé !".
-  Dans le cas d'échec de notre création nous recevons le message "Échec de la création d'un avis".
-  Lorsque la création est faite avec succès, l'avis est envoyé en base de données et publié sur l'application.
-  */
+
   /// Ajoute un avis créé dans l'API
   /// Toast affiché en fonction du résultat de la requête (Succès/Échec)
   Future<void> CreateAvis(double star, String comment, int idUser) async {
@@ -139,7 +134,7 @@ class _CreateAvisArtist extends State<CreateAvisArtist> {
       body: jsonEncode(<String, String>{
         "stars": star.toString(),
         "comment": comment,
-        "user_noted": widget.id.toString(),
+        "salon_noted": widget.id.toString(),
         "user_noting": idUser.toString(),
       }),
     );
@@ -157,7 +152,7 @@ class _CreateAvisArtist extends State<CreateAvisArtist> {
       );
       Navigator.pushReplacement(
           context,
-          MaterialPageRoute(builder: (context) => ProfilArtisteId(widget.id)));
+          MaterialPageRoute(builder: (context) => ProfilShopPage(widget.id)));
     }else{
       print(response.body);
       Fluttertoast.showToast(

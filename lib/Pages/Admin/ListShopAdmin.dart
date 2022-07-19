@@ -6,12 +6,12 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:http/http.dart' as http;
 import 'package:streaming_shared_preferences/streaming_shared_preferences.dart';
-import 'package:thebestatoo/Pages/addShop.dart';
-import 'package:thebestatoo/Pages/sideBar.dart';
+import 'package:thebestatoo/Pages/AddShopPage.dart';
+import 'package:thebestatoo/Pages/SideBarPage.dart';
 import 'package:thebestatoo/main.dart';
 import 'dart:io';
 import '../../Classes/Shop.dart';
-import '../ProfilSalon.dart';
+import '../ProfilShopPage.dart';
 
 class ListShopAdmin extends StatefulWidget {
   const ListShopAdmin({Key? key}) : super(key: key);
@@ -34,7 +34,7 @@ class _ListShopAdmin extends State<ListShopAdmin> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      drawer: SideBar(),
+      drawer: SideBarPage(),
       appBar: AppBar(
         title: const Text('Liste des salons'),
         backgroundColor: Colors.deepPurple,
@@ -44,7 +44,7 @@ class _ListShopAdmin extends State<ListShopAdmin> {
             onPressed: (){
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => const AddShop()),
+                MaterialPageRoute(builder: (context) => const AddShopPage()),
               );
             },
           )
@@ -64,7 +64,7 @@ class _ListShopAdmin extends State<ListShopAdmin> {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => ProfilSalon(currentSalon.id)),
+                              builder: (context) => ProfilShopPage(currentSalon.id)),
                         );
                       },
                       child: Card(
@@ -108,6 +108,8 @@ class _ListShopAdmin extends State<ListShopAdmin> {
       ),
     );
   }
+
+  ///Supprime un shop via son id
   Future<void> deleteShop(int? id) async {
     log(id.toString());
     final responseSalon = await http.delete(

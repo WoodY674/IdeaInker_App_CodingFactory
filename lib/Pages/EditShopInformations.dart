@@ -1,33 +1,52 @@
+import 'dart:async';
 import 'dart:convert';
-import 'dart:developer';
+import 'dart:io';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:geocode/geocode.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:http/http.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'package:thebestatoo/Classes/Shop.dart';
+import 'package:thebestatoo/Classes/User.dart';
 import 'package:thebestatoo/main.dart';
-import 'dart:io';
-import '../Classes/CoordinatesStore.dart';
 import '../Classes/ImageTo64.dart';
-import '../Classes/Shop.dart';
+import 'Admin/ProfilShopAdmin.dart';
 
-class AddShop extends StatefulWidget {
-  static String route = 'addShop';
-  const AddShop({Key? key}) : super(key: key);
+class EditShopInformations extends StatefulWidget {
+  static String route = 'editShop';
+  final dynamic shop;
+  final dynamic id;
+  const EditShopInformations(this.shop,this.id,{Key? key}) : super(key: key);
 
   @override
-  _AddShop createState() => _AddShop();
+  _EditShopInformations createState() => _EditShopInformations();
 }
 
-class _AddShop extends State<AddShop> {
+class _EditShopInformations extends State<EditShopInformations> {
+  late Shop futureShop;
   TextEditingController nameController = TextEditingController();
   TextEditingController addressController = TextEditingController();
-  TextEditingController cityController = TextEditingController();
   TextEditingController zipCodeController = TextEditingController();
-  late Shop salon;
-  late CoordinatesStore coordinatesStore;
+  TextEditingController cityController = TextEditingController();
+  TextEditingController imageController = TextEditingController();
+
+  @override
+  void initState() {
+    super.initState();
+    futureShop = widget.shop;
+    nameController.text = futureShop.name!;
+    addressController.text = futureShop.address!;
+    zipCodeController.text = futureShop.zipCode!;
+    cityController.text = futureShop.city!;
+    if(futureShop.salonImage != null){
+      imageController.text = futureShop.salonImage!.imagePath!;
+    }else{
+      imageController.text = "";
+    }
+  }
+
+  late User user;
   String imagePath = "";
   final picker = ImagePicker();
   File imageFile = File("");
@@ -37,26 +56,29 @@ class _AddShop extends State<AddShop> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Détails du salon'),
+        title: const Text('Modification'),
         backgroundColor: Colors.deepPurple,
       ),
       body: Padding(
         padding: const EdgeInsets.all(10),
-        child: Form(
+        child:
+        Form(
           key: _formKey,
-          child:ListView(
+          child: ListView(
             children: <Widget>[
               Container(
-                  alignment: Alignment.center,
-                  padding: const EdgeInsets.all(10),
-                  child: const Text(
-                    'Ajout Salon de Tatouage',
-                    style: TextStyle(fontSize: 20),
-                  )
+                alignment: Alignment.center,
+                padding: const EdgeInsets.all(10),
+                child: const Text( 'Modification du profil de mon salon',
+                  style: TextStyle(fontSize: 20),
+                ),
               ),
               imageFile.path != "" ?
               // Affichage de l'image
-              Image.file(imageFile)
+              CircleAvatar(
+                backgroundImage: FileImage(imageFile),
+                radius: 100,
+              )
                   : Container(),
               Container(
                 child:
@@ -69,6 +91,7 @@ class _AddShop extends State<AddShop> {
                         // Either the permission was already granted before or the user just granted it.
                         final pickedFile = await picker.pickImage(source: ImageSource.gallery);
                         // getImage à été remplacé par pickImage ?
+                        print(pickedFile);
                         if (pickedFile != null) {
                           setState(() {
                             imageFile = File(pickedFile.path);
@@ -128,12 +151,16 @@ class _AddShop extends State<AddShop> {
                     border: OutlineInputBorder(),
                     labelText: 'Adresse',
                   ),
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'Veuillez renseigner ce champ';
-                    }
-                    return null;
-                  },
+                ),
+              ),
+              Container(
+                padding: const EdgeInsets.all(10),
+                child: TextFormField(
+                  controller: zipCodeController,
+                  decoration: const InputDecoration(
+                    border: OutlineInputBorder(),
+                    labelText: 'Code Postal',
+                  ),
                 ),
               ),
               Container(
@@ -144,35 +171,13 @@ class _AddShop extends State<AddShop> {
                     border: OutlineInputBorder(),
                     labelText: 'Ville',
                   ),
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'Veuillez renseigner ce champ';
-                    }
-                    return null;
-                  },
-                ),
-              ),
-              Container(
-                padding: const EdgeInsets.fromLTRB(10, 10, 10, 0),
-                child: TextFormField(
-                  controller: zipCodeController,
-                  decoration: const InputDecoration(
-                    border: OutlineInputBorder(),
-                    labelText: 'Code Postal',
-                  ),
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'Veuillez renseigner ce champ';
-                    }
-                    return null;
-                  },
                 ),
               ),
               Container(
                   height: 50,
                   padding: const EdgeInsets.fromLTRB(30, 15, 30, 0),
                   child: ElevatedButton(
-                    child: const Text('Register'),
+                    child: const Text('Enregistrer'),
                     onPressed: () {
                       if (_formKey.currentState!.validate()) {
                         // If the form is valid, display a snackbar. In the real world,
@@ -181,7 +186,15 @@ class _AddShop extends State<AddShop> {
                         if(imageFile.path != ""){
                           fileInBase64 = imageTo64(imageFile);
                         }
-                        addShop(nameController.text, addressController.text,cityController.text,zipCodeController.text,fileInBase64);
+                        editAccount(
+                            nameController.text,
+                            addressController.text,
+                            zipCodeController.text,
+                            cityController.text,
+                            fileInBase64,
+                            futureShop.id!,
+                            widget.id
+                        );
                       }
                     },
                     style: ButtonStyle(
@@ -195,90 +208,61 @@ class _AddShop extends State<AddShop> {
       ),
     );
   }
-  /*
-  La fonction addShop récupère le nom, l'adresse, la ville, le code postal et l'image que l'utilisateur ai entré dans l'application.
-  La class coordinate vérifie les coordonnées géographiques.
-  Elle attend ensuite une réponse http avec le code 400.
-  Puis l'image entrée est inspectée, si elle est en base 64 un message "photo detected" est envoyée sinon "no photo".
-  Si nous recevons un code 201 un message confirmant notre ajout nous est envoyé "Salon added with Success!"
-  Dans le cas d'échec de notre ajout nous recevons le message "Failed create salon".
-  Lorsque la création est fait avec succès, les informations sont envoyées en base de données et le salon est publié sur l'application.
-  */
 
-  /// Ajoute un salon sur l'API
-  /// Fait une requête de Geocoding vers un serveur tier pour récupérer la latitude/longitude avant la création du shop
+  /// Modifie les informations d'un compte sur l'API
   /// Toast affiché en fonction du résultat de la requête (Succès/Échec)
-  Future<void> addShop(String name, String address, String city, String zipCode, String image64) async {
-    final now = DateTime.now();
-    GeoCode geoCode = GeoCode();
-    final query = address + ", " + city + ", " + zipCode;
-    try {
-      Coordinates coordinates = await geoCode.forwardGeocoding(address: query);
-      late Response responseSalon = http.Response("", 400);
-      if(image64 != ""){
-        print("photo detected");
-        responseSalon = await http.post(
-          Uri.parse(urlSite + 'salon'),
-          headers: <String, String>{
-            'Content-Type': 'application/json; charset=UTF-8',
-          },
-          body: jsonEncode(<String, String>{
-            'address': address,
-            'zip_code': zipCode,
-            'city': city,
-            'name': name,
-            'latitude': coordinates.latitude.toString(),
-            'longitude': coordinates.longitude.toString(),
-            'salon_image': image64,
-          }),
-        );
-      }else{
-        print("no photo");
-        responseSalon = await http.post(
-          Uri.parse(urlSite + 'salon'),
-          headers: <String, String>{
-            'Content-Type': 'application/json; charset=UTF-8',
-          },
-          body: jsonEncode(<String, String>{
-            'address': address,
-            'zip_code': zipCode,
-            'city': city,
-            'name': name,
-            'latitude': coordinates.latitude.toString(),
-            'longitude': coordinates.longitude.toString(),
-          }),
-        );
-      }
-
-      if (responseSalon.statusCode == 201) {
-        // If the server did return a 201 CREATED response,
-        // then parse the JSON.
-        Fluttertoast.showToast(
-            msg: "Salon added with Success!",
-            toastLength: Toast.LENGTH_SHORT,
-            gravity: ToastGravity.BOTTOM,
-            timeInSecForIosWeb: 1,
-            backgroundColor: Colors.green,
-            textColor: Colors.white,
-            fontSize: 16.0
-        );
-        Navigator.pop(context);
-      }else{
-        Fluttertoast.showToast(
-            msg: "Failed create salon",
-            toastLength: Toast.LENGTH_SHORT,
-            gravity: ToastGravity.BOTTOM,
-            timeInSecForIosWeb: 1,
-            backgroundColor: Colors.red,
-            textColor: Colors.white,
-            fontSize: 16.0
-        );
-      }
+  Future<void> editAccount(String name, String address, String zipCode, String city, String image64, int idShop,int idUser) async {
+    late Response response = http.Response("", 400);
+    if(image64 != ""){
+      response = await http.patch(
+        Uri.parse(urlSite + 'salon/' + idShop.toString()),
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+        },
+        body: jsonEncode(<String, String>{
+          'name': name,
+          'zip_code': zipCode,
+          'city': city,
+          'address': address,
+          'salon_image' : image64
+        }),
+      );
+    }else{
+      response = await http.patch(
+        Uri.parse(urlSite + 'salon/' + idShop.toString()),
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+        },
+        body: jsonEncode(<String, String>{
+          'name': name,
+          'zip_code': zipCode,
+          'city': city,
+          'address': address,
+          'salon_image' : imageController.text
+        }),
+      );
     }
-    catch(e){
-      print(e);
+
+    if (response.statusCode == 200) {
+      // If the server did return a 201 CREATED response,
+      // then parse the JSON.
       Fluttertoast.showToast(
-          msg: "Failed get Geolocalisation of shop",
+          msg: "Edit successful !",
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.BOTTOM,
+          timeInSecForIosWeb: 1,
+          backgroundColor: Colors.green,
+          textColor: Colors.white,
+          fontSize: 16.0
+      );
+      Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (context) => ProfilSalonAdmin(idUser)));
+    } else {
+      // If the server did not return a 201 CREATED response,
+      // then throw an exception.
+      Fluttertoast.showToast(
+          msg: "Edit Failed !",
           toastLength: Toast.LENGTH_SHORT,
           gravity: ToastGravity.BOTTOM,
           timeInSecForIosWeb: 1,
@@ -289,3 +273,5 @@ class _AddShop extends State<AddShop> {
     }
   }
 }
+
+

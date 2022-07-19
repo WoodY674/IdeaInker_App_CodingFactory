@@ -3,19 +3,19 @@ import 'package:convex_bottom_bar/convex_bottom_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:jwt_decoder/jwt_decoder.dart';
 import 'package:thebestatoo/Pages/ChannelPage.dart';
-import 'package:thebestatoo/Pages/ProfilSalon.dart';
-import 'package:thebestatoo/Pages/ProfilUser.dart';
-import 'package:thebestatoo/Pages/CreateAvisArtist.dart';
-import 'package:thebestatoo/Pages/addShop.dart';
-import 'package:thebestatoo/Pages/createaccount.dart';
-import 'package:thebestatoo/Pages/editUser.dart';
-import 'package:thebestatoo/Pages/Admin/listShopAdmin.dart';
-import 'package:thebestatoo/Pages/postsPage.dart';
-import 'package:thebestatoo/Pages/profil.dart';
-import 'package:thebestatoo/Pages/map.dart';
-import 'package:thebestatoo/Pages/home.dart';
+import 'package:thebestatoo/Pages/ProfilShopPage.dart';
+import 'package:thebestatoo/Pages/ProfilUserPage.dart';
+import 'package:thebestatoo/Pages/CreateNoticesArtist.dart';
+import 'package:thebestatoo/Pages/AddShopPage.dart';
+import 'package:thebestatoo/Pages/CreateAccountPage.dart';
+import 'package:thebestatoo/Pages/EditUserInformations.dart';
+import 'package:thebestatoo/Pages/Admin/ListShopAdmin.dart';
+import 'package:thebestatoo/Pages/PostsPage.dart';
+import 'package:thebestatoo/Pages/LoginPage.dart';
+import 'package:thebestatoo/Pages/MapPage.dart';
+import 'package:thebestatoo/Pages/HomePage.dart';
 import 'package:streaming_shared_preferences/streaming_shared_preferences.dart';
-import 'package:thebestatoo/Pages/ProfilArtiste.dart';
+import 'package:thebestatoo/Pages/ProfilArtistePage.dart';
 import 'package:thebestatoo/chat/chatAppBar.dart';
 late final StreamingSharedPreferences preferences;
 late final String urlSite;
@@ -59,22 +59,22 @@ class _MainPageState extends State<MainPage> {
   @override
   void initState() {
     super.initState();
-    currentPage = const Home();
+    currentPage = const HomePage();
   }
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       routes: {
-        Home.route: (context) => const Home(),
-        MyMap.route: (context) => const MyMap(),
-        CreateAccount.route: (context) => const CreateAccount(),
-        EditUser.route: (context) => const EditUser(),
-        AddShop.route: (context) => const AddShop(),
+        HomePage.route: (context) => const HomePage(),
+        MapPage.route: (context) => const MapPage(),
+        CreateAccountPage.route: (context) => const CreateAccountPage(),
+        EditUserInformations.route: (context) => const EditUserInformations(),
+        AddShopPage.route: (context) => const AddShopPage(),
         ListShopAdmin.route: (context) => const ListShopAdmin(),
-        ProfilUser.route: (context) => const ProfilUser(),
-        ProfilArtiste.route: (context) => const ProfilArtiste(),
-        Profil.route: (context) => const Profil(),
+        ProfilUserPage.route: (context) => const ProfilUserPage(),
+        ProfilArtistePage.route: (context) => const ProfilArtistePage(),
+        LoginPage.route: (context) => const LoginPage(),
         PostsPage.route:(context) => const PostsPage(),
       },
       home: Scaffold(

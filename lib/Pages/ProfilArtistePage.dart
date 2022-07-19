@@ -1,30 +1,42 @@
 import 'dart:convert';
 import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:http/http.dart' as http;
-import 'package:thebestatoo/Pages/informationsUser.dart';
-import 'package:thebestatoo/Pages/postsPage.dart';
-import 'package:thebestatoo/Pages/sideBar.dart';
-import 'package:thebestatoo/Pages/toggleBar.dart';
+import 'package:smooth_star_rating/smooth_star_rating.dart';
+import 'package:thebestatoo/Pages/ArtistesFromShopPage.dart';
+import 'package:thebestatoo/Pages/informationsSalonPage.dart';
+import 'package:thebestatoo/Pages/NoticesListPage.dart';
+import 'package:thebestatoo/Pages/PostsPage.dart';
+import 'package:thebestatoo/Pages/SideBarPage.dart';
+import 'package:thebestatoo/Pages/ToggleBarPage.dart';
+import '../Classes/Notice.dart';
+import '../Classes/Shop.dart';
 import '../Classes/User.dart';
-import 'editUser.dart';
+import 'Creations.dart';
+import 'EditUserInformations.dart';
 import '../main.dart';
-import 'favoritesPage.dart';
+import 'FavoritesPage.dart';
+import 'informationsArtistePage.dart';
+import 'informationsUserPage.dart';
+import '../main.dart';
 
+class ProfilArtistePage extends StatefulWidget {
+  static String route = 'ProfilArtiste';
 
-class ProfilUser extends StatefulWidget {
-  static String route = 'ProfilUser';
-  const ProfilUser({Key? key}) : super(key: key);
+  const ProfilArtistePage({Key? key}) : super(key: key);
 
   @override
-  _ProfilUser createState() => _ProfilUser();
+  _ProfilArtistePage createState() => _ProfilArtistePage();
 }
 
-class _ProfilUser extends State<ProfilUser> {
+class _ProfilArtistePage extends State<ProfilArtistePage> {
   late User user;
   late Future<User> futureUser;
-  List<String> labels = ["Favoris","Informations"];
+  late double stars = 0;
+  List<String> labels = ["Créations","Informations"];
   int currentIndex = 0;
+  late double meanStars = 0.0;
 
   @override
   void initState() {
@@ -35,27 +47,20 @@ class _ProfilUser extends State<ProfilUser> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      drawer: SideBar(),
+      drawer: SideBarPage(),
       appBar: AppBar(
-        title: Text('Mon profil'),
+        title: Text('Profil Artiste'),
         backgroundColor: Colors.deepPurple,
         centerTitle: true,
-        actions: [
-          IconButton(onPressed: (){
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                  builder: (context) => const PostsPage()),
-            );
-          },
-              icon: const Icon(Icons.add))
-        ],
       ),
       body: FutureBuilder<User>(
         future: futureUser,
         builder: (context, snapshot) {
           if (snapshot.hasData) {
             user = snapshot.data!;
+            if(user.notices != null){
+              meanStars = double.parse(user.notices!.average.toString());
+            }
             return NestedScrollView(headerSliverBuilder: (context, _) {
               return [
                 SliverList(
@@ -72,18 +77,6 @@ class _ProfilUser extends State<ProfilUser> {
                               height: 200,
                               child: Stack(
                                 children: <Widget>[
-                                  Align(
-                                    alignment: Alignment.bottomRight,
-                                    child: IconButton(
-                                      icon: const Icon(Icons.edit),
-                                      onPressed: (){
-                                        Navigator.push(
-                                          context,
-                                          MaterialPageRoute(builder: (context) => const EditUser()),
-                                        );
-                                      },
-                                    ),
-                                  ),
                                   Container(
                                     width: 200,
                                     height: 200,
@@ -100,18 +93,6 @@ class _ProfilUser extends State<ProfilUser> {
                                 height: 200,
                                 child: Stack(
                                   children: <Widget>[
-                                    Align(
-                                      alignment: Alignment.bottomRight,
-                                      child: IconButton(
-                                        icon: Icon(Icons.edit),
-                                        onPressed: (){
-                                          Navigator.push(
-                                            context,
-                                            MaterialPageRoute(builder: (context) => const EditUser()),
-                                          );
-                                        },
-                                      ),
-                                    ),
                                     Container(
                                       width: 200,
                                       height: 200,
@@ -132,6 +113,32 @@ class _ProfilUser extends State<ProfilUser> {
                                     fontWeight: FontWeight.bold,
                                     color: Colors.white),
                               ),
+                            ),
+                            Container(
+                                child: GestureDetector(
+                                  onTap: (){
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(builder: (context) => NoticesListPage(snapshot.data!.notices,snapshot.data!.id,"Artist")),
+                                    );
+                                  },
+                                  child: Align(
+                                    alignment: Alignment.center,
+                                    child: SmoothStarRating(
+                                      rating: double.parse(snapshot.data!.notices!.average.toString()),
+                                      isReadOnly: true,
+                                      size: 50,
+                                      filledIconData: Icons.star,
+                                      halfFilledIconData: Icons.star_half,
+                                      defaultIconData: Icons.star_border,
+                                      color: Colors.yellow,
+                                      borderColor: Colors.yellow,
+                                      starCount: 5,
+                                      allowHalfRating: false,
+                                      spacing: 2.0,
+                                    ),
+                                  ),
+                                )
                             ),
                             Container(
                               color: Colors.white,
@@ -155,14 +162,14 @@ class _ProfilUser extends State<ProfilUser> {
                 ),
               ];
             },
-                body: Container(
+              body: Container(
                   child: currentIndex == 0 ?
-                          FavoritesPage(user) :
-                          Informations(user)
-                ),
+                  FavoritesPage(user) :
+                  InformationsArtistePage(user)
+              ),
             );
           } else if (snapshot.hasError) {
-          return Text('${snapshot.error}');
+            return Text('${snapshot.error}');
           }
           // By default, show a loading spinner.
           return const CircularProgressIndicator();

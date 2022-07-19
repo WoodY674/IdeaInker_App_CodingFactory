@@ -1,52 +1,32 @@
-import 'dart:async';
 import 'dart:convert';
-import 'dart:io';
+import 'dart:developer';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:geocode/geocode.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:http/http.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:permission_handler/permission_handler.dart';
-import 'package:thebestatoo/Classes/Shop.dart';
-import 'package:thebestatoo/Classes/User.dart';
 import 'package:thebestatoo/main.dart';
+import 'dart:io';
+import '../Classes/CoordinatesStore.dart';
 import '../Classes/ImageTo64.dart';
-import 'Admin/ProfilShopAdmin.dart';
+import '../Classes/Shop.dart';
 
-class EditShop extends StatefulWidget {
-  static String route = 'editShop';
-  final dynamic shop;
-  final dynamic id;
-  const EditShop(this.shop,this.id,{Key? key}) : super(key: key);
+class AddShopPage extends StatefulWidget {
+  static String route = 'addShop';
+  const AddShopPage({Key? key}) : super(key: key);
 
   @override
-  _EditShop createState() => _EditShop();
+  _AddShopPage createState() => _AddShopPage();
 }
 
-class _EditShop extends State<EditShop> {
-  late Shop futureShop;
+class _AddShopPage extends State<AddShopPage> {
   TextEditingController nameController = TextEditingController();
   TextEditingController addressController = TextEditingController();
-  TextEditingController zipCodeController = TextEditingController();
   TextEditingController cityController = TextEditingController();
-  TextEditingController imageController = TextEditingController();
-
-  @override
-  void initState() {
-    super.initState();
-    futureShop = widget.shop;
-    nameController.text = futureShop.name!;
-    addressController.text = futureShop.address!;
-    zipCodeController.text = futureShop.zipCode!;
-    cityController.text = futureShop.city!;
-    if(futureShop.salonImage != null){
-      imageController.text = futureShop.salonImage!.imagePath!;
-    }else{
-      imageController.text = "";
-    }
-  }
-
-  late User user;
+  TextEditingController zipCodeController = TextEditingController();
+  late CoordinatesStore coordinatesStore;
   String imagePath = "";
   final picker = ImagePicker();
   File imageFile = File("");
@@ -56,29 +36,26 @@ class _EditShop extends State<EditShop> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Modification'),
+        title: const Text('Détails du salon'),
         backgroundColor: Colors.deepPurple,
       ),
       body: Padding(
         padding: const EdgeInsets.all(10),
-        child:
-        Form(
+        child: Form(
           key: _formKey,
-          child: ListView(
+          child:ListView(
             children: <Widget>[
               Container(
-                alignment: Alignment.center,
-                padding: const EdgeInsets.all(10),
-                child: const Text( 'Modification du profil de mon salon',
-                  style: TextStyle(fontSize: 20),
-                ),
+                  alignment: Alignment.center,
+                  padding: const EdgeInsets.all(10),
+                  child: const Text(
+                    'Ajout Salon de Tatouage',
+                    style: TextStyle(fontSize: 20),
+                  )
               ),
               imageFile.path != "" ?
               // Affichage de l'image
-              CircleAvatar(
-                backgroundImage: FileImage(imageFile),
-                radius: 100,
-              )
+              Image.file(imageFile)
                   : Container(),
               Container(
                 child:
@@ -91,7 +68,6 @@ class _EditShop extends State<EditShop> {
                         // Either the permission was already granted before or the user just granted it.
                         final pickedFile = await picker.pickImage(source: ImageSource.gallery);
                         // getImage à été remplacé par pickImage ?
-                        print(pickedFile);
                         if (pickedFile != null) {
                           setState(() {
                             imageFile = File(pickedFile.path);
@@ -151,16 +127,12 @@ class _EditShop extends State<EditShop> {
                     border: OutlineInputBorder(),
                     labelText: 'Adresse',
                   ),
-                ),
-              ),
-              Container(
-                padding: const EdgeInsets.all(10),
-                child: TextFormField(
-                  controller: zipCodeController,
-                  decoration: const InputDecoration(
-                    border: OutlineInputBorder(),
-                    labelText: 'Code Postal',
-                  ),
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Veuillez renseigner ce champ';
+                    }
+                    return null;
+                  },
                 ),
               ),
               Container(
@@ -171,6 +143,28 @@ class _EditShop extends State<EditShop> {
                     border: OutlineInputBorder(),
                     labelText: 'Ville',
                   ),
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Veuillez renseigner ce champ';
+                    }
+                    return null;
+                  },
+                ),
+              ),
+              Container(
+                padding: const EdgeInsets.fromLTRB(10, 10, 10, 0),
+                child: TextFormField(
+                  controller: zipCodeController,
+                  decoration: const InputDecoration(
+                    border: OutlineInputBorder(),
+                    labelText: 'Code Postal',
+                  ),
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Veuillez renseigner ce champ';
+                    }
+                    return null;
+                  },
                 ),
               ),
               Container(
@@ -186,15 +180,7 @@ class _EditShop extends State<EditShop> {
                         if(imageFile.path != ""){
                           fileInBase64 = imageTo64(imageFile);
                         }
-                        editAccount(
-                            nameController.text,
-                            addressController.text,
-                            zipCodeController.text,
-                            cityController.text,
-                            fileInBase64,
-                            futureShop.id!,
-                            widget.id
-                        );
+                        addShop(nameController.text, addressController.text,cityController.text,zipCodeController.text,fileInBase64);
                       }
                     },
                     style: ButtonStyle(
@@ -208,71 +194,79 @@ class _EditShop extends State<EditShop> {
       ),
     );
   }
-  /*
-  La fonction editAccount récupère le nom, l'adresse, le code postal, la ville, l'image, l'identifiant du salon et de l'utilisateur
-  que ce dernier a entré dans l'application.
-  Elle attend ensuite une réponse http avec le code 400.
-  Puis l'image entrée est inspectée, si elle est en base 64 un message "photo détected" est envoyée sinon "no photo".
-  Si nous recevons un code 200 un message confirmant notre modification nous est envoyé "Edit successful !".
-  Dans le cas d'échec de notre modification nous recevons le message "Edit Failed !".
-  Lorsque la modification est faite avec succès, elle est envoyée en base de données et publiée sur l'application.
-  */
-  /// Modifie les informations d'un compte sur l'API
-  /// Toast affiché en fonction du résultat de la requête (Succès/Échec)
-  Future<void> editAccount(String name, String address, String zipCode, String city, String image64, int idShop,int idUser) async {
-    late Response response = http.Response("", 400);
-    if(image64 != ""){
-      print("photo detected");
-      response = await http.patch(
-        Uri.parse(urlSite + 'salon/' + idShop.toString()),
-        headers: <String, String>{
-          'Content-Type': 'application/json; charset=UTF-8',
-        },
-        body: jsonEncode(<String, String>{
-          'name': name,
-          'zip_code': zipCode,
-          'city': city,
-          'address': address,
-          'salon_image' : image64
-        }),
-      );
-    }else{
-      print("no photo");
-      response = await http.patch(
-        Uri.parse(urlSite + 'salon/' + idShop.toString()),
-        headers: <String, String>{
-          'Content-Type': 'application/json; charset=UTF-8',
-        },
-        body: jsonEncode(<String, String>{
-          'name': name,
-          'zip_code': zipCode,
-          'city': city,
-          'address': address,
-          'salon_image' : imageController.text
-        }),
-      );
-    }
 
-    if (response.statusCode == 200) {
-      // If the server did return a 201 CREATED response,
-      // then parse the JSON.
+  /// Ajoute un salon sur l'API
+  /// Fait une requête de Geocoding vers un serveur tier pour récupérer la latitude/longitude avant la création du shop
+  /// Toast affiché en fonction du résultat de la requête (Succès/Échec)
+  Future<void> addShop(String name, String address, String city, String zipCode, String image64) async {
+    final now = DateTime.now();
+    GeoCode geoCode = GeoCode();
+    final query = address + ", " + city + ", " + zipCode;
+    try {
+      Coordinates coordinates = await geoCode.forwardGeocoding(address: query);
+      late Response responseSalon = http.Response("", 400);
+      if(image64 != ""){
+        responseSalon = await http.post(
+          Uri.parse(urlSite + 'salon'),
+          headers: <String, String>{
+            'Content-Type': 'application/json; charset=UTF-8',
+          },
+          body: jsonEncode(<String, String>{
+            'address': address,
+            'zip_code': zipCode,
+            'city': city,
+            'name': name,
+            'latitude': coordinates.latitude.toString(),
+            'longitude': coordinates.longitude.toString(),
+            'salon_image': image64,
+          }),
+        );
+      }else{
+          responseSalon = await http.post(
+          Uri.parse(urlSite + 'salon'),
+          headers: <String, String>{
+            'Content-Type': 'application/json; charset=UTF-8',
+          },
+          body: jsonEncode(<String, String>{
+            'address': address,
+            'zip_code': zipCode,
+            'city': city,
+            'name': name,
+            'latitude': coordinates.latitude.toString(),
+            'longitude': coordinates.longitude.toString(),
+          }),
+        );
+      }
+
+      if (responseSalon.statusCode == 201) {
+        // If the server did return a 201 CREATED response,
+        // then parse the JSON.
+        Fluttertoast.showToast(
+            msg: "Salon added with Success!",
+            toastLength: Toast.LENGTH_SHORT,
+            gravity: ToastGravity.BOTTOM,
+            timeInSecForIosWeb: 1,
+            backgroundColor: Colors.green,
+            textColor: Colors.white,
+            fontSize: 16.0
+        );
+        Navigator.pop(context);
+      }else{
+        Fluttertoast.showToast(
+            msg: "Failed create salon",
+            toastLength: Toast.LENGTH_SHORT,
+            gravity: ToastGravity.BOTTOM,
+            timeInSecForIosWeb: 1,
+            backgroundColor: Colors.red,
+            textColor: Colors.white,
+            fontSize: 16.0
+        );
+      }
+    }
+    catch(e){
+      print(e);
       Fluttertoast.showToast(
-          msg: "Edit successful !",
-          toastLength: Toast.LENGTH_SHORT,
-          gravity: ToastGravity.BOTTOM,
-          timeInSecForIosWeb: 1,
-          backgroundColor: Colors.green,
-          textColor: Colors.white,
-          fontSize: 16.0
-      );
-      Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(builder: (context) => ProfilSalonAdmin(idUser)));
-    } else {
-      // If the server did not return a 201 CREATED response,
-      // then throw an exception.
-      Fluttertoast.showToast(
-          msg: "Edit Failed !",
+          msg: "Failed get Geolocalisation of shop",
           toastLength: Toast.LENGTH_SHORT,
           gravity: ToastGravity.BOTTOM,
           timeInSecForIosWeb: 1,
@@ -283,5 +277,3 @@ class _EditShop extends State<EditShop> {
     }
   }
 }
-
-

@@ -6,21 +6,21 @@ import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:thebestatoo/main.dart';
-import 'package:thebestatoo/Pages/sideBar.dart';
+import 'package:thebestatoo/Pages/SideBarPage.dart';
 import 'package:http/http.dart' as http;
 import '../Classes/Posts.dart';
 
 late List<Posts> posts = [];
 
-class Home extends StatefulWidget {
-  const Home({Key? key}) : super(key: key);
+class HomePage extends StatefulWidget {
+  const HomePage({Key? key}) : super(key: key);
   static String route = 'home';
 
   @override
-  _Home createState() => _Home();
+  _HomePage createState() => _HomePage();
 }
 
-class _Home extends State<Home> {
+class _HomePage extends State<HomePage> {
   TextEditingController searchController = TextEditingController();
   late Future<List<Posts>> futurePost;
   Icon customIcon = const Icon(Icons.search);
@@ -44,7 +44,7 @@ class _Home extends State<Home> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        drawer: SideBar(),
+        drawer: SideBarPage(),
         appBar: AppBar(
           title: customSearchBar,
           actions: [
@@ -290,6 +290,8 @@ class _Home extends State<Home> {
 
 StreamController<List<Posts>> _streamController = StreamController<List<Posts>>.broadcast();
 Stream<List<Posts>> get _stream => _streamController.stream;
+
+///Filtre les posts via le contenu de la barre de recherche
 _filter(String searchQuery) {
   List<Posts> _filteredList = posts
       .where((Posts user) => user.content!.toLowerCase().contains(searchQuery.toLowerCase()))

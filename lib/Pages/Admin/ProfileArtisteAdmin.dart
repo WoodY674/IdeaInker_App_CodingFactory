@@ -4,22 +4,22 @@ import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:http/http.dart' as http;
 import 'package:smooth_star_rating/smooth_star_rating.dart';
-import 'package:thebestatoo/Pages/ArtistesLies.dart';
-import 'package:thebestatoo/Pages/informationsSalon.dart';
-import 'package:thebestatoo/Pages/listAvis.dart';
-import 'package:thebestatoo/Pages/sideBar.dart';
-import 'package:thebestatoo/Pages/toggleBar.dart';
+import 'package:thebestatoo/Pages/ArtistesFromShopPage.dart';
+import 'package:thebestatoo/Pages/informationsSalonPage.dart';
+import 'package:thebestatoo/Pages/NoticesListPage.dart';
+import 'package:thebestatoo/Pages/SideBarPage.dart';
+import 'package:thebestatoo/Pages/ToggleBarPage.dart';
 import '../../Classes/Notice.dart';
 import '../../Classes/Shop.dart';
 import '../../Classes/User.dart';
 import '../Creations.dart';
-import '../editUser.dart';
+import '../EditUserInformations.dart';
 import '../../main.dart';
-import '../favoritesPage.dart';
-import '../informationsArtiste.dart';
-import '../informationsUser.dart';
+import '../FavoritesPage.dart';
+import '../informationsArtistePage.dart';
+import '../informationsUserPage.dart';
 import '../../main.dart';
-import '../postsPage.dart';
+import '../PostsPage.dart';
 
 class ProfilArtisteAdmin extends StatefulWidget {
   static String route = 'ProfilArtiste';
@@ -47,7 +47,7 @@ class _ProfilArtisteAdmin extends State<ProfilArtisteAdmin> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      drawer: SideBar(),
+      drawer: SideBarPage(),
       appBar: AppBar(
         title: Text('Profil Artiste'),
         backgroundColor: Colors.deepPurple,
@@ -94,7 +94,7 @@ class _ProfilArtisteAdmin extends State<ProfilArtisteAdmin> {
                                       onPressed: (){
                                         Navigator.push(
                                           context,
-                                          MaterialPageRoute(builder: (context) => const EditUser()),
+                                          MaterialPageRoute(builder: (context) => const EditUserInformations()),
                                         );
                                       },
                                     ),
@@ -122,7 +122,7 @@ class _ProfilArtisteAdmin extends State<ProfilArtisteAdmin> {
                                         onPressed: (){
                                           Navigator.push(
                                             context,
-                                            MaterialPageRoute(builder: (context) => const EditUser()),
+                                            MaterialPageRoute(builder: (context) => const EditUserInformations()),
                                           );
                                         },
                                       ),
@@ -153,7 +153,7 @@ class _ProfilArtisteAdmin extends State<ProfilArtisteAdmin> {
                                   onTap: (){
                                     Navigator.push(
                                       context,
-                                      MaterialPageRoute(builder: (context) => ListAvis(user.notices,user.id,"Artist")),
+                                      MaterialPageRoute(builder: (context) => NoticesListPage(user.notices,user.id,"Artist")),
                                     );
                                   },
                                   child: Align(
@@ -199,7 +199,7 @@ class _ProfilArtisteAdmin extends State<ProfilArtisteAdmin> {
               body: Container(
                   child: currentIndex == 0 ?
                   FavoritesPage(user) :
-                  InformationsArtiste(user)
+                  InformationsArtistePage(user)
               ),
             );
           } else if (snapshot.hasError) {

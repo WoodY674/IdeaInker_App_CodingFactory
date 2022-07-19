@@ -7,12 +7,15 @@ import '../main.dart';
 
 final String url = urlSite + "post";
 
+///Retourne la liste des Posts
 List<Posts> parsePosts(String responseBody){
   var list = json.decode(responseBody) as List<dynamic>;
   var salons = list.map((e) => Posts.fromJson(e)).toList();
   return salons;
 }
 
+///Execute la requete pour récupérer les Posts
+///Retourne une Future Liste de Postes
 Future<List<Posts>> fetchPosts() async {
   final http.Response response = await http.get(Uri.parse(url),
   );

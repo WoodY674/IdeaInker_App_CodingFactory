@@ -1,52 +1,36 @@
 import 'dart:convert';
 import 'dart:developer';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
-import 'package:fluttertoast/fluttertoast.dart';
-import 'package:thebestatoo/Classes/User.dart';
 import 'package:thebestatoo/main.dart';
-import 'package:thebestatoo/Pages/sideBar.dart';
-import '../Classes/Token.dart';
-import 'createaccount.dart';
-import 'home.dart';
-import 'package:streaming_shared_preferences/streaming_shared_preferences.dart';
 
-
-class Profil extends StatefulWidget {
-  const Profil({Key? key}) : super(key: key);
-  static String route = 'profil';
+class CreateAccountPage extends StatefulWidget {
+  static String route = 'register';
+  const CreateAccountPage({Key? key}) : super(key: key);
 
   @override
-  _Profil createState() => _Profil();
+  _CreateAccountPage createState() => _CreateAccountPage();
 }
 
-class _Profil extends State<Profil> {
+class _CreateAccountPage extends State<CreateAccountPage> {
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
-  late Token token;
+  TextEditingController firstNameController = TextEditingController();
+  TextEditingController lastNameController = TextEditingController();
+  TextEditingController pseudoController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      drawer: SideBar(),
       appBar: AppBar(
-        title: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Image.asset(
-              'assets/IdeaInkerBanderole.png',
-              fit: BoxFit.contain,
-              height: 40,
-            ),
-          ],
-        ),
+        title: const Text('Créer un Compte'),
         backgroundColor: Colors.deepPurple,
       ),
-      backgroundColor: Colors.white,
       body: Padding(
         padding: const EdgeInsets.all(10),
-        child:Form(
+        child: Form(
           key: _formKey,
           child:ListView(
             children: <Widget>[
@@ -54,9 +38,62 @@ class _Profil extends State<Profil> {
                   alignment: Alignment.center,
                   padding: const EdgeInsets.all(10),
                   child: const Text(
-                    'Sign in',
+                    "Inscription",
                     style: TextStyle(fontSize: 20),
-                  )),
+                  )
+              ),
+              Container(
+                padding: const EdgeInsets.all(10),
+                child: Center(
+                  child: TextFormField(
+                    controller: pseudoController,
+                    decoration: const InputDecoration(
+                      border: OutlineInputBorder(),
+                      labelText: 'Pseudo',
+                    ),
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Veuillez renseigner ce champ';
+                      }
+                      return null;
+                    },
+                  ),
+                ),
+              ),
+              Container(
+                padding: const EdgeInsets.all(10),
+                child: Center(
+                  child: TextFormField(
+                    controller: firstNameController,
+                    decoration: const InputDecoration(
+                      border: OutlineInputBorder(),
+                      labelText: 'Prénom',
+                    ),
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Veuillez renseigner ce champ';
+                      }
+                      return null;
+                    },
+                  ),
+                ),
+              ),
+              Container(
+                padding: const EdgeInsets.all(10),
+                child: TextFormField(
+                  controller: lastNameController,
+                  decoration: const InputDecoration(
+                    border: OutlineInputBorder(),
+                    labelText: 'Nom',
+                  ),
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Veuillez renseigner ce champ';
+                    }
+                    return null;
+                  },
+                ),
+              ),
               Container(
                 padding: const EdgeInsets.all(10),
                 child: TextFormField(
@@ -65,7 +102,6 @@ class _Profil extends State<Profil> {
                     border: OutlineInputBorder(),
                     labelText: 'E-mail',
                   ),
-                  key: const Key('email'),
                   validator: (value) {
                     if (value == null || value.isEmpty) {
                       return 'Veuillez renseigner ce champ';
@@ -81,9 +117,8 @@ class _Profil extends State<Profil> {
                   controller: passwordController,
                   decoration: const InputDecoration(
                     border: OutlineInputBorder(),
-                    labelText: 'Password',
+                    labelText: 'Mot de Passe',
                   ),
-                  key: const Key('password'),
                   validator: (value) {
                     if (value == null || value.isEmpty) {
                       return 'Veuillez renseigner ce champ';
@@ -96,13 +131,12 @@ class _Profil extends State<Profil> {
                   height: 50,
                   padding: const EdgeInsets.fromLTRB(30, 15, 30, 0),
                   child: ElevatedButton(
-                    key: const Key('btn'),
-                    child: const Text('Login'),
+                    child: const Text('Enregistrer'),
                     onPressed: () {
                       if (_formKey.currentState!.validate()) {
                         // If the form is valid, display a snackbar. In the real world,
                         // you'd often call a server or save the information in a database.
-                        Login(emailController.text, passwordController.text);
+                        createAccount(firstNameController.text, lastNameController.text,emailController.text,passwordController.text, pseudoController.text);
                       }
                     },
                     style: ButtonStyle(
@@ -110,60 +144,37 @@ class _Profil extends State<Profil> {
                     ),
                   )
               ),
-              Row(
-                children: <Widget>[
-                  const Text('Does not have account?'),
-                  TextButton(
-                    child: const Text(
-                      'Create an account',
-                      style: TextStyle(fontSize: 20),
-                    ),
-                    onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => const CreateAccount()),
-                      );
-                    },
-                  )
-                ],
-                mainAxisAlignment: MainAxisAlignment.center,
-              ),
             ],
           ),
         ),
       ),
-
     );
   }
-  /*
-  La fonction Login récupère l'email et le mot de passe de l'utilisateur.
-  Elle attend ensuite la réponse da la requête Http post dans laquelle nous récupérons l'image de profil de l'utilisateur
-  et son token d'authentification.
-  Si nous recevons un code 200, un message confirmant notre connexion nous est envoyé "Login Success!"
-  avant d'être renvoyé à la page d'accueil.
-  Dans le cas d'une connexion échouée nous recevons le message "Failed Login".
-  */
-  /// Connecte un utilisateur
-  /// Récupère l'URL de l'image et le token d'authentification
+
+  /// Ajoute un nouveau compte sur l'API
   /// Toast affiché en fonction du résultat de la requête (Succès/Échec)
-  Future<void> Login(String email, String password) async {
+  Future<void> createAccount(String firstName, String lastName, String email, String password, String pseudo) async {
+    final now = DateTime.now();
     final response = await http.post(
-      Uri.parse(urlImage + 'authentication_token'),
+      Uri.parse(urlSite + 'register'),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
       },
       body: jsonEncode(<String, String>{
         'email': email,
         'password': password,
+        'lastName': lastName,
+        'firstName': firstName,
+        'createdAt': now.toString(),
+        'pseudo': pseudo,
       }),
     );
-    WidgetsFlutterBinding.ensureInitialized();
-    final preferences = await StreamingSharedPreferences.instance;
-    if (response.statusCode == 200) {
+    log(response.body);
+    if (response.statusCode == 201) {
       // If the server did return a 201 CREATED response,
       // then parse the JSON.
       Fluttertoast.showToast(
-          msg: "Login Success!",
+          msg: "Account created with Success!",
           toastLength: Toast.LENGTH_SHORT,
           gravity: ToastGravity.BOTTOM,
           timeInSecForIosWeb: 1,
@@ -171,19 +182,12 @@ class _Profil extends State<Profil> {
           textColor: Colors.white,
           fontSize: 16.0
       );
-      Map map = json.decode(response.body);
-      setState(() {
-        token = Token(map);
-      });
-      preferences.setString('token', token.token);
-      Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(builder: (context) => const Home()));
+      Navigator.pop(context);
     } else {
       // If the server did not return a 201 CREATED response,
       // then throw an exception.
       Fluttertoast.showToast(
-          msg: "Failed Login",
+          msg: "Failed Create Account",
           toastLength: Toast.LENGTH_SHORT,
           gravity: ToastGravity.BOTTOM,
           timeInSecForIosWeb: 1,

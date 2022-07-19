@@ -162,18 +162,13 @@ class _PostsPageShop extends State<PostsPageShop> {
             ),
     );
   }
-  /*
-  La fonction addPost récupère le contenu du post, l'image et l'identifiant du salon.
-  Elle récupère notre token en plus d'attendre une réponse de la requête Http post.
-  Si nous recevons un code 201, un message confirmant notre publication nous est envoyé "Post added with Success!"
-  sinon nous recevons "Failed create Post".
-  */
+
   /// Ajoute un post dans l'API
   /// Toast affiché en fonction du résultat de la requête (Succès/Échec)
   Future<void> addPost(String content, String image64, int shopId) async {
     final token = preferences.getString('token', defaultValue: '').getValue();
     final responsePost = await http.post(
-      Uri.parse('http://ideainker.fr/api/post/'),
+      Uri.parse(urlSite + '/post/'),
       headers: <String, String>{
         'Content-Type': 'application/json',
         HttpHeaders.authorizationHeader: "Bearer $token",

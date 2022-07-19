@@ -4,6 +4,8 @@ import 'package:http/http.dart' as http;
 import '../main.dart';
 import 'Notice.dart';
 
+/// Execute une requete afin de récupérer les informations de l'utilisateur connecté
+/// Retourne un Future Utilisateur
 Future<User> fetchUser() async {
   final token = preferences.getString('token', defaultValue: '').getValue();
   final response = await http
@@ -24,6 +26,7 @@ Future<User> fetchUser() async {
   }
 }
 
+///Retourne un utilisateur précis
 Future<User> fetchUserIndividual(idUser) async {
   final token = preferences.getString('token', defaultValue: '').getValue();
   final response = await http

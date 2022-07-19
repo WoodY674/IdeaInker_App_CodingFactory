@@ -8,19 +8,19 @@ import 'package:http/http.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:thebestatoo/Classes/User.dart';
-import 'package:thebestatoo/Pages/ProfilUser.dart';
+import 'package:thebestatoo/Pages/ProfilUserPage.dart';
 import 'package:thebestatoo/main.dart';
 import '../Classes/ImageTo64.dart';
 
-class EditUser extends StatefulWidget {
+class EditUserInformations extends StatefulWidget {
   static String route = 'editUser';
-  const EditUser({Key? key}) : super(key: key);
+  const EditUserInformations({Key? key}) : super(key: key);
 
   @override
-  _EditUser createState() => _EditUser();
+  _EditUserInformations createState() => _EditUserInformations();
 }
 
-class _EditUser extends State<EditUser> {
+class _EditUserInformations extends State<EditUserInformations> {
   late Future<User> futureUser;
 
   @override
@@ -236,7 +236,7 @@ class _EditUser extends State<EditUser> {
                       height: 50,
                       padding: const EdgeInsets.fromLTRB(30, 15, 30, 0),
                       child: ElevatedButton(
-                        child: const Text('Register'),
+                        child: const Text('Enregistrer'),
                         onPressed: () {
                           if (_formKey.currentState!.validate()) {
                             // If the form is valid, display a snackbar. In the real world,
@@ -278,21 +278,12 @@ class _EditUser extends State<EditUser> {
       ),
     );
   }
-  /*
-  La fonction editAccount récupère le prénom, le nom, l'adresse email, l'adresse, le code postal, la ville, la date de naissance,
-  le pseudo, l'image et l'identifiant de l'utilisateur.
-  Elle attend ensuite une réponse http avec le code 400.
-  Puis l'image entrée est inspectée, si elle est en base 64 un message "photo detected" est envoyée sinon "no photo".
-  Si nous recevons un code 200 un message confirmant notre modification nous est envoyé "Edit successful !".
-  Dans le cas d'échec de notre modification nous recevons le message "Edit Failed !".
-  Lorsque la modification est faite avec succès, elle est envoyée en base de données et publiée sur l'application.
-  */
+
   /// Modifie les informations d'un compte sur l'API
   /// Toast affiché en fonction du résultat de la requête (Succès/Échec)
   Future<void> editAccount(String firstName, String lastName, String email, String address, String zipCode, String city, String birthday, String pseudo, String image64, int idUser, String image) async {
     late Response response = http.Response("", 400);
     if(image64 != ""){
-      print("photo detected");
       print(idUser.toString());
       response = await http.patch(
         Uri.parse(urlSite + 'users/' + idUser.toString()),
@@ -311,10 +302,6 @@ class _EditUser extends State<EditUser> {
         }),
       );
     }else{
-      print("no photo");
-      print(idUser.toString());
-      print(image);
-
       response = await http.patch(
         Uri.parse(urlSite + 'users/' + idUser.toString()),
         headers: <String, String>{
@@ -336,7 +323,7 @@ class _EditUser extends State<EditUser> {
       // If the server did return a 201 CREATED response,
       // then parse the JSON.
       Fluttertoast.showToast(
-          msg: "Edit successful !",
+          msg: "Profil mis a jour",
           toastLength: Toast.LENGTH_SHORT,
           gravity: ToastGravity.BOTTOM,
           timeInSecForIosWeb: 1,
@@ -346,12 +333,12 @@ class _EditUser extends State<EditUser> {
       );
       Navigator.pushReplacement(
           context,
-          MaterialPageRoute(builder: (context) => ProfilUser()));
+          MaterialPageRoute(builder: (context) => ProfilUserPage()));
     } else {
       // If the server did not return a 201 CREATED response,
       // then throw an exception.
       Fluttertoast.showToast(
-          msg: "Edit Failed !",
+          msg: "Mise a jour Impossible",
           toastLength: Toast.LENGTH_SHORT,
           gravity: ToastGravity.BOTTOM,
           timeInSecForIosWeb: 1,

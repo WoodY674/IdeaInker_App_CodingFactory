@@ -4,30 +4,30 @@ import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:http/http.dart' as http;
 import 'package:smooth_star_rating/smooth_star_rating.dart';
-import 'package:thebestatoo/Pages/Admin/favoritesPageSalon.dart';
-import 'package:thebestatoo/Pages/ArtistesLies.dart';
-import 'package:thebestatoo/Pages/informationsSalon.dart';
-import 'package:thebestatoo/Pages/postsPage.dart';
-import 'package:thebestatoo/Pages/sideBar.dart';
-import 'package:thebestatoo/Pages/toggleBar.dart';
+import 'package:thebestatoo/Pages/Admin/FavoritesPageSalon.dart';
+import 'package:thebestatoo/Pages/ArtistesFromShopPage.dart';
+import 'package:thebestatoo/Pages/informationsSalonPage.dart';
+import 'package:thebestatoo/Pages/PostsPage.dart';
+import 'package:thebestatoo/Pages/SideBarPage.dart';
+import 'package:thebestatoo/Pages/ToggleBarPage.dart';
 import '../Classes/Shop.dart';
 import '../Classes/User.dart';
 import 'Creations.dart';
-import 'editUser.dart';
-import 'favoritesPage.dart';
-import 'informationsUser.dart';
+import 'EditUserInformations.dart';
+import 'FavoritesPage.dart';
+import 'informationsUserPage.dart';
 import '../main.dart';
-import 'listAvis.dart';
+import 'NoticesListPage.dart';
 
-class ProfilSalon extends StatefulWidget {
+class ProfilShopPage extends StatefulWidget {
   static String route = 'ProfilArtiste';
   final dynamic id;
-  const ProfilSalon(this.id,{Key? key}) : super(key: key);
+  const ProfilShopPage(this.id,{Key? key}) : super(key: key);
   @override
-  _ProfilSalon createState() => _ProfilSalon();
+  _ProfilShopPage createState() => _ProfilShopPage();
 }
 
-class _ProfilSalon extends State<ProfilSalon> {
+class _ProfilShopPage extends State<ProfilShopPage> {
   late double stars = 0;
   List<String> labels = ["Créations","Informations","Artistes liés"];
   int currentIndex = 0;
@@ -43,7 +43,7 @@ class _ProfilSalon extends State<ProfilSalon> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        drawer: SideBar(),
+        drawer: SideBarPage(),
         appBar: AppBar(
           title: const Text('Profil Salon'),
           backgroundColor: Colors.deepPurple,
@@ -115,7 +115,7 @@ class _ProfilSalon extends State<ProfilSalon> {
                                       onTap: (){
                                         Navigator.push(
                                           context,
-                                          MaterialPageRoute(builder: (context) => ListAvis(shop.notices,shop.id,"Shop")),
+                                          MaterialPageRoute(builder: (context) => NoticesListPage(shop.notices,shop.id,"Shop")),
                                         );
                                       },
                                       child: Align(
@@ -167,7 +167,7 @@ class _ProfilSalon extends State<ProfilSalon> {
                         return InformationsSalon(shop);
                       }
                       else if (currentIndex == 2) {
-                        return ArtistesLies(shop.artists);
+                        return ArtistesFromShopPage(shop.artists);
                       }else{
                         return const CircularProgressIndicator();
                       }

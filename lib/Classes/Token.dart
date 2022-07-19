@@ -1,5 +1,4 @@
 class Token{
-
   late String token;
 
   Token(Map map){

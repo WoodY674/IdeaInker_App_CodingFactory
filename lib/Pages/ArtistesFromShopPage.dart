@@ -3,15 +3,15 @@ import 'dart:collection';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:thebestatoo/Classes/User.dart';
-import 'package:thebestatoo/Pages/ProfilArtiste.dart';
+import 'package:thebestatoo/Pages/ProfilArtistePage.dart';
 
 import '../Classes/Shop.dart';
 import '../main.dart';
-import 'ProfilArtisteId.dart';
+import 'ProfilArtisteIdPage.dart';
 
-class ArtistesLies extends StatelessWidget {
+class ArtistesFromShopPage extends StatelessWidget {
   final dynamic artistes;
-  const ArtistesLies( this.artistes, {Key? key}) : super(key: key);
+  const ArtistesFromShopPage( this.artistes, {Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -29,7 +29,7 @@ class ArtistesLies extends StatelessWidget {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                      builder: (context) => ProfilArtisteId(user.id)),
+                      builder: (context) => ProfilArtisteIdPage(user.id)),
                 );
               },
               child: Card(

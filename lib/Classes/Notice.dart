@@ -1,3 +1,4 @@
+/// Retourne la liste des avis
 class Notices {
   List<AllNotices>? allNotices;
   String? average;

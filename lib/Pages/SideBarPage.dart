@@ -2,23 +2,23 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:streaming_shared_preferences/streaming_shared_preferences.dart';
 import 'package:thebestatoo/Pages/Admin/ProfilShopAdmin.dart';
-import 'package:thebestatoo/Pages/ProfilArtiste.dart';
-import 'package:thebestatoo/Pages/ProfilSalon.dart';
-import 'package:thebestatoo/Pages/ProfilUser.dart';
-import 'package:thebestatoo/Pages/Admin/listShopAdmin.dart';
+import 'package:thebestatoo/Pages/ProfilArtistePage.dart';
+import 'package:thebestatoo/Pages/ProfilShopPage.dart';
+import 'package:thebestatoo/Pages/ProfilUserPage.dart';
+import 'package:thebestatoo/Pages/Admin/ListShopAdmin.dart';
 import 'package:thebestatoo/Pages/listShopUsers.dart';
-import 'package:thebestatoo/Pages/profil.dart';
+import 'package:thebestatoo/Pages/LoginPage.dart';
 import 'package:thebestatoo/Pages/ChannelPage.dart';
 import '../Classes/Shop.dart';
 import '../Classes/User.dart';
 import 'Admin/ProfileArtisteAdmin.dart';
-import 'home.dart';
+import 'HomePage.dart';
 import '../main.dart';
-import 'map.dart';
+import 'MapPage.dart';
 import 'dart:io';
 import 'package:http/http.dart' as http;
 
-class SideBar extends StatelessWidget {
+class SideBarPage extends StatelessWidget {
   late Future<User> futureUser = fetchUser();
   late Future<Shop> futureShop;
   @override
@@ -57,7 +57,7 @@ class SideBar extends StatelessWidget {
                             title: Text('Accueil'),
                             onTap: () {Navigator.pushReplacement(
                                 context,
-                                MaterialPageRoute(builder: (context) => const Home()));
+                                MaterialPageRoute(builder: (context) => const HomePage()));
                             },
                           ),
                           ListTile(
@@ -65,7 +65,7 @@ class SideBar extends StatelessWidget {
                             title: Text('Carte'),
                             onTap: (){Navigator.pushReplacement(
                                 context,
-                                MaterialPageRoute(builder: (context) => const MyMap()));
+                                MaterialPageRoute(builder: (context) => const MapPage()));
                             },
                           ),
                           ListTile(
@@ -127,7 +127,7 @@ class SideBar extends StatelessWidget {
                             title: Text('Mon Profil'),
                             onTap: (){Navigator.pushReplacement(
                                 context,
-                                MaterialPageRoute(builder: (context) => const ProfilUser()));
+                                MaterialPageRoute(builder: (context) => const ProfilUserPage()));
                             },
                           )
                               : Container(),
@@ -139,14 +139,14 @@ class SideBar extends StatelessWidget {
                               Disconnect();
                               Navigator.pushReplacement(
                                   context,
-                                  MaterialPageRoute(builder: (context) => const Home()));
+                                  MaterialPageRoute(builder: (context) => const HomePage()));
                             },
                           ): ListTile(
                             title: const Text('Se Connecter'),
                             leading: const Icon(Icons.login_outlined),
                             onTap: () {Navigator.pushReplacement(
                                 context,
-                                MaterialPageRoute(builder: (context) => const Profil()));
+                                MaterialPageRoute(builder: (context) => const LoginPage()));
                             },
                           ),
 
@@ -172,7 +172,7 @@ class SideBar extends StatelessWidget {
                             title: Text('Accueil'),
                             onTap: () {Navigator.pushReplacement(
                                 context,
-                                MaterialPageRoute(builder: (context) => const Home()));
+                                MaterialPageRoute(builder: (context) => const HomePage()));
                             },
                           ),
                           ListTile(
@@ -180,7 +180,7 @@ class SideBar extends StatelessWidget {
                             title: Text('Carte'),
                             onTap: (){Navigator.pushReplacement(
                                 context,
-                                MaterialPageRoute(builder: (context) => const MyMap()));
+                                MaterialPageRoute(builder: (context) => const MapPage()));
                             },
                           ),
                           ListTile(
@@ -196,7 +196,7 @@ class SideBar extends StatelessWidget {
                             title: Text('Mon Profil'),
                             onTap: (){Navigator.pushReplacement(
                                 context,
-                                MaterialPageRoute(builder: (context) => const ProfilUser()));
+                                MaterialPageRoute(builder: (context) => const ProfilUserPage()));
                             },
                           ): Text(''),
 
@@ -208,14 +208,14 @@ class SideBar extends StatelessWidget {
                               Disconnect();
                               Navigator.pushReplacement(
                                   context,
-                                  MaterialPageRoute(builder: (context) => const Home()));
+                                  MaterialPageRoute(builder: (context) => const HomePage()));
                             },
                           ): ListTile(
                             title: const Text('Se Connecter'),
                             leading: const Icon(Icons.login_outlined),
                             onTap: () {Navigator.pushReplacement(
                                 context,
-                                MaterialPageRoute(builder: (context) => const Profil()));
+                                MaterialPageRoute(builder: (context) => const LoginPage()));
                             },
                           ),
                         ],

@@ -3,23 +3,22 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:smooth_star_rating/smooth_star_rating.dart';
 import 'package:thebestatoo/Classes/Shop.dart';
-import 'package:thebestatoo/Pages/CreateAvisArtist.dart';
-
+import 'package:thebestatoo/Pages/CreateNoticesArtist.dart';
 import '../Classes/Notice.dart';
-import 'CreateAvisSalon.dart';
+import 'CreateNoticesSalon.dart';
 
-class ListAvis extends StatefulWidget {
+class NoticesListPage extends StatefulWidget {
   final dynamic notices;
   final dynamic id;
   final dynamic role;
-  const ListAvis(this.notices,this.id,this.role, {Key? key}) : super(key: key);
+  const NoticesListPage(this.notices,this.id,this.role, {Key? key}) : super(key: key);
   static String route = 'listAvis';
 
   @override
-  _ListAvis createState() => _ListAvis();
+  _NoticesListPage createState() => _NoticesListPage();
 }
 
-class _ListAvis extends State<ListAvis> {
+class _NoticesListPage extends State<NoticesListPage> {
   late Notices notices;
 
   @override
@@ -41,12 +40,12 @@ class _ListAvis extends State<ListAvis> {
               if(widget.role == "Artist"){
                 await Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => CreateAvisArtist(widget.id)),
+                  MaterialPageRoute(builder: (context) => CreateNoticesArtist(widget.id)),
                 );
               }else if(widget.role == "Shop"){
                 await Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => CreateAvisSalon(widget.id)),
+                  MaterialPageRoute(builder: (context) => CreateNoticesSalon(widget.id)),
                 );
               }
             },

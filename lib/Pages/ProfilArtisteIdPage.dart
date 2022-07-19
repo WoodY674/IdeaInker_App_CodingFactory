@@ -4,33 +4,33 @@ import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:http/http.dart' as http;
 import 'package:smooth_star_rating/smooth_star_rating.dart';
-import 'package:thebestatoo/Pages/ArtistesLies.dart';
-import 'package:thebestatoo/Pages/informationsSalon.dart';
-import 'package:thebestatoo/Pages/listAvis.dart';
-import 'package:thebestatoo/Pages/postsPage.dart';
-import 'package:thebestatoo/Pages/sideBar.dart';
-import 'package:thebestatoo/Pages/toggleBar.dart';
+import 'package:thebestatoo/Pages/ArtistesFromShopPage.dart';
+import 'package:thebestatoo/Pages/informationsSalonPage.dart';
+import 'package:thebestatoo/Pages/NoticesListPage.dart';
+import 'package:thebestatoo/Pages/PostsPage.dart';
+import 'package:thebestatoo/Pages/SideBarPage.dart';
+import 'package:thebestatoo/Pages/ToggleBarPage.dart';
 import '../Classes/Notice.dart';
 import '../Classes/Shop.dart';
 import '../Classes/User.dart';
 import 'Creations.dart';
-import 'editUser.dart';
+import 'EditUserInformations.dart';
 import '../main.dart';
-import 'favoritesPage.dart';
-import 'informationsArtiste.dart';
-import 'informationsUser.dart';
+import 'FavoritesPage.dart';
+import 'informationsArtistePage.dart';
+import 'informationsUserPage.dart';
 import '../main.dart';
 
-class ProfilArtisteId extends StatefulWidget {
+class ProfilArtisteIdPage extends StatefulWidget {
   static String route = 'ProfilArtisteId';
   final dynamic id;
-  const ProfilArtisteId(this.id,{Key? key}) : super(key: key);
+  const ProfilArtisteIdPage(this.id,{Key? key}) : super(key: key);
 
   @override
-  _ProfilArtisteId createState() => _ProfilArtisteId();
+  _ProfilArtisteIdPage createState() => _ProfilArtisteIdPage();
 }
 
-class _ProfilArtisteId extends State<ProfilArtisteId> {
+class _ProfilArtisteIdPage extends State<ProfilArtisteIdPage> {
   late User user;
   late Future<User> futureUser;
   late double stars = 0;
@@ -47,7 +47,7 @@ class _ProfilArtisteId extends State<ProfilArtisteId> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      drawer: SideBar(),
+      drawer: SideBarPage(),
       appBar: AppBar(
         title: Text('Profil Artiste'),
         backgroundColor: Colors.deepPurple,
@@ -119,7 +119,7 @@ class _ProfilArtisteId extends State<ProfilArtisteId> {
                                   onTap: (){
                                     Navigator.push(
                                       context,
-                                      MaterialPageRoute(builder: (context) => ListAvis(snapshot.data!.notices,snapshot.data!.id,"Artist")),
+                                      MaterialPageRoute(builder: (context) => NoticesListPage(snapshot.data!.notices,snapshot.data!.id,"Artist")),
                                     );
                                   },
                                   child: Align(
@@ -165,7 +165,7 @@ class _ProfilArtisteId extends State<ProfilArtisteId> {
               body: Container(
                   child: currentIndex == 0 ?
                   FavoritesPage(user) :
-                  InformationsArtiste(user)
+                  InformationsArtistePage(user)
               ),
             );
           } else if (snapshot.hasError) {

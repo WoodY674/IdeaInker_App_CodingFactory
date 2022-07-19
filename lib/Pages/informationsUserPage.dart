@@ -4,17 +4,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:thebestatoo/Classes/User.dart';
 
-class Informations extends StatelessWidget {
+class InformationsUserPage extends StatelessWidget {
   final dynamic users;
-  const Informations( this.users, {Key? key}) : super(key: key);
+  const InformationsUserPage( this.users, {Key? key}) : super(key: key);
 
   TextStyle _style(){
     return TextStyle(
       fontWeight: FontWeight.bold
     );
   }
-
-
 
   @override
   Widget build(BuildContext context) {

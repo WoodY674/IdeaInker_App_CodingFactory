@@ -4,22 +4,22 @@ import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:http/http.dart' as http;
 import 'package:smooth_star_rating/smooth_star_rating.dart';
-import 'package:thebestatoo/Pages/Admin/favoritesPageSalon.dart';
-import 'package:thebestatoo/Pages/ArtistesLies.dart';
-import 'package:thebestatoo/Pages/informationsSalon.dart';
-import 'package:thebestatoo/Pages/postsPageShop.dart';
-import 'package:thebestatoo/Pages/sideBar.dart';
-import 'package:thebestatoo/Pages/toggleBar.dart';
+import 'package:thebestatoo/Pages/Admin/FavoritesPageSalon.dart';
+import 'package:thebestatoo/Pages/ArtistesFromShopPage.dart';
+import 'package:thebestatoo/Pages/informationsSalonPage.dart';
+import 'package:thebestatoo/Pages/PostsPageShop.dart';
+import 'package:thebestatoo/Pages/SideBarPage.dart';
+import 'package:thebestatoo/Pages/ToggleBarPage.dart';
 import '../../Classes/Shop.dart';
 import '../../Classes/User.dart';
 import '../Creations.dart';
-import '../editShop.dart';
-import '../editUser.dart';
-import '../favoritesPage.dart';
-import '../informationsUser.dart';
+import '../EditShopInformations.dart';
+import '../EditUserInformations.dart';
+import '../FavoritesPage.dart';
+import '../informationsUserPage.dart';
 import '../../main.dart';
-import '../listAvis.dart';
-import '../postsPage.dart';
+import '../NoticesListPage.dart';
+import '../PostsPage.dart';
 
 class ProfilSalonAdmin extends StatefulWidget {
   static String route = 'ProfilArtiste';
@@ -46,7 +46,7 @@ class _ProfilSalonAdmin extends State<ProfilSalonAdmin> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      drawer: SideBar(),
+      drawer: SideBarPage(),
         appBar: AppBar(
           title: const Text('Profil Salon'),
           backgroundColor: Colors.deepPurple,
@@ -94,7 +94,7 @@ class _ProfilSalonAdmin extends State<ProfilSalonAdmin> {
                                           onPressed: (){
                                             Navigator.push(
                                               context,
-                                              MaterialPageRoute(builder: (context) =>  EditShop(shop,widget.id)),
+                                              MaterialPageRoute(builder: (context) =>  EditShopInformations(shop,widget.id)),
                                             );
                                           },
                                         ),
@@ -122,7 +122,7 @@ class _ProfilSalonAdmin extends State<ProfilSalonAdmin> {
                                             onPressed: (){
                                               Navigator.push(
                                                 context,
-                                                MaterialPageRoute(builder: (context) =>  EditShop(shop,widget.id)),
+                                                MaterialPageRoute(builder: (context) =>  EditShopInformations(shop,widget.id)),
                                               );
                                             },
                                           ),
@@ -153,7 +153,7 @@ class _ProfilSalonAdmin extends State<ProfilSalonAdmin> {
                                       onTap: (){
                                         Navigator.push(
                                           context,
-                                          MaterialPageRoute(builder: (context) => ListAvis(shop.notices,shop.id,"Shop")),
+                                          MaterialPageRoute(builder: (context) => NoticesListPage(shop.notices,shop.id,"Shop")),
                                         );
                                       },
                                       child: Align(
@@ -205,7 +205,7 @@ class _ProfilSalonAdmin extends State<ProfilSalonAdmin> {
                         return InformationsSalon(shop);
                       }
                       else if (currentIndex == 2) {
-                        return ArtistesLies(shop.artists);
+                        return ArtistesFromShopPage(shop.artists);
                       }else{
                         return const CircularProgressIndicator();
                       }

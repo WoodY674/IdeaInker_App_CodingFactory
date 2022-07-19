@@ -64,12 +64,14 @@ class FavoritesPageSalon extends StatelessWidget {
       },
     );
   }
+
+  ///Récupére une liste de Posts
   void parsePostsImages() async {
     var postsToGet = fetchPosts();
     posts =  await postsToGet;
     _streamController.sink.add(filteredPosts(posts));
   }
-
+  /// Filtre une liste de Posts via un id
   List<Posts> filteredPosts(List<Posts> posts) {
     List<Posts> postFiltered = posts.where((element) => element.createdBySalon?.id == users.id).toList();
     return postFiltered;

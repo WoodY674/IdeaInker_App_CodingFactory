@@ -19,10 +19,10 @@ class PostsPage extends StatefulWidget {
   const PostsPage({Key? key}) : super(key: key);
 
   @override
-  _Posts createState() => _Posts();
+  _PostsPage createState() => _PostsPage();
 }
 
-class _Posts extends State<PostsPage> {
+class _PostsPage extends State<PostsPage> {
   TextEditingController contentController = TextEditingController();
   TextEditingController addressController = TextEditingController();
   TextEditingController cityController = TextEditingController();
@@ -177,19 +177,13 @@ class _Posts extends State<PostsPage> {
       ),
     );
   }
-  /*
-  La fonction addPost récupère le contenu du post, l'image et l'identifiant de l'utilisateur.
-  Elle récupère notre token en plus d'attendre une réponse de la requête Http post.
-  Si nous recevons un code 201, un message confirmant notre publication nous est envoyé "Post added with Success!"
-  sinon nous recevons "Failed create Post".
-  */
 
   /// Ajoute un post dans l'API
   /// Toast affiché en fonction du résultat de la requête (Succès/Échec)
   Future<void> addPost(String content, String image64, int userId) async {
     final token = preferences.getString('token', defaultValue: '').getValue();
     final responsePost = await http.post(
-      Uri.parse('http://ideainker.fr/api2/post/'),
+      Uri.parse(urlSite + 'post/'),
       headers: <String, String>{
         'Content-Type': 'application/json',
         HttpHeaders.authorizationHeader: "Bearer $token",

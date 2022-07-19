@@ -11,7 +11,7 @@ import 'package:thebestatoo/chat/components/inputField.dart';
 import 'package:thebestatoo/chat/components/inputFieldController.dart';
 import 'package:thebestatoo/chat/models/chatMessage.dart';
 import 'package:thebestatoo/main.dart';
-import 'package:thebestatoo/Pages/sideBar.dart';
+import 'package:thebestatoo/Pages/SideBarPage.dart';
 import '../../Classes/Token.dart';
 import 'package:streaming_shared_preferences/streaming_shared_preferences.dart';
 
@@ -40,7 +40,7 @@ class _MessagePage extends State<MessagePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      drawer: SideBar(),
+      drawer: SideBarPage(),
       appBar: AppBar(
         title: Row(
           mainAxisAlignment: MainAxisAlignment.center,

@@ -6,9 +6,9 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:http/http.dart' as http;
 import 'package:streaming_shared_preferences/streaming_shared_preferences.dart';
-import 'package:thebestatoo/Pages/ProfilSalon.dart';
-import 'package:thebestatoo/Pages/addShop.dart';
-import 'package:thebestatoo/Pages/sideBar.dart';
+import 'package:thebestatoo/Pages/ProfilShopPage.dart';
+import 'package:thebestatoo/Pages/AddShopPage.dart';
+import 'package:thebestatoo/Pages/SideBarPage.dart';
 import 'package:thebestatoo/main.dart';
 import 'dart:io';
 import '../Classes/Shop.dart';
@@ -42,7 +42,7 @@ class _ListShopUsers extends State<ListShopUsers> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      drawer: SideBar(),
+      drawer: SideBarPage(),
       appBar: AppBar(
         title: customSearchBar,
         actions: [
@@ -114,7 +114,7 @@ class _ListShopUsers extends State<ListShopUsers> {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => ProfilSalon(currentSalon.id)),
+                              builder: (context) => ProfilShopPage(currentSalon.id)),
                         );
                       },
                       child: Card(

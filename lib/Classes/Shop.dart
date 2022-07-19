@@ -10,12 +10,16 @@ import '../main.dart';
 import 'Notice.dart';
 
 final String url = urlSite +"salon/";
+
+///Retourne une liste de Shop
 List<Shop> parseShop(String responseBody){
   var list = json.decode(responseBody) as List<dynamic>;
   var salons = list.map((e) => Shop.fromJson(e)).toList();
   return salons;
 }
 
+///Execute une requete pour récupérer un shop en particulier
+///Retourne un seul shop
 Future<Shop> fetchShopIndividual(idShop) async {
   final token = preferences.getString('token', defaultValue: '').getValue();
   final response = await http
@@ -35,8 +39,9 @@ Future<Shop> fetchShopIndividual(idShop) async {
   }
 }
 
+/// Execute une requete afin de récuperer une liste de shop
+/// Retourne une future list de shop
 Future<List<Shop>> fetchShop() async {
-
   final preferences = await StreamingSharedPreferences.instance;
   final token = preferences.getString('token', defaultValue: '').getValue();
   final http.Response response = await http.get(Uri.parse(url),
