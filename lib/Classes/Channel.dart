@@ -4,7 +4,6 @@ import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
 import 'package:streaming_shared_preferences/streaming_shared_preferences.dart';
 import '../main.dart';
-import 'User.dart';
 
 final String url = urlSite +"channel/";
 List<Channel> parseChannel(String responseBody){

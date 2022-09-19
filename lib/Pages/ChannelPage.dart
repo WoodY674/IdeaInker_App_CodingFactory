@@ -1,18 +1,8 @@
-import 'dart:convert';
-import 'dart:developer';
-import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:thebestatoo/Classes/Channel.dart';
 import 'package:thebestatoo/Classes/User.dart';
-import 'package:thebestatoo/chat/chatAppBar.dart';
-import 'package:thebestatoo/chat/components/body.dart';
-import 'package:thebestatoo/chat/models/chatMessage.dart';
-import 'package:thebestatoo/main.dart';
 import 'package:thebestatoo/Pages/sideBar.dart';
 import '../../Classes/Token.dart';
-import 'package:streaming_shared_preferences/streaming_shared_preferences.dart';
-
 import 'MessagesPage.dart';
 import 'MessagesPage2.dart';
 
@@ -68,11 +58,11 @@ class _ChannelPage extends State<ChannelPage> {
           future: futureChannel,
           builder: (BuildContext context, AsyncSnapshot<List<Channel>> snapshot) {
             if (snapshot.hasData) {
-
               return Container(
                 child: ListView.builder(
                   itemCount: snapshot.data?.length,
                   itemBuilder: (BuildContext context, int index) {
+                    Channel currentChannel = snapshot.data![index];
                     if(snapshot.data?[index]?.usersInside?[1] == widget.userPseudo){
                       myUserPseudo = snapshot.data?[index]?.usersInside?[0];
                     }else{
@@ -83,14 +73,17 @@ class _ChannelPage extends State<ChannelPage> {
                       color: Colors.purple,
                       child: Center(
                           child: GestureDetector(
-
                             onTap: () {
+                              if(snapshot.data?[index]?.usersInside?[1] == widget.userPseudo){
+                                myUserPseudo = snapshot.data?[index]?.usersInside?[0];
+                              }else{
+                                myUserPseudo = snapshot.data?[index]?.usersInside?[1];
+                              }
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(
-
                                     builder: (context) => MessagePage2(
-                                        snapshot.data?[index]?.id, myUserPseudo
+                                        currentChannel.id, myUserPseudo
                                     ),
                               ));
                             },

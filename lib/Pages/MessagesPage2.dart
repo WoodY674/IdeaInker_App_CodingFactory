@@ -52,6 +52,8 @@ class _MessagePage extends State<MessagePage2> {
           future: futureChatMessage,
           builder: (BuildContext context, AsyncSnapshot<List<ChatMessage>> snapshot) {
             if (snapshot.hasData) {
+              print(widget.userId);
+              print(snapshot.data);
               return Column(
               children: [
                         SizedBox(
@@ -113,7 +115,7 @@ class _MessagePage extends State<MessagePage2> {
                         ),
                         IconButton(
                           onPressed: () {
-                            createMessage(myController.text, 1);
+                            createMessage(myController.text, widget.channelId);
                             Navigator.push(
                                 context,
                                 MaterialPageRoute(
